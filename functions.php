@@ -1,4 +1,6 @@
 <?php
+require_once get_template_directory() . '/inc/blocks.php';
+
 function altius_healthcare_enqueue_styles()
 {
     // Add Bootstrap CSS
@@ -11,9 +13,9 @@ function altius_healthcare_enqueue_styles()
 
     wp_enqueue_style(
         "altius_healthcare-style",
-        get_stylesheet_uri() . '?v=' . time(), // Add cache busting query string
-        [],
-        null // Set version to null to avoid double version parameters in the URL
+        get_stylesheet_uri(),
+        ["bootstrap-css"],
+        filemtime( get_stylesheet_directory() . '/style.css' ) // cache-busts on every save
     );
 }
 add_action("wp_enqueue_scripts", "altius_healthcare_enqueue_styles");
@@ -65,10 +67,10 @@ function register_my_menus()
 {
     register_nav_menus([
         "header-menu" => __("Header Menu"),
-        "footer-menu" => __("Footer Menu"),
-        "clinic-menu" => __("Clinic Menu"),
-        "services-menu" => __("Services Menu"),
-        "company-menu" => __("Company Menu"),
+        "footer-menu" => __("Footer Menu (fallback)"),
+        "services-menu" => __("Footer: Treatments"),
+        "clinic-menu" => __("Footer: Conditions"),
+        "company-menu" => __("Footer: Resources"),
     ]);
 }
 add_action("init", "register_my_menus");
@@ -100,6 +102,15 @@ function altius_healthcare_setup()
         "flex-width" => true,
         "header-text" => ["site-title", "site-description"],
     ]);
+
+    // Wide/Full alignment controls — without this the editor strips align attributes on save.
+    add_theme_support( 'align-wide' );
+    add_theme_support( 'responsive-embeds' );
+    add_theme_support( 'html5', [ 'search-form', 'gallery', 'caption', 'style', 'script' ] );
+
+    // Load the theme stylesheet inside the block editor so pages preview true to the front end.
+    add_theme_support( 'editor-styles' );
+    add_editor_style( 'style.css' );
 }
 add_action("after_setup_theme", "altius_healthcare_setup");
 
@@ -110,7 +121,15 @@ function altius_healthcare_scripts()
         "altius-healthcare",
         get_template_directory_uri() . "/assets/js/functions.js",
         ["jquery"],
-        "1.0.0",
+        filemtime( get_template_directory() . '/assets/js/functions.js' ),
+        true
+    );
+
+    wp_enqueue_script(
+        "cji-main",
+        get_template_directory_uri() . "/assets/js/main.js",
+        [],
+        filemtime( get_template_directory() . '/assets/js/main.js' ),
         true
     );
 }
@@ -218,6 +237,21 @@ $wp_customize->add_control(
     )
 );
 
+
+    // Footer tagline
+    $wp_customize->add_section( 'altius_healthcare_footer', array( 'title' => __( 'Footer', 'altius_healthcare' ), 'priority' => 35 ) );
+    $wp_customize->add_setting( 'altius_healthcare_footer_tagline', array(
+        'default'           => 'Specialist non-surgical joint care and ultrasound-guided interventions delivered by senior clinical NHS consultants in Poynton, Cheshire.',
+        'type'              => 'theme_mod',
+        'capability'        => 'edit_theme_options',
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+    $wp_customize->add_control( 'altius_healthcare_footer_tagline', array(
+        'label'   => __( 'Footer tagline', 'altius_healthcare' ),
+        'section' => 'altius_healthcare_footer',
+        'type'    => 'textarea',
+    ) );
 
     // Register the social links section
     $wp_customize->add_section(

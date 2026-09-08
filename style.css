@@ -3,1130 +3,2440 @@ Theme Name: Cheshire Joint Injections
 Theme URI: http://hanningtondigital.com/cheshire_joint_injections
 Author: Jack Hannington
 Author URI: hannigtondigital.com
-Description: Customisable light theme for Cheshire Joint Injections
-Version: 1.0
+Description: Clinical, premium, comforting theme for Cheshire Joint Injections. Manrope headings, Inter body, olive palette.
+Version: 2.0
 License: GNU General Public License v2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: cheshire_joint_injections
 */
 
+/* ==========================================================================
+   CONTENTS
+   1. Design tokens          — colours, type scale, spacing, radii, shadows
+   2. Base                   — resets, body, links, focus
+   3. Typography             — headings, paragraph styles, lists
+   4. Layout                 — container, sections, full-width bands
+   5. Buttons
+   6. Forms
+   7. Navigation             — fixed header, drawer, sub-menus, alert bar
+   8. Cards & panels         — .card, block styles, dark contexts
+   9. Components             — hero, bento, link-icon, badges, accordion,
+                               carousel, profile cards, contact section
+   10. Templates             — page header, blog, services sidebar, hero page
+   11. Footer
+   12. Legacy                — classes still used by existing page content
+   13. Utilities
+
+   Fonts (Manrope + Inter, self-hosted) are declared in theme.json, which
+   prints the @font-face rules on the front end and in the editor.
+   ========================================================================== */
+
+/* ==========================================================================
+   1. DESIGN TOKENS  (Figma: Design System / Sampler Board)
+   Everything below reads from these. Change a value here, not in a rule.
+   ========================================================================== */
+
 :root {
-  --bg-color: #fffff;
-  --body-text-color: #273308;
-  --dark-grey: #414548;
-  --light-grey: #ededed;
-  --body-font-size: 1rem;
-  --green: #4F7F0C;
-  --bronze: #D2881B;
-  --silver: #9a9494;
-  --gold: #F0AA22;
-  --dark-blue: #0f3e61;
-  --animate-duration: 400ms;
-  --default-box-shadow: 0px -4px 19px 3px rgb(0 0 0 / 13%);
+  /* Brand palette */
+  --olive: #4F7F0C;          /* Primary/Default — buttons, links, accents */
+  --olive-dark: #264D03;     /* Primary/Dark */
+  --olive-light: #EBF2E5;    /* Primary/Light — tints, icon badges */
+  --olive-pale: #A3C47A;     /* links on dark panels */
+  --warm-neutral: #FAFBF9;   /* Neutral/Background — soft bands, inputs */
+  --warm-grey: #F0EDE8;      /* neutral bento card */
+  --light-grey: #E4EAE2;     /* Neutral/Border */
+  --dark: #1C290D;           /* Surface/Dark + Text/Body */
+  --ink: #111111;            /* Text/Primary — headings */
+  --white: #FFFFFF;
+
+  /* Semantic — components read these. Dark panels override them (section 8). */
+  --bg: var(--white);
+  --bg-soft: var(--warm-neutral);
+  --surface: var(--white);                 /* card background */
+  --text: var(--dark);                     /* labels, names, list items */
+  --text-soft: rgba(28, 41, 13, 0.80);     /* paragraphs (Figma body @ 80%) */
+  --text-muted: rgba(28, 41, 13, 0.60);    /* captions, roles */
+  --heading: var(--ink);
+  --accent: var(--olive);
+  --accent-hover: #43700A;
+  --accent-contrast: var(--white);         /* text on olive */
+  --link: var(--olive);
+  --link-hover: var(--olive-dark);
+  --border: var(--light-grey);
+  --border-soft: #F3F3F3;
+  --tint: var(--olive-light);
+  --field-bg: var(--warm-neutral);
+  --btn-outline: var(--olive);             /* outline button colour */
+  --icon-bg: var(--olive-light);
+  --focus-ring: 0 0 0 3px rgba(79, 127, 12, 0.28);
+
+  /* Type */
+  --font-heading: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  --fw-heading: 400;
+  --fs-body: 16px;
+  --lh-body: 1.6;
+  --fs-display: clamp(40px, 5.2vw, 66px);  /* Heading/Display */
+  --fs-h1: clamp(32px, 3.6vw, 40px);       /* Heading/H1 */
+  --fs-h2: clamp(24px, 2.6vw, 28px);       /* Heading/H2 */
+  --fs-h3: 20px;                           /* Heading/H3 */
+  --fs-h4: 18px;
+  --fs-lead: 18px;                         /* Body/Large */
+  --fs-small: 14px;                        /* Body/Small */
+  --fs-caption: 12px;                      /* Body/Caption */
+  --fs-caption-lg: 13px;
+  --fs-label: 14px;                        /* UI/Label */
+  --fs-button: 15px;                       /* UI/Button */
+
+  /* Spacing scale (multiples of 4, as used throughout the Figma) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 56px;
+  --space-9: 80px;
+  --space-10: 96px;
+
+  /* Layout */
+  --container: 1280px;       /* 1440 frame minus 80px side padding */
+  --content-max: 760px;      /* comfortable reading width */
+  --gutter: 20px;
+  --nav-height: 72px;
+  --section-y: 96px;         /* vertical padding of a section/band */
+  --section-gap: 56px;       /* section header → content */
+  --card-pad: 32px;
+  --card-pad-sm: 24px;
+  --panel-pad: 36px;
+  --grid-gap: 24px;
+
+  /* Radii */
+  --radius-xs: 4px;
+  --radius-sm: 6px;          /* buttons, inputs, card images */
+  --radius-md: 12px;         /* small cards, photos */
+  --radius-lg: 16px;         /* cards */
+  --radius-xl: 20px;         /* bento panels */
+  --radius-pill: 100px;
+
+  /* Shadows (Figma: very soft olive-tinted) */
+  --shadow-card: 0 8px 12px rgba(28, 41, 13, 0.04);
+  --shadow-lift: 0 14px 28px rgba(28, 41, 13, 0.08);
+  --shadow-nav: 0 2px 14px rgba(28, 41, 13, 0.06);
+  --shadow-menu: 0 12px 28px rgba(28, 41, 13, 0.10);
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-fast: 0.2s var(--ease);
+  --t-med: 0.35s var(--ease);
+  --animate-duration: 400ms; /* animate.css (mobile drawer) */
 }
 
-* {
+@media (max-width: 1024px) {
+  :root {
+    --section-y: 72px;
+    --section-gap: 40px;
+    --panel-pad: 28px;
+  }
+}
+
+@media (max-width: 782px) {
+  :root {
+    --section-y: 56px;
+    --section-gap: 32px;
+    --card-pad: 24px;
+    --panel-pad: 24px;
+    --grid-gap: 16px;
+  }
+}
+
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-}
-
-
-
-/*---- FONTS ----*/
-
-
-@font-face {
-  font-family: 'Inter';
-  src: url('assets/fonts/inter/Inter-VariableFont_slnt,wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: oblique 0deg 10deg;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Manrope';
-  src: url('assets/fonts/manrope/Manrope-VariableFont_wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: oblique 0deg 10deg;
-  font-display: swap;
 }
 
 html {
-  height: 100%;
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
-  font-weight: 400;
-  font-size: 1rem;
-  color: #212529;
-  text-align: left;
-  line-height: 1.6;
-  background-color: var(--bg-color);
-  height: 100%;
-}
-
-/*---- Colours ----*/
-
-.green {
-  color:var(--green);
-}
-.background-green {
-  background-color:var(--green);
-  color: var(--light-grey);
-}
-
-.dark-grey-bg {
-  background-color:var(--dark-grey);
-  color: var(--light-grey);
-}
-
-.bronze {
-  color:var(--bronze);
-}
-
-.border-bronze {
-  border:1px solid var(--bronze)
-}
-.background-bronze {
-  background-color:var(--bronze);
-}
-
-.silver {
-  color:var(--silver);
-}
-.border-silver {
-  border:1px solid var(--silver)
-}
-.background-silver {
-  background-color:var(--silver);
-}
-
-.gold {
-  color:var(--gold);
-}
-.background-gold {
-  background-color:var(--gold);
-}
-.border-gold {
-  border:1px solid var(--gold)
-}
-
-
-/* Shadows */
-.default-shadow {
-  box-shadow: var(--default-box-shadow);
-}
-
-.shadow-bottom {
-  box-shadow: 0px 9px 13px 1px #f4f4f4;
-}
-
-
-/*---- NAV ----*/
-
-nav {
-  width: 100%;
   margin: 0;
-  position: fixed;
-  background-color:white;
-  transition: 0.3s ease-in;
-  top: 0;
-  box-shadow: 0px -4px 19px 3px rgb(0 0 0 / 13%);
-  z-index: 1000;
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: var(--lh-body);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-align: left;
 }
 
-/* .translucent-bg {
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background-color: rgba(32, 33, 34, 0.86);
-  transition: background-color 0.3s ease;
-} */
-
-.navbar {
-  transition: 0.3s;
-  z-index: 1;
-  display: flex;
-  width: 100%;
-  justify-content: space-between;
-  padding: 10px 15px;
-  color: var(--light-grey)
+img,
+svg,
+video,
+iframe {
+  max-width: 100%;
 }
 
-.navbar-light {
-  background-color: var(--light-grey);
-  color: var(--dark-grey)
-}
-
-.custom-logo {
-  width: 100px;
+img {
   height: auto;
-  transition: 0.3s ease-in;
+  vertical-align: middle;
 }
 
-.menu-container {
-  position: fixed;
-  top: 0;
-  background-color: #fff;
-  width: calc(100%);
-  height: 100vh;
-  left: 0px;
-  display: none;
-  box-sizing: border-box;
-  overflow-y: auto;
+figure {
+  margin: 0;
 }
 
-.nav-item>button {
-  font-size: 14px;
-  border: 1px solid var(--green);
-}
-
-.nav-item {
-  /* flex: 1.3; */
-}
-
-#nav-toggle,
-.close-menu {
-  text-align: right;
-  order:3;
-}
-
-.nav-toggle {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid lightgrey;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center;
-  padding: 7px;
-  transition: width 1s ease-in-out;
-  position: relative;
-}
-
-#showMenu span {
-  width: 60%;
-  height: 2px;
-  background-color: var(--green);
-}
-
-.close-menu span {
-  font-size: 20px;
-  color: var(--body-text-color);
-}
-
-.menu-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  border-bottom: 1px solid #c6c6c6;
-}
-
-.menu,
-.sub-menu {
-  list-style-type: none;
-  padding-inline-start: 0;
-  margin-block-start: 0;
-  margin-block-end: 0;
-}
-
-.menu li {
-  border-bottom: 1px solid #ededed;
-}
-
-.menu li a {
+a {
+  color: var(--link);
   text-decoration: none;
-  width: 100%;
-  padding: 15px 15px;
-  height: 100%;
-  display: block;
-  transition: 0.3s ease-in;
-  font-size:14px;
-  font-weight:500;
-  color: var(--body-text-color);
+  transition: color var(--t-fast), opacity var(--t-fast);
 }
 
-.menu li a:hover {
-  color:var(--green);
+a:hover {
+  color: var(--link-hover);
 }
 
-
-
-.menu-footer {
-  margin: 15px;
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-
-.menu-item-has-children>a>svg {
-  margin-left: 5px;
-  display: inline-block;
-  /* Required for transform */
-  transition: transform 0.3s ease;
-  /* Animate the transform */
-  float: right;
+::selection {
+  background: var(--olive);
+  color: #fff;
 }
 
-.rotate-icon {
-  transform: rotate(180deg);
-}
-
-
-
-/* Alert bar */
-.alert-bar {
-  background-color: var(--green);
-  position: absolute;
-  left: 0;
-  z-index: 1;
-  text-align: center;
-  width: 100%;
-  top:64px;
-  padding:6px;
-}
-
-.alert-bar a {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 14px;
-}
-
-/* Services menu */
-
-#services-toggle {
-  display: none;
-}
-
-.services-menu {
-  display: flex;
-  flex-direction: column;
-  padding-inline-start: 0;
-  background-color: #fff;
-  padding:20px;
-  width:90%;
-  border-radius:4px;
-  border:0.5px solid #747474;
-  /* box-shadow: 0 0 4px 0 rgb(0 0 0 / 23%); */
-  position:sticky;
-  top:90px;
-}
-
-@media (max-width:1000px){
-  .services-menu {
-    width: 100%;
-    border-color:#f9f9f9;
-  }
-}
-
-.services-menu .current-menu-item a {
-  color: var(--green); 
-  font-weight: 500;
-}
-
-
-.menu-services-container {
-  height:100%;
-}
- 
-.services-menu > li {
-  list-style-type: none;
-  padding-inline-start: 0;
-  margin-block-start: 0;
-  margin-block-end: 0;
-  padding:4px 0px;
-  color:inherit!important;
-};
-
-.services-menu a {
-  text-decoration: none;
-  color:#051F29;
-  width:100%;
-  padding: 10px 0px;
-}
-
-@media (max-width:1000px){
-  .services-menu{
-    display:none;
-  }
-  .services-menu-toggle{
-    display:block;
-  }
-  #services-toggle {
-    display: block;
-  }
-  .menu-services-container {
-    height:auto;
-  }
-}
-
-/* Sidebar offers */
-
-.sidebar-offers {
-  font-size: 14px;
-}
-
-@media (min-width:996px){
-  .sidebar-offers {
-        display: flex;
-    flex-direction: column;
-    align-items: end;
-}
-.sidebar-offers .offer {
-  width: 320px;
-}
-.sidebar-offers {
-  position: sticky;
-  top: 100px;
-}
-}
-
-@media (max-width:996px){
-  .sidebar-offers {
-    margin-top:40px;
-    font-size: 16px;
-  }
-}
-
-/* Services summary bar */
-
-.services-summary img  {
-   max-width:36px;
-}
-
-.services-summary p {
-  margin-bottom:0px;
-  font-size: 14px;
-  font-weight: 300;
-  line-height: 18px;
-
-}
-
-@media (min-width:1200px){
-  .services-summary p {
-    margin-bottom:0px;
-    font-size: 16px;
-    line-height: 18px;
-  }
-  .services-summary img  {
-    max-width:40px;
- }
-}
-
-@media (max-width:600px){
-  .services-summary p {
-    font-size: 13px;
-  }
-  .services-summary img {
-    max-width:30px;
-  }
-  .services-summary .wp-block-column {
-    min-width: 100px;
-  }
-  .services-summary .wp-block-columns {
-   gap:0px!important;
-  }
-}
-
-
-/* Hide sub-menu by default */
-.sub-menu {
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.5s ease;
-  display: none;
-  flex-direction: column;
-}
-/* Show sub-menu on hover */
-.menu-item-has-children:hover .sub-menu {
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: var(--space-6) 0;
   opacity: 1;
-  visibility: visible;
-  display: flex;
-  flex-direction: column;
 }
 
-.sub-menu > li {
-  border-bottom: none;
-}
-
-.show {
-  display: flex;
-  flex-direction: column;
-  z-index: 1;
-}
-
-.hide-sm {
-  display: none;
-}
-
-#nav-cta {
-  flex: 3;
-  text-align: right;
-  margin-right: 10px;
-}
-
-@media (max-width:450px){
-  .nav-cta-button {
-  font-size: 12px!important;
-}
-}
-
-@media (min-width:1000px) {
-  .navbar {
-    align-items: center;
-  }
-  #nav-cta {
-    flex: 1;
-    white-space: nowrap;
-    text-align: right;
-    margin-right:0px;
-    margin-left:10px;
-  }
-  
-
-  .nav-item {
-    display: flex;
-    /* flex: 1; */
-  }
-
-  .menu-cta {
-    text-align: right;
-    display: inline-block;
-  }
-
-  .menu-container {
-    display: flex;
-    position: relative;
-    border: none;
-    height: auto;
-    flex: 8;
-    padding: 0;
-
-    background-color: inherit;
-  }
-
-  .menu-body {
-    width: 100%;
-  }
-
-  .menu-body ul {
-    display: flex;
-    flex-direction: row;
-    justify-content: end;
-    white-space: nowrap;
-    font-size: 0.9rem;
-  }
-
-  .menu-body li {
-    border-bottom: none;
-  }
-
-  .menu li a {
-    color: var(--body-text-color);
-    padding:10px 15px;
-  }
-
-  .menu-toggle,
-  #closeMenu,
-  .mobile-menu-logo,
-  .menu-header,
-  .menu-number,
-  .menu-footer {
-    display: none;
-  }
-
-  .menu-item-has-children>.sub-menu {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .menu-item-has-children>a>svg {
-    float: none;
-  }
-
-  .sub-menu {
-    background-color: #fff;
-    border-bottom: 1px solid;
-    border-right: 1px solid;
-    border-left: 1px solid;
-    margin-top:12px;
-    /* box-shadow: -1px 6px 13px 0px #d8d8d8; */
-  }
-
-  /* Show sub-menu on hover */
-  .menu-item-has-children:hover .sub-menu {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  /* Rotate the chevron when the menu item is hovered */
-  .menu-item-has-children:hover>a>svg {
-    transform: rotate(180deg);
-  }
-  .hide-sm {
-    display: block;
-  }
-}
-
-
-
-
-/* Logged-in User Admin Menu Menu */
-
-.admin-margin {
-  top: 32px;
-}
-
-@media screen and (max-width: 782px) {
-  .admin-margin {
-    top: 46px;
-  }
-}
-
-
-/*---- LAYOUT ----*/
-
-/* Center default container */
-
-.header {
-  padding:40px 0px 20px 0px;
-}
-
-.row {
-  --bs-gutter-x: 0; 
-}
-
-.container {
-  margin: auto;
-  max-width: 1200px;
-}
-
-@media (max-width:1000px){
-  .container {
-    padding-left:20px;
-    padding-right:20px;
-  }
-}
-
-:where(.is-layout-flex) {
-  gap: 0.3em;
-}
-
-.site-content {
-  margin-top: 65px;
-  padding-left:0px;
-  padding-right:0px;
-}
-
-/* Default gap between column container */
-:where(.wp-block-columns.is-layout-flex) {
-  gap: 4em;
-}
-
-/* leaf background */
-
-.leaf-bg {
-  background-image: url('http://cheshire-joint-injections.local/wp-content/uploads/2023/12/Logo-background-image.png');
-  background-repeat: no-repeat;
-  background-size:contain;
-}
-
-
-.leaf-bg-right {
-  background-image: url('http://cheshire-joint-injections.local/wp-content/uploads/2023/12/Logo-background-image.png');
-  background-repeat: no-repeat;
-  background-size:contain;
-  background-position: right;
-}
-
-@media (max-width: 650px) {
-  .leaf-bg {
-    background-size: cover;
-  }
-  .leaf-bg-left {
-    background-position: left;
-  }
-}
-
-/* Limit written content width  - useful for long text headings */
-
-.max-450 {
-  max-width: 450px;
-}
-.max-650 {
-  max-width: 650px;
-}
-
-.max-750 {
-  max-width: 750px;
-}
-
-/*--- HEADINGS ----*/
+/* ==========================================================================
+   3. TYPOGRAPHY
+   ========================================================================== */
 
 h1,
 h2,
 h3,
 h4,
 h5,
-h6 {
-  font-family: 'Manrope', 'Inter', sans-serif;
-  font-weight: 700;
-  color: #273308;
-  letter-spacing: -0.5px;
-}
-/* .wp-block-heading {
-  max-width: 700px;
-} */
-
-
-h1 {
-  font-weight: 700;
-
+h6,
+.h1,
+.h2,
+.h3 {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-heading);
+  color: var(--heading);
+  letter-spacing: -0.01em;
+  margin: 0 0 0.5em;
+  line-height: 1.25;
+  text-wrap: balance;
 }
 
+h1, .h1 { font-size: var(--fs-h1); line-height: 1.2; }
+h2, .h2 { font-size: var(--fs-h2); line-height: 1.3; }
+h3, .h3 { font-size: var(--fs-h3); line-height: 1.3; }
+h4 { font-size: var(--fs-h4); }
+h5 { font-size: 16px; }
+h6 { font-size: 14px; }
 
-@media (min-width : 1200px) {
-  .landing-h1 {
-    font-size: 3rem;
-    font-weight: 700;
-    line-height: 3.1rem;
-  }
+/* Display size — hero headlines. Heading block style or "Display" font-size preset. */
+.display,
+.is-style-display,
+.has-display-font-size {
+  font-size: var(--fs-display);
+  line-height: 1.15;
+  letter-spacing: -0.015em;
 }
 
-@media (max-width : 800px) {
-  landing-h1  {
-    font-size: 36px;
-    line-height: 40px;
-  }
+.has-xx-large-font-size { line-height: 1.2; }
+.has-x-large-font-size  { line-height: 1.3; }
+
+/* Rhythm: a heading that follows body content gets breathing room above it */
+:where(p, ul, ol, figure, .wp-block-image, .wp-block-buttons, .wp-block-list, .wp-block-group, .wp-block-columns, .wp-block-table) + :where(h2, h3, h4) {
+  margin-top: 1.5em;
 }
 
+p {
+  margin: 0 0 1.25em;
+  color: var(--text-soft);
+}
 
-
-/* Paragrahs, strong, a*/
-strong {
+strong,
+b,
+.fw-bolder,
+.fw-bold {
   font-weight: 600;
 }
 
-/* Borders */
-
-.rounded {
-  border-radius: 4px;
+small {
+  font-size: var(--fs-small);
 }
 
-/* Text preceding a section's heading */
-
+/* Eyebrow — small label above a heading (Paragraph style, or .brow-text for old content) */
+.eyebrow,
+.is-style-eyebrow,
 .brow-text {
-  color: var(--green)!important;
-  margin-bottom: 5px;
-  font-weight: 500;
+  display: block;
+  color: var(--link);
+  font-size: var(--fs-caption);
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin: 0 0 var(--space-3);
 }
 
-
-
-/* Override Wordpress defaults */
-
-
-/* Covers */
-
-.wp-block-cover {
-  padding:0px;
+/* Lead — Body/Large */
+.lead,
+.is-style-lead {
+  font-size: var(--fs-lead);
+  line-height: 1.4;
 }
 
-/* Buttons and links */
-
-a {
-  text-decoration: none;
-  color:inherit;
-  transition: all 0.3s ease-in;
+/* Caption — Body/Caption Large */
+.caption,
+.is-style-caption {
+  font-size: var(--fs-caption-lg);
+  line-height: 1.5;
+  color: var(--text-muted);
 }
 
-a:hover {
-  color:var(--green);
-  opacity: 0.7;
+.muted {
+  color: var(--text-muted);
 }
 
-.wp-block-buttons {
-  gap:10px;
+/* UI label — Inter 600 14 */
+.label,
+.is-style-label {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
 }
 
-.wp-block-button__link, .wp-element-button,
-button, .btn {
-  border-radius: 50px;
-  background-color: var(--green);
-  color: #F6F5F5;
-  padding: 8px 20px;
-  font-size: 14px;
-  font-weight: 500;
-  border:1px solid transparent;
-  transition: 0.3s;
-  box-shadow: inset 0px -3px 6px 2px #466818;
+/* Width caps for long copy (use on headings / paragraphs / groups) */
+.max-450 { max-width: 450px; }
+.max-560 { max-width: 560px; }
+.max-650 { max-width: 650px; }
+.max-680 { max-width: 680px; }
+.max-750 { max-width: 750px; }
+
+/* Lists */
+ul.wp-block-list,
+ol.wp-block-list {
+  padding-left: 1.25rem;
+  margin: 0 0 1.25em;
 }
 
-.wp-block-button .wp-block-button__link.is-style-outline, .wp-block-button.is-style-outline>.wp-block-button__link {
-  padding: 8px 20px;
-  font-size: 14px;
-  background-color: #fff;
-  box-shadow:  inset 0px -3px 6px 2px #f4f4f4;
-  border:1px solid var(--light-grey);
-  color: var(--green)!important;
+.wp-block-list li {
+  padding-bottom: var(--space-1);
+  color: var(--text-soft);
 }
 
-
-.wp-block-button.wp-block-button__link {
-  background-color: #F6F5F5;
-  color:#051F29;
+.wp-block-list li::marker {
+  color: var(--accent);
 }
 
-/* Buttons and links */
-
-
-
-.wp-block-button__link:hover {
-  color:white;
-  opacity: 0.7;
+/* Tick list — core List style, or legacy ul.ticks */
+ul.is-style-ticks,
+ul.ticks {
+  list-style: none;
+  padding-left: 0;
 }
 
-
-.carousel-inner {
-  padding:15px;
-  background-color:white;
-  font-size:0.9rem;
-  border: 1px solid RGBA(0,0,0,0.17);
-  border-radius:4px;
+ul.is-style-ticks li,
+ul.ticks li {
+  position: relative;
+  padding: 0 0 0 30px;
+  margin-bottom: var(--space-2);
 }
 
-
-/* iFrames */
-.google-maps-embed {
-  border-radius: 10px;
-  border: 1px solid #eded;
-  /* box-shadow: var(--default-box-shadow); */
-  min-height: 250px;
+ul.is-style-ticks li::before,
+ul.ticks li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.3em;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: var(--icon-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234F7F0C' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E");
+  background-size: 11px;
+  background-repeat: no-repeat;
+  background-position: center;
 }
 
-.maps-container {
-  padding-top:0px;
+/* Rows — hairline-separated list (credentials, opening hours) */
+ul.is-style-rows {
+  list-style: none;
+  padding-left: 0;
+  margin: 0 0 var(--space-5);
 }
 
-@media (min-width:996px){
-  .maps-container {
-    padding-left:40px;
-    padding-top:58px;
-  }
+ul.is-style-rows li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--border-soft);
+  font-size: var(--fs-small);
+  color: var(--text);
 }
 
-/* Padding and margins */
-
-.py-4 {
-  padding-top:2.2rem!important;
-  padding-bottom:2.2rem!important;
+ul.is-style-rows li strong {
+  margin-left: auto;
+  font-size: var(--fs-label);
+  color: var(--heading);
+  white-space: nowrap;
 }
 
-/* Images */
-
-img {
-  max-width: 100%;
+/* Blockquote */
+blockquote,
+.wp-block-quote {
+  margin: var(--space-6) 0;
+  padding: var(--space-5) var(--space-6);
+  background: var(--tint);
+  border: 0;
+  border-left: 3px solid var(--accent);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: normal;
 }
 
-figure {
-  margin: 0 0 0.5rem;
+.wp-block-quote p {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  line-height: 1.45;
+  color: var(--heading);
 }
 
-/* Cards */
-
-.card {
-  border-radius: 10px;
-  padding:14px;
-  transition:0.3s ease-in; 
-  min-width: 250px;
-  border:1px solid var(--light-grey);
-  box-shadow: 0px 4px 10px 3px rgb(0 0 0 / 5%);
-  /* font-size: 0.9rem; */
+.wp-block-quote cite {
+  display: block;
+  margin-top: var(--space-3);
+  font-size: var(--fs-small);
+  font-style: normal;
+  font-weight: 600;
+  color: var(--link);
 }
 
-.card p {
-  font-size: 14px;
-}
-
-.card:hover > .wp-block-buttons >  .wp-block-button a{
-  background-color: var(--green);
-  box-shadow: none;
-  color:white!important;
+/* Separator — hairline by default, full width */
+.wp-block-separator,
+.wp-block-separator.is-style-rule,
+.wp-block-separator.is-style-wide,
+.rule {
+  border: 0;
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: none;
+  margin: var(--space-6) 0;
   opacity: 1;
 }
 
-.card a {
-  text-decoration: none;
-  /* color:inherit; */
-}
+/* ==========================================================================
+   4. LAYOUT
+   ========================================================================== */
 
-@media screen and (max-width:500px){
-  .wp-block-columns > .card {
-    /* max-width: 180px; */
-    min-width: auto;
-  }
-  .wp-block-columns {
-    justify-content: space-between;
-    gap:10px!important;
-    margin-bottom:10px;
-  }
-}
-@media screen and (max-width:410px){
-  .wp-block-columns > .card  {
-    min-width: 100%;
-    max-width: 100%;
-  }
-  .wp-block-columns {
-    justify-content: space-between;
-  }
-}
-
-.card:hover {
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-  border:1px solid var(--green);
-  cursor:pointer;
-}
-
-/* Forms */
-
-label {
-  margin-bottom:4px;
-}
-
-input, textarea {
-  font-family: inherit;
-  padding:10px;
-  border-radius:4px;
-  border:1px solid var(--light-grey);
-  width:100%;
-  margin-bottom:10px;
-}
-
-/* Features bar */
-.features-bar {
-  width:100%;
-  flex-wrap:wrap;
-  display:flex;
-}
-
-.feature {
-  display:inline-flex;
-  align-items:center;
-  flex:1;
-  justify-content:center;
-  font-family:'Manrope', 'Inter', 'Sans-serif';
+/* Sticky footer: #page fills the viewport so the footer never floats mid-page */
+#page.site {
+  display: flex;
   flex-direction: column;
-  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.site-content {
+  flex: 1 0 auto;
+  margin-top: var(--nav-height);
+  overflow-x: clip;           /* full-width bands use 100vw; clip the scrollbar overshoot */
+}
+
+body:has(.alert-bar) .site-content {
+  margin-top: calc(var(--nav-height) + 36px);
+}
+
+.site-footer {
+  flex-shrink: 0;
+}
+
+body.admin-bar #page.site {
+  min-height: calc(100vh - 32px);
+  min-height: calc(100dvh - 32px);
+}
+
+/* Container (overrides Bootstrap's responsive max-widths) */
+.container,
+.container-fluid {
+  width: 100%;
+  max-width: var(--container);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+.row {
+  --bs-gutter-x: 0;
+}
+
+/* Full-width bands: any Full-aligned block inside the page container breaks out
+   to the viewport edge. (Front end only — the editor handles .alignfull itself.) */
+.site-content .alignfull {
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* Full-width groups keep the page gutter so text never touches the viewport edge */
+.wp-block-group.alignfull {
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/* Root-level block rhythm. Zero specificity, so inside Group/Column layouts
+   WordPress' own block gap takes over. */
+:where(.wp-block-columns, .wp-block-group, .wp-block-image, .wp-block-buttons, .wp-block-cover, .wp-block-media-text, .wp-block-table, .wp-block-embed, .wp-block-gallery, .wp-block-accordion, .wp-block-details, .wp-block-quote) {
+  margin-bottom: var(--space-6);
+}
+
+:where(.alignfull) {
+  margin-bottom: 0;
+}
+
+/* Section — use on a Group for consistent vertical rhythm */
+.section {
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
+}
+
+.section--tight {
+  padding-top: var(--space-7);
+  padding-bottom: var(--space-7);
+}
+
+.section--flush {
+  padding-top: 0;
+}
+
+/* Section header: heading + lead, left-aligned, capped width, gap below */
+.section-header {
+  margin-bottom: var(--section-gap);
+}
+
+.section-header > h1,
+.section-header > h2,
+.section-header > h3 {
+  margin-bottom: var(--space-3);
+}
+
+.section-header > p {
+  max-width: 680px;
+  margin-bottom: 0;
+}
+
+.section-header--center,
+.section-header.has-text-align-center {
   text-align: center;
 }
 
-.feature:nth-last-of-type(1) {
-  border:none;
+.section-header--center > *,
+.section-header.has-text-align-center > * {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.feature-count {
-  font-size:2.4rem;
+/* Narrow reading column (Group block style) */
+.is-style-narrow,
+.narrow {
+  max-width: var(--content-max);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* WordPress block layout defaults */
+:where(.wp-block-columns.is-layout-flex) {
+  gap: var(--space-6);
+}
+
+:where(.wp-block-columns.is-layout-flex.is-style-cards),
+:where(.wp-block-columns.is-layout-flex.bento) {
+  gap: var(--grid-gap);
+}
+
+.wp-block-cover {
+  padding: 0;
+}
+
+.wp-block-buttons {
+  gap: var(--space-4);
+}
+
+.wp-block-image img {
+  display: block;
+}
+
+.has-text-align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* A Group with a palette background becomes a padded panel; Full-width, a band. */
+.wp-block-group.has-background {
+  padding: var(--card-pad);
+  border-radius: var(--radius-xl);
+}
+
+.wp-block-group.has-background.alignfull {
+  padding: var(--section-y) var(--gutter);
+  border-radius: 0;
+}
+
+/* Bootstrap spacing helpers still used by templates — keep them on our scale */
+.py-5 { padding-top: var(--section-y) !important; padding-bottom: var(--section-y) !important; }
+.py-4 { padding-top: var(--space-7) !important; padding-bottom: var(--space-7) !important; }
+.mt-5 { margin-top: var(--section-y) !important; }
+.border-top,
+.border-bottom {
+  border-color: var(--border) !important;
+}
+
+/* ==========================================================================
+   5. BUTTONS   (Figma: 46px tall, 6px radius, Inter 600 15px)
+   ========================================================================== */
+
+.btn,
+.wp-block-button__link,
+.wp-block-button .wp-block-button__link,
+.wp-element-button,
+:where(button:not(.nav-toggle):not(.carousel-arrow):not(.carousel-dot):not(.wp-block-accordion-heading__toggle), input[type="submit"], input[type="button"]) {
+  /* Bootstrap reads these for its :active / :focus states on .btn */
+  --bs-btn-color: var(--accent-contrast);
+  --bs-btn-bg: var(--accent);
+  --bs-btn-border-color: var(--accent);
+  --bs-btn-hover-color: var(--accent-contrast);
+  --bs-btn-hover-bg: var(--accent-hover);
+  --bs-btn-hover-border-color: var(--accent-hover);
+  --bs-btn-active-color: var(--accent-contrast);
+  --bs-btn-active-bg: var(--accent-hover);
+  --bs-btn-active-border-color: var(--accent-hover);
+  --bs-btn-focus-box-shadow: var(--focus-ring);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 46px;
+  padding: 13px 28px;
+  font-family: var(--font-body);
+  font-size: var(--fs-button);
   font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  color: var(--accent-contrast);
+  background: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: var(--radius-sm);
+  box-shadow: none;
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
 }
 
-.feature-caption {
-  margin-left:10px;
-  font-size:0.9rem;
-  line-height: 1rem;
+.btn:hover,
+.wp-block-button__link:hover,
+.wp-block-button .wp-block-button__link:hover,
+.wp-element-button:hover,
+:where(button:not(.nav-toggle):not(.carousel-arrow):not(.carousel-dot):not(.wp-block-accordion-heading__toggle), input[type="submit"], input[type="button"]):hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: var(--accent-contrast);
+  opacity: 1;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-card);
+}
+
+.btn:focus-visible,
+.wp-block-button__link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* Secondary / outline — core Button "Outline" style, or .btn--outline */
+.btn--outline,
+.wp-block-button.is-style-outline > .wp-block-button__link,
+.wp-block-button .wp-block-button__link.is-style-outline {
+  --bs-btn-bg: transparent;
+  --bs-btn-color: var(--btn-outline);
+  background: transparent;
+  color: var(--btn-outline);
+  border-color: var(--btn-outline);
+}
+
+.btn--outline:hover,
+.wp-block-button.is-style-outline > .wp-block-button__link:hover,
+.wp-block-button .wp-block-button__link.is-style-outline:hover {
+  background: var(--btn-outline);
+  border-color: var(--btn-outline);
+  color: var(--btn-outline-contrast, #fff);
+}
+
+/* White — white fill; olive text on light backgrounds, dark text on dark ones */
+.btn--white,
+.wp-block-button.is-style-white > .wp-block-button__link {
+  --bs-btn-bg: #fff;
+  --bs-btn-color: var(--btn-white-text, var(--olive));
+  background: #fff;
+  border-color: #fff;
+  color: var(--btn-white-text, var(--olive));
+}
+
+.btn--white:hover,
+.wp-block-button.is-style-white > .wp-block-button__link:hover {
+  background: var(--olive-light);
+  border-color: var(--olive-light);
+  color: var(--dark);
+  box-shadow: none;
+}
+
+/* Ghost / text link — no box, olive label */
+.btn--ghost,
+.wp-block-button.is-style-ghost > .wp-block-button__link {
+  --bs-btn-bg: transparent;
+  --bs-btn-color: var(--link);
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+  background: transparent;
+  border-color: transparent;
+  color: var(--link);
+}
+
+.btn--ghost:hover,
+.wp-block-button.is-style-ghost > .wp-block-button__link:hover {
+  background: var(--tint);
+  border-color: transparent;
+  color: var(--link);
+  transform: none;
+  box-shadow: none;
+}
+
+/* Sizes */
+.btn--sm {
+  min-height: 40px;
+  padding: 10px 20px;
+  font-size: 14px;
+}
+
+.btn--block,
+.wp-block-button.w-100 > .wp-block-button__link,
+.wp-block-button__link.w-100 {
+  display: flex;
+  width: 100%;
+}
+
+/* ==========================================================================
+   6. FORMS   (Figma: warm-neutral fill, light-grey border, 6px radius)
+   ========================================================================== */
+
+label,
+.wp-block-form-input__label {
+  display: block;
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--text);
+}
+
+:where(input:not([type="submit"]):not([type="button"]):not([type="checkbox"]):not([type="radio"]), textarea, select) {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  margin: 0 0 var(--space-5);
+  font: inherit;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--field-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast), background var(--t-fast);
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+:where(input, textarea, select):focus {
+  outline: none;
+  background: #fff;
+  border-color: var(--accent);
+  box-shadow: var(--focus-ring);
+}
+
+::placeholder {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   7. NAVIGATION
+   DOM: nav > .navbar.container > #nav-logo | #nav-toggle | .menu-container | #nav-cta
+   functions.js toggles .show + animate.css classes on .menu-container and
+   .rotate-icon on sub-menu chevrons; keep those hooks.
+   ========================================================================== */
+
+.site-header nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.94);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+  transition: box-shadow var(--t-med);
+}
+
+.site-header nav.scrolled {
+  box-shadow: var(--shadow-nav);
+}
+
+/* Logged-in admin bar (JS adds .admin-margin; body.admin-bar covers no-JS) */
+.admin-margin,
+body.admin-bar .site-header nav {
+  top: 32px;
+}
+
+@media (max-width: 782px) {
+  .admin-margin,
+  body.admin-bar .site-header nav {
+    top: 46px;
+  }
+
+  body.admin-bar #page.site {
+    min-height: calc(100vh - 46px);
+    min-height: calc(100dvh - 46px);
+  }
+}
+
+.navbar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  height: var(--nav-height);
+  padding-top: 0;
+  padding-bottom: 0;
+  color: var(--text);
+}
+
+#nav-logo {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.logo a {
+  display: inline-block;
+  line-height: 0;
+}
+
+.custom-logo {
+  width: auto;
+  max-width: 200px;
+  max-height: 46px;
+  height: auto;
+  transition: none;
+}
+
+/* Hamburger */
+#nav-toggle,
+.close-menu {
+  order: 3;
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.nav-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+
+.nav-toggle:hover {
+  border-color: var(--accent);
+  background: var(--tint);
+}
+
+#showMenu span {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--olive);
+  border-radius: 2px;
+}
+
+.close-menu span {
+  font-size: 26px;
+  line-height: 1;
+  color: var(--text);
+}
+
+/* Mobile CTA next to the hamburger */
+#nav-cta {
+  flex: 0 0 auto;
+  order: 2;
+  text-align: right;
+}
+
+#nav-cta .wp-block-button__link {
+  min-height: 40px;
+  padding: 10px 18px;
+  font-size: 14px;
+}
+
+@media (max-width: 600px) {
+  .custom-logo {
+    max-width: 140px;
+    max-height: 40px;
+  }
+
+  #nav-cta .wp-block-button__link {
+    min-height: 36px;
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+}
+
+/* Full-screen drawer (mobile) — functions.js adds .show + animate.css classes */
+.menu-container {
+  position: fixed;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--bg);
+  overflow-y: auto;
+  z-index: 1001;
+}
+
+.menu-container.show {
+  display: flex;
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px var(--gutter);
+  border-bottom: 1px solid var(--border);
+}
+
+.menu-body {
+  flex: 1 0 auto;
+}
+
+.menu-footer {
+  padding: var(--space-4) var(--gutter) var(--space-6);
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+
+.menu-footer .wp-block-button {
+  display: block;
+}
+
+.menu-footer .wp-block-button__link {
+  width: 100%;
+}
+
+.menu-footer .wp-block-social-links {
+  justify-content: center;
+  margin-top: var(--space-5);
+}
+
+.menu,
+.sub-menu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu > li {
+  border-bottom: 1px solid var(--border);
+}
+
+.menu li a {
+  display: block;
+  width: 100%;
+  padding: 16px var(--gutter);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  transition: color var(--t-fast), background var(--t-fast);
+}
+
+.menu li a:hover,
+.menu li.current-menu-item > a,
+.menu li.current-menu-ancestor > a {
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* Sub-menu chevron: functions.js injects an Iconify svg into the parent link */
+.menu-item-has-children > a > svg,
+.menu-item-has-children > a > .iconify {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  vertical-align: -3px;
+  float: right;
+  transition: transform var(--t-fast);
+}
+
+.rotate-icon {
+  transform: rotate(180deg);
+}
+
+/* Sub-menus: hidden; functions.js sets inline display:block on tap (mobile) */
+.sub-menu {
+  display: none;
+}
+
+.sub-menu > li {
+  border-bottom: 0;
+}
+
+@media (max-width: 999px) {
+  .menu-item-has-children > .sub-menu {
+    margin: 0 var(--space-3) var(--space-3);
+    padding: var(--space-1);
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .sub-menu li a {
+    padding: 12px 16px;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* Desktop nav */
+@media (min-width: 1000px) {
+  #nav-toggle {
+    display: none;
+  }
+
+  #nav-logo {
+    flex: 1;
+  }
+
+  .menu-container {
+    position: static;
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: row;
+    align-items: center;
+    height: auto;
+    background: transparent;
+    overflow: visible;
+    z-index: auto;
+  }
+
+  .menu-header,
+  .menu-footer {
+    display: none;
+  }
+
+  .menu-body {
+    flex: none;
+  }
+
+  .menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    white-space: nowrap;
+  }
+
+  .menu > li {
+    position: relative;
+    border-bottom: 0;
+  }
+
+  .menu li a {
+    padding: 10px 14px;
+    font-size: 15px;
+    border-radius: var(--radius-sm);
+  }
+
+  .menu > li > a:hover {
+    background: var(--tint);
+  }
+
+  .menu-item-has-children > a > svg,
+  .menu-item-has-children > a > .iconify {
+    float: none;
+  }
+
+  .menu-item-has-children:hover > a > svg {
+    transform: rotate(180deg);
+  }
+
+  .menu-item-has-children > .sub-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 240px;
+    padding: var(--space-2);
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-menu);
+    margin-top: 0;
+  }
+
+  /* Bridge the gap so hover doesn't drop between link and panel */
+  .sub-menu::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 0;
+    right: 0;
+    height: 10px;
+  }
+
+  .menu-item-has-children:hover > .sub-menu,
+  .menu-item-has-children:focus-within > .sub-menu {
+    display: block;
+  }
+
+  .sub-menu li a {
+    padding: 10px 14px;
+    font-size: 14.5px;
+    white-space: nowrap;
+  }
+
+  .sub-menu li a:hover {
+    background: var(--tint);
+  }
+
+  #nav-cta {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+/* Alert bar (Customizer) — sits under the fixed nav */
+.alert-bar {
+  position: fixed;
+  top: var(--nav-height);
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  padding: 8px var(--gutter);
+  text-align: center;
+  background: var(--olive);
+}
+
+body.admin-bar .alert-bar {
+  top: calc(var(--nav-height) + 32px);
+}
+
+.alert-bar a {
+  color: #fff;
+  font-size: var(--fs-small);
   font-weight: 500;
 }
 
-@media only screen and (max-width: 700px) {
-  .feature {
-    padding:10px;
-    min-width:40%;
-    border:none;
-    display: flex;
-  }
-  .feature-caption {
-    font-size:0.8rem;
-  }
-  .feature-count {
-    font-size:1.8rem;
-  }
-}
+/* ==========================================================================
+   8. CARDS & PANELS
+   .card / "Card" block style  → white surface, hairline border, 16px radius
+   Panel styles               → tinted or dark surfaces, 20px radius
+   Dark panels re-point the semantic tokens so everything inside adapts
+   without extra classes (headings, paragraphs, links, buttons, hairlines).
+   ========================================================================== */
 
-@media only screen and (max-width: 300px) {
-  .feature {
-    padding:10px;
-    min-width:100%;
-    border:none;
-  }
-}
-
-
-/* Autoscrolling slider */
-.logo-slider {
-  --image-size: 300px;
-  padding: 20px;
-  overflow: hidden;
-  width: 100%;
-  margin: 0 auto;
-  position: relative;
-  display: flex;
-}
-.logo-slider:hover div {
-  animation-play-state: paused;
-}
-.logo-slider div {
-  display: flex;
-  position: relative;
-  animation: marquee 20s linear infinite;
-  justify-content: space-around;
-}
-.logo-slider img {
+.card,
+.is-style-card,
+.wp-block-columns.is-style-cards > .wp-block-column,
+.wp-block-columns.is-style-carousel > .wp-block-column {
+  --bs-card-bg: var(--surface);
+  --bs-card-border-color: var(--border);
+  --bs-card-border-radius: var(--radius-lg);
+  /* Cards are always a light surface — reset the tokens so a card inside a dark band still reads */
+  --text: var(--dark);
+  --text-soft: rgba(28, 41, 13, 0.80);
+  --text-muted: rgba(28, 41, 13, 0.60);
+  --heading: var(--ink);
+  --link: var(--olive);
+  --link-hover: var(--olive-dark);
+  --border: var(--light-grey);
+  --border-soft: #F3F3F3;
+  --tint: var(--olive-light);
+  --icon-bg: var(--olive-light);
+  --btn-outline: var(--olive);
+  --btn-outline-contrast: #fff;
+  --btn-white-text: var(--olive);
+  --pill-bg: var(--light-grey);
+  --dot: var(--light-grey);
+  --dot-hover: var(--olive-pale);
+  --dot-active: var(--olive);
   display: block;
-  min-width: var(--image-size);
-  height: auto;
-  margin: 0 1vw;
+  min-width: 0;
+  padding: var(--card-pad);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  color: var(--text);
+  transition: transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med);
 }
-.logo-slider:after {
+
+/* Cards that are links lift on hover */
+a > .card,
+a.card,
+.card:has(> a:only-child) {
+  cursor: pointer;
+}
+
+a > .card:hover,
+a.card:hover,
+.wp-block-columns.is-style-cards > .wp-block-column:hover,
+.wp-block-columns.is-style-carousel > .wp-block-column:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+  border-color: rgba(79, 127, 12, 0.35);
+}
+
+.card a {
+  color: inherit;
+}
+
+.no-hover,
+.card.no-hover:hover {
+  transform: none;
+  box-shadow: var(--shadow-card);
+  border-color: var(--border);
+  cursor: default;
+}
+
+/* Card content rhythm (Figma treatment card: 24px gap, 12px between title/text) */
+.card h2, .card h3, .card h4, .card .card-title,
+.panel h2, .panel h3, .panel h4,
+.is-style-card h2, .is-style-card h3, .is-style-card h4,
+.is-style-cards > .wp-block-column h2, .is-style-cards > .wp-block-column h3, .is-style-cards > .wp-block-column h4,
+.is-style-carousel > .wp-block-column h2, .is-style-carousel > .wp-block-column h3, .is-style-carousel > .wp-block-column h4,
+[class*="is-style-panel"] h2, [class*="is-style-panel"] h3, [class*="is-style-panel"] h4 {
+  margin: 0 0 var(--space-3);
+}
+
+.card p, .card .card-text,
+.panel p,
+.is-style-card p,
+.is-style-cards > .wp-block-column p,
+.is-style-carousel > .wp-block-column p,
+[class*="is-style-panel"] p {
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  margin: 0 0 var(--space-4);
+}
+
+/* Bento spotlight cards and full-width bands keep body-size copy */
+.bento--tall p,
+.alignfull[class*="is-style-panel"] p,
+.alignfull.has-background p {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+}
+
+.card > *:last-child,
+.panel > *:last-child,
+.is-style-card > *:last-child,
+.is-style-cards > .wp-block-column > *:last-child,
+.is-style-carousel > .wp-block-column > *:last-child,
+[class*="is-style-panel"] > *:last-child {
+  margin-bottom: 0;
+}
+
+/* Buttons at the foot of a card sit on the baseline of the card */
+.is-style-cards > .wp-block-column > .wp-block-buttons:last-child,
+.is-style-carousel > .wp-block-column > .wp-block-buttons:last-child,
+.is-style-card > .wp-block-buttons:last-child,
+.is-style-cards > .wp-block-column > .is-style-link-icon:last-child,
+.is-style-carousel > .wp-block-column > .is-style-link-icon:last-child {
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+
+/* Images in cards: flush, rounded, fixed ratio */
+.card > .wp-block-image,
+.is-style-card > .wp-block-image,
+.is-style-cards > .wp-block-column > .wp-block-image,
+.is-style-carousel > .wp-block-column > .wp-block-image {
+  margin: 0 0 var(--space-5);
+}
+
+.card > .wp-block-image img,
+.is-style-card > .wp-block-image img,
+.is-style-cards > .wp-block-column > .wp-block-image img,
+.is-style-carousel > .wp-block-column > .wp-block-image img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+/* Bootstrap card parts used by the blog templates */
+.card-body {
+  flex: 1 1 auto;
+  padding: var(--space-5) 0 0;
+  color: inherit;
+}
+
+.card-title {
+  font-size: var(--fs-h3);
+  margin: 0 0 var(--space-2);
+}
+
+.card-img-top,
+.card .post-image {
+  border-radius: var(--radius-sm);
+}
+
+/* ---- Panels ---------------------------------------------------------- */
+
+.panel,
+.is-style-panel,
+.is-style-panel-neutral,
+.is-style-panel-olive,
+.is-style-panel-olive-dark,
+.is-style-panel-dark {
+  --bs-card-bg: transparent;
+  --carousel-fade: var(--olive-light);   /* colour a fade/wash matches (see .is-style-panel-fade) */
+  display: block;
+  min-width: 0;
+  padding: var(--panel-pad);
+  background: var(--tint);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  color: var(--text);
+}
+
+.panel--neutral,
+.is-style-panel-neutral {
+  --carousel-fade: var(--warm-grey);
+  background: var(--warm-grey);
+}
+
+/* Dark contexts — re-point the semantic tokens */
+.is-dark,
+.bg-olive,
+.bg-dark,
+.panel--olive,
+.panel--olive-dark,
+.panel--dark,
+.is-style-panel-olive,
+.is-style-panel-olive-dark,
+.is-style-panel-dark,
+.has-olive-background-color,
+.has-olive-dark-background-color,
+.has-dark-background-color,
+.has-ink-background-color,
+.wp-block-cover:not(.is-light),
+.page-title {
+  --text: #fff;
+  --text-soft: rgba(255, 255, 255, 0.85);
+  --text-muted: rgba(255, 255, 255, 0.65);
+  --heading: #fff;
+  --link: var(--olive-pale);
+  --link-hover: #fff;
+  --border: rgba(255, 255, 255, 0.16);
+  --border-soft: rgba(255, 255, 255, 0.12);
+  --tint: rgba(255, 255, 255, 0.10);
+  --icon-bg: rgba(255, 255, 255, 0.14);
+  --btn-outline: #fff;
+  --btn-outline-contrast: var(--dark);
+  --btn-white-text: var(--dark);
+  --field-bg: rgba(255, 255, 255, 0.08);
+  --pill-bg: rgba(255, 255, 255, 0.14);
+  --dot: rgba(255, 255, 255, 0.30);
+  --dot-hover: rgba(255, 255, 255, 0.60);
+  --dot-active: #fff;
+  color: #fff;
+}
+
+.panel--olive,
+.is-style-panel-olive,
+.has-olive-background-color {
+  --link: var(--olive-light);
+  --carousel-fade: var(--olive);
+  background: var(--olive);
+  border-color: var(--olive-dark);
+}
+
+.panel--olive-dark,
+.is-style-panel-olive-dark,
+.has-olive-dark-background-color {
+  --carousel-fade: var(--olive-dark);
+  background: var(--olive-dark);
+  border-color: var(--olive-dark);
+}
+
+.panel--dark,
+.is-style-panel-dark,
+.has-dark-background-color {
+  --carousel-fade: var(--dark);
+  background: var(--dark);
+  border-color: var(--dark);
+}
+
+/* Primary button on an olive panel becomes white so it still reads as the CTA */
+.is-style-panel-olive .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link,
+.has-olive-background-color .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link,
+.panel--olive .btn:not([class*="btn--"]) {
+  background: #fff;
+  border-color: #fff;
+  color: var(--dark);
+}
+
+.is-style-panel-olive .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link:hover,
+.has-olive-background-color .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link:hover {
+  background: var(--olive-light);
+  border-color: var(--olive-light);
+}
+
+/* Light tinted contexts */
+.has-olive-light-background-color,
+.has-warm-neutral-background-color,
+.has-warm-grey-background-color,
+.has-light-grey-background-color {
+  --carousel-fade: var(--wp--preset--color--olive-light);
+  --icon-bg: #fff;
+}
+
+.has-warm-neutral-background-color { --carousel-fade: var(--warm-neutral); }
+.has-warm-grey-background-color    { --carousel-fade: var(--warm-grey); }
+.has-light-grey-background-color   { --carousel-fade: var(--light-grey); }
+
+/* A Full-width panel becomes a band: square corners, section rhythm, gutters */
+.alignfull.panel,
+.alignfull[class*="is-style-panel"],
+.band {
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+  padding: var(--section-y) var(--gutter);
+}
+
+/* Column cards/panels are flex columns so a final image, link or button can sit
+   on the foot. (Groups stay block-level: WP's constrained layout gives their
+   children auto side margins, which a flex column would shrink-wrap.) */
+.wp-block-column[class*="is-style-panel"],
+.wp-block-column.is-style-card,
+.wp-block-columns.is-style-cards > .wp-block-column,
+.wp-block-columns.is-style-carousel > .wp-block-column,
+.blog-page-card .card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* A Column given a palette background in the editor gets panel padding too */
+.wp-block-column.has-background {
+  padding: var(--panel-pad);
+  border-radius: var(--radius-xl);
+}
+
+/* Pill tag / badge */
+.tag,
+.is-style-pill {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 12px;
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-caption);
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text);
+  background: var(--pill-bg, var(--light-grey));
+  border-radius: var(--radius-xs);
+}
+
+/* ==========================================================================
+   9. COMPONENTS
+   ========================================================================== */
+
+/* ---- Link with arrow (Paragraph style) --------------------------------
+   Every link inside gets a chevron. If the paragraph has no link yet, the
+   paragraph itself takes the treatment so the style previews in the editor. */
+.is-style-link-icon a,
+.is-style-link-icon:not(:has(a)),
+.link-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--fs-label);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--link);
+  transition: color var(--t-fast), gap var(--t-fast);
+}
+
+.is-style-link-icon a::after,
+.is-style-link-icon:not(:has(a))::after,
+.link-icon::after {
+  content: "";
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4-4-4-4'/%3E%3C/svg%3E") center / 16px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4-4-4-4'/%3E%3C/svg%3E") center / 16px no-repeat;
+  transition: transform var(--t-fast);
+}
+
+/* Arrow variant (profile cards "Read full profile →") */
+.is-style-link-icon.has-arrow a::after,
+.link-icon--arrow::after {
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.33 8h9.34M8 12.67L12.67 8 8 3.33'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3.33 8h9.34M8 12.67L12.67 8 8 3.33'/%3E%3C/svg%3E");
+}
+
+.is-style-link-icon a:hover,
+.link-icon:hover {
+  color: var(--link-hover);
+}
+
+.is-style-link-icon a:hover::after,
+.link-icon:hover::after {
+  transform: translateX(3px);
+}
+
+/* ---- Icon badge (Image block style, or a div) -------------------------- */
+.icon-badge,
+.wp-block-image.is-style-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  margin: 0;
+  border-radius: 50%;
+  background: var(--icon-bg);
+  color: var(--accent);
+}
+
+.icon-badge--lg {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+}
+
+.icon-badge img,
+.icon-badge svg,
+.icon-badge iconify-icon,
+.wp-block-image.is-style-icon-badge img {
+  width: 18px;
+  height: 18px;
+  font-size: 18px;
+  border-radius: 0;
+}
+
+.icon-badge--lg img,
+.icon-badge--lg svg {
+  width: 24px;
+  height: 24px;
+}
+
+/* ---- Photo (Image block style) ----------------------------------------- */
+.wp-block-image.is-style-photo img,
+.photo img,
+img.photo {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+/* ---- Hero (Cover block style) ------------------------------------------
+   Figma: 635px tall, gradient shade from the left, Display heading,
+   Body/Large lead, primary + white buttons. */
+.wp-block-cover.is-style-hero,
+.hero.wp-block-cover {
+  min-height: min(635px, 82vh);
+  padding: var(--section-y) var(--gutter);
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.wp-block-cover.is-style-hero .wp-block-cover__inner-container,
+.hero.wp-block-cover .wp-block-cover__inner-container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  text-align: left;
+}
+
+.wp-block-cover.is-style-hero .wp-block-cover__inner-container > *,
+.hero.wp-block-cover .wp-block-cover__inner-container > * {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+/* Reset core's legacy centred/padded cover heading rules */
+.wp-block-cover h1,
+.wp-block-cover h2,
+.wp-block-cover h3,
+.wp-block-cover .wp-block-cover-text {
+  padding: 0;
+  max-width: none;
+  text-align: inherit;
+  font-size: var(--fs-h1);
+  line-height: 1.2;
+}
+
+.wp-block-cover h1.has-display-font-size,
+.wp-block-cover h2.has-display-font-size,
+.wp-block-cover .is-style-display {
+  line-height: 1.15;
+}
+
+.wp-block-cover.is-style-hero h1,
+.wp-block-cover.is-style-hero h2,
+.hero.wp-block-cover h1 {
+  max-width: 640px;
+  margin-bottom: var(--space-5);
+}
+
+.wp-block-cover.is-style-hero p,
+.hero.wp-block-cover p {
+  max-width: 570px;
+}
+
+.wp-block-cover.is-style-hero .wp-block-buttons,
+.hero.wp-block-cover .wp-block-buttons {
+  margin-top: var(--space-7);
+}
+
+.wp-block-cover.is-style-hero .wp-block-buttons .wp-block-button:not([class*="is-style-"]) + .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link {
+  background: #fff;
+  border-color: #fff;
+  color: var(--dark);
+}
+
+@media (max-width: 782px) {
+  .wp-block-cover.is-style-hero,
+  .hero.wp-block-cover {
+    min-height: 480px;
+  }
+}
+
+/* ---- Bento service grid (Columns with .bento) --------------------------
+   Column panels with a final Image (.panel-visual) that sits on the foot. */
+.bento > .wp-block-column {
+  min-height: 380px;
+  overflow: hidden;
+}
+
+.bento--tall > .wp-block-column {
+  min-height: 480px;
+}
+
+.bento > .wp-block-column h3 {
+  font-size: var(--fs-h3);
+}
+
+.bento--tall > .wp-block-column h3,
+.bento--tall > .wp-block-column h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.3;
+}
+
+.panel-visual,
+.wp-block-image.panel-visual {
+  margin: auto calc(-1 * var(--panel-pad)) calc(-1 * var(--panel-pad)) !important;
+  padding-top: var(--space-5);
+}
+
+.panel-visual img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.bento--tall .panel-visual img {
+  height: 240px;
+}
+
+@media (max-width: 782px) {
+  .bento > .wp-block-column,
+  .bento--tall > .wp-block-column {
+    min-height: 0;
+  }
+
+  .panel-visual img,
+  .bento--tall .panel-visual img {
+    height: 160px;
+  }
+}
+
+/* Fade variant — Image style "Fade into panel" (.is-style-panel-fade) on a
+   .panel-visual: the photo is taller and rises through a wash of the panel's
+   own colour (--carousel-fade), so the content appears to sit over it. */
+.panel-visual.is-style-panel-fade {
+  position: relative;
+  padding-top: 0;
+}
+
+.panel-visual.is-style-panel-fade::after {
   content: "";
   position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, var(--carousel-fade, transparent) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.panel-visual.is-style-panel-fade img {
+  height: 300px;
+  border-radius: 0;
+}
+
+.bento--tall .panel-visual.is-style-panel-fade img {
+  height: 380px;
+}
+
+@media (max-width: 782px) {
+  .panel-visual.is-style-panel-fade img,
+  .bento--tall .panel-visual.is-style-panel-fade img {
+    height: 240px;
+  }
+}
+
+/* ---- Profile card (Media & Text block style) ---------------------------
+   Figma: 200×260 portrait, name (H2), role, hairline credentials, arrow link. */
+.wp-block-media-text.is-style-profile-card {
+  grid-template-columns: 200px 1fr !important;
+  gap: var(--space-6);
+  align-items: center;
+  padding: var(--card-pad);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+}
+
+.wp-block-media-text.is-style-profile-card .wp-block-media-text__media {
+  width: 200px;
+  height: 260px;
+}
+
+.wp-block-media-text.is-style-profile-card .wp-block-media-text__media img {
   width: 100%;
   height: 100%;
-  left: 0;
-  top: 0;
-  background: linear-gradient(to right, white, rgba(255, 255, 255, 0) 30px, rgba(255, 255, 255, 0) calc(100% - 30px), white);
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
 }
-@media (max-width: 900px) {
-  logo-slider {
-    --image-size: 280px;
-    --image-size: min(max(50px, 10vw), 100px);
+
+.wp-block-media-text.is-style-profile-card .wp-block-media-text__content {
+  padding: 0;
+}
+
+.wp-block-media-text.is-style-profile-card h2,
+.wp-block-media-text.is-style-profile-card h3 {
+  font-size: var(--fs-h2);
+  margin: 0 0 6px;
+}
+
+.wp-block-media-text.is-style-profile-card .wp-block-media-text__content > p:first-of-type {
+  margin-bottom: var(--space-5);
+}
+
+.wp-block-media-text.is-style-profile-card ul.is-style-rows {
+  margin-bottom: var(--space-5);
+}
+
+.wp-block-media-text.is-style-profile-card ul.is-style-rows li {
+  font-size: var(--fs-caption);
+}
+
+@media (max-width: 600px) {
+  .wp-block-media-text.is-style-profile-card {
+    grid-template-columns: 1fr !important;
+    padding: var(--card-pad-sm);
+  }
+
+  .wp-block-media-text.is-style-profile-card .wp-block-media-text__media {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+
+  .wp-block-media-text.is-style-profile-card .wp-block-media-text__content {
+    grid-column: 1;
+    grid-row: 2;
+    padding-top: var(--space-5);
   }
 }
 
-@keyframes marquee {
-  0% {
-    transform: translateX(0%);
+/* ---- Team about (Media & Text .team-about) ---------------------------- */
+.team-about.wp-block-media-text {
+  gap: var(--space-9);
+}
+
+.team-about .wp-block-media-text__media img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+}
+
+.team-about .wp-block-media-text__content {
+  padding: 0;
+}
+
+.team-about .wp-block-buttons {
+  margin-top: var(--space-6);
+}
+
+@media (max-width: 1024px) {
+  .team-about.wp-block-media-text {
+    gap: var(--space-7);
   }
-  100% {
-    transform: translateX(-100%);
+}
+
+@media (max-width: 600px) {
+  .team-about .wp-block-media-text__content {
+    padding-top: var(--space-5);
   }
 }
 
-
-/* Hero section */
-@media (max-width:768px){
-.hero-btn-container > a {
-   font-size: 14px;
-}
-}
-/* Meta slider */
-.flex-active {
-  background-color:var(--green)!important;
+/* ---- Contact section ---------------------------------------------------
+   Columns .contact-section: card with form | clinic info */
+.contact-section.wp-block-columns {
+  gap: var(--space-9);
+  align-items: flex-start;
 }
 
-/* Recent posts */
+@media (max-width: 1024px) {
+  .contact-section.wp-block-columns {
+    gap: var(--space-7);
+  }
+}
 
-.recent-posts {
+.contact-detail {
   display: flex;
-  overflow:auto;
-  flex-wrap:nowrap;
+  gap: var(--space-4);
+  align-items: flex-start;
+  margin-bottom: var(--space-5);
 }
 
-
-
-.recent-post {
-  /* min-width: 250px; */
-  max-width: 85%;
-  padding:4px;
-  display: flex;
-  flex-direction: column;
+.contact-detail .icon-badge,
+.contact-detail .wp-block-image {
+  flex-shrink: 0;
+  margin: 0;
 }
 
-@media only screen and (max-width: 1000px) {
-  .recent-posts {
-    gap:15px;
-  }
-  .recent-post {
-    padding:0px;
-  }
-  .article-title {
-    line-height: 36px;
-    font-size: 40px;
-  }
+.contact-detail p {
+  margin: 0;
 }
 
-.recent-posts-title {
-  font-size:20px;
+.contact-detail p:first-of-type {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--heading);
+  margin-bottom: var(--space-1);
 }
 
-.post-image {
+.contact-detail p + p {
+  font-size: var(--fs-body);
+}
+
+/* Embedded Tally / Google Maps */
+.google-maps-embed {
   width: 100%;
-  height: 0; /* This is important, as it allows the padding-top to determine the height */
+  min-height: 240px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
 }
 
-.recent-post > a > .post-image {
-  border-radius:10px;
-  box-shadow: 0px 4px 10px 3px rgb(0 0 0 / 5%);
+iframe[data-tally-src] {
+  border-radius: var(--radius-sm);
 }
 
-.pagination {
-  gap:10px;
+/* ---- Accordion / FAQ (core Accordion + core Details) ------------------- */
+.wp-block-accordion-item,
+.wp-block-details,
+details {
+  margin: 0 0 var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color var(--t-fast);
 }
 
-.page-numbers {
-  padding: 10px 20px;
-  background: #ededed;
-  border: 4px;
-}
-.current {
-  background:var(--green);
+.wp-block-accordion-item.is-open,
+.wp-block-details[open],
+details[open] {
+  border-color: rgba(79, 127, 12, 0.4);
 }
 
-
-/* Content pages */
-
-.services-page h2, .article-container h2 {
-  margin-top:15px;
-  font-size: 22px;
+.wp-block-accordion-heading {
+  margin: 0;
+  font-size: 17px;
 }
 
-/* Blog - articles */
+.wp-block-accordion-heading__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+  min-height: 0;
+  padding: 18px 22px;
+  font-family: var(--font-heading);
+  font-size: inherit;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  white-space: normal;
+  color: var(--heading);
+  background: none;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  transform: none;
+  box-shadow: none;
+}
 
-@media (min-width:768px){
-.blog-page-card {
-    padding-left:6px;
-    padding-right:6px;
+.wp-block-accordion-heading__toggle:hover {
+  background: none;
+  color: var(--accent);
+  transform: none;
+  box-shadow: none;
+}
+
+.wp-block-accordion-heading__toggle-icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--accent);
+  background: var(--icon-bg);
+  border-radius: 50%;
+  transition: transform var(--t-fast);
+}
+
+.wp-block-accordion-item.is-open .wp-block-accordion-heading__toggle-icon {
+  transform: rotate(45deg);
+}
+
+.wp-block-accordion-panel {
+  padding: 0 22px 20px;
+}
+
+.wp-block-accordion-panel[hidden] {
+  padding: 0;
+}
+
+.wp-block-accordion-panel > *:last-child {
+  margin-bottom: 0;
+}
+
+.wp-block-details summary,
+details > summary {
+  position: relative;
+  padding: 18px 56px 18px 22px;
+  font-family: var(--font-heading);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--heading);
+  cursor: pointer;
+  list-style: none;
+}
+
+.wp-block-details summary::-webkit-details-marker,
+details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.wp-block-details summary::after,
+details > summary::after {
+  content: "";
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  transform: translateY(-70%) rotate(45deg);
+  transition: transform var(--t-fast);
+}
+
+.wp-block-details[open] summary::after,
+details[open] > summary::after {
+  transform: translateY(-30%) rotate(225deg);
+}
+
+.wp-block-details summary:hover,
+details > summary:hover {
+  color: var(--accent);
+}
+
+.wp-block-details > *:not(summary),
+details > *:not(summary) {
+  padding: 0 22px;
+}
+
+.wp-block-details > *:last-child,
+details > *:last-child {
+  padding-bottom: 20px;
+  margin-bottom: 0;
+}
+
+/* ---- Card carousel (Columns "Card carousel" style) ---------------------
+   CSS makes the row a scroll-snap track; main.js adds dots + arrows. */
+.wp-block-columns.is-style-carousel {
+  --carousel-card: 405px;
+  --carousel-gap: var(--space-6);
+  display: flex;
+  flex-wrap: nowrap !important;
+  gap: var(--carousel-gap) !important;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 4px;
+  padding: 6px 4px 14px;
+  scrollbar-width: none;
+}
+
+.wp-block-columns.is-style-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+/* Fade on the right edge while more cards are hidden. Set --carousel-fade on
+   the parent (dark panels do this automatically). */
+.wp-block-columns.is-style-carousel::after {
+  content: "";
+  position: sticky;
+  right: 0;
+  flex: 0 0 72px;
+  align-self: stretch;
+  background: linear-gradient(to right, transparent, var(--carousel-fade, var(--bg)) 80%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--t-med);
+}
+
+.wp-block-columns.is-style-carousel.has-more::after {
+  opacity: 1;
+}
+
+.wp-block-columns.is-style-carousel > .wp-block-column {
+  flex: 0 0 var(--carousel-card) !important;
+  width: var(--carousel-card);
+  scroll-snap-align: start;
+}
+
+@media (max-width: 600px) {
+  .wp-block-columns.is-style-carousel {
+    --carousel-card: min(340px, 84vw);
   }
 }
 
-
-.article-container {
-  max-width:800px;
-}
-
-.page-title {
+/* Controls injected by main.js */
+.carousel-footer {
   position: relative;
-  overflow: hidden;
-  color: white;
-  margin-top:20px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
+  min-height: 44px;
+  margin-top: var(--space-4);
 }
 
-.page-header {
+.carousel-dots {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  z-index: 1;  /* Ensure the header content is above the image */
-  position: relative;  /* Needed for z-index to take effect */
+  align-items: center;
+  gap: 8px;
 }
 
-.background-image {
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--dot, var(--border));
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background var(--t-fast), transform var(--t-fast);
+}
+
+.carousel-dot:hover {
+  background: var(--dot-hover, var(--olive-pale));
+}
+
+.carousel-dot.is-active {
+  width: 8px;
+  height: 8px;
+  background: var(--dot-active, var(--accent));
+}
+
+.carousel-arrows {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  gap: var(--space-3);
+}
+
+.carousel-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  color: var(--olive);
+  background: #fff;
+  border: 1px solid var(--light-grey);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color var(--t-fast), background var(--t-fast), color var(--t-fast);
+}
+
+.carousel-arrow:hover {
+  border-color: var(--olive);
+  background: var(--olive-light);
+}
+
+.carousel-arrow[disabled] {
+  color: rgba(28, 41, 13, 0.3);
+  border-color: var(--light-grey);
+  background: #fff;
+  cursor: default;
+}
+
+.carousel-arrow svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Testimonial card contents (name / role / quote) */
+.testimonial-name {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px !important;
+}
+
+.testimonial-role {
+  font-size: var(--fs-caption);
+  color: var(--text-muted);
+  margin-bottom: var(--space-4) !important;
+}
+
+/* ---- Reviews gallery (Card carousel + .reviews-gallery) ----------------
+   Four narrower cards per row mixing quote cards (.testimonial-quote, name,
+   role pinned to the foot) with photo-only Columns (Column style "Photo").
+   Same scroll track and main.js controls as the carousel; the dots become
+   a segmented progress bar. */
+.wp-block-columns.is-style-carousel.reviews-gallery {
+  --carousel-gap: var(--grid-gap);
+  --carousel-card: calc((100% - 3 * var(--carousel-gap)) / 4);
+}
+
+.reviews-gallery > .wp-block-column {
+  min-height: 425px;
+}
+
+.testimonial-quote {
+  position: relative;
+  padding-top: var(--space-8);
+  margin-bottom: var(--space-7) !important;
+  font-size: var(--fs-body) !important;
+  line-height: 1.55 !important;
+  color: var(--text-soft);
+}
+
+.testimonial-quote::before {
+  content: "\201C";
   position: absolute;
   top: 0;
   left: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 40px;
+  line-height: 1;
+  color: var(--olive);
+}
+
+.reviews-gallery > .wp-block-column > .testimonial-name {
+  margin-top: auto;
+}
+
+.reviews-gallery .testimonial-role {
+  margin-bottom: 0 !important;
+  color: var(--olive);
+}
+
+/* Photo card: the Image fills the card edge to edge */
+.reviews-gallery > .wp-block-column.is-style-photo {
+  padding: 0;
+  overflow: hidden;
+}
+
+.reviews-gallery > .wp-block-column.is-style-photo > .wp-block-image {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+}
+
+.reviews-gallery > .wp-block-column.is-style-photo > .wp-block-image img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+/* No edge fade: the row ends on a whole card and the progress bar + arrows
+   are the "more" cue (the fade washed out the photo cards). */
+.wp-block-columns.is-style-carousel.reviews-gallery::after {
+  display: none;
+}
+
+/* Progress bar (main.js builds this instead of dots for .reviews-gallery):
+   the thumb is as wide as the visible share of the track, so it is honest
+   about how much is left. Click anywhere on the bar to jump. */
+.carousel-progress {
+  position: relative;
+  width: 320px;
+  max-width: 60%;
+  height: 3px;
+  background: var(--light-grey);
+  border-radius: 2px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.carousel-progress__thumb {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 25%;
+  background: var(--olive);
+  border-radius: 2px;
+  transition: left var(--t-fast), width var(--t-fast);
+}
+
+@media (max-width: 1024px) {
+  .wp-block-columns.is-style-carousel.reviews-gallery {
+    --carousel-card: calc((100% - 2 * var(--carousel-gap)) / 3);
+  }
+}
+
+@media (max-width: 782px) {
+  .wp-block-columns.is-style-carousel.reviews-gallery {
+    --carousel-card: min(300px, 78vw);
+  }
+
+  .reviews-gallery > .wp-block-column {
+    min-height: 380px;
+  }
+
+  /* Swiping is the natural control on touch — no arrows on small screens */
+  .carousel-arrows {
+    display: none;
+  }
+}
+
+/* ---- Features bar (stat counters) -------------------------------------- */
+.features-bar {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.feature {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  text-align: center;
+  font-family: var(--font-heading);
+}
+
+.feature-count {
+  font-size: 2.4rem;
+  line-height: 1.1;
+  color: var(--heading);
+}
+
+.feature-caption {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--text-soft);
+}
+
+@media (max-width: 700px) {
+  .feature { min-width: 40%; }
+  .feature-count { font-size: 1.8rem; }
+}
+
+/* ---- Lightbox (functions.js) ------------------------------------------- */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 17, 17, 0.92);
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+}
+
+.lightbox .btn {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  min-height: 0;
+  padding: 0;
+  font-size: 26px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+.lightbox .btn:hover {
+  background: rgba(255, 255, 255, 0.24);
+  transform: none;
+  box-shadow: none;
+}
+
+.lightbox .prev,
+.lightbox .next {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.lightbox .prev { left: 20px; }
+.lightbox .next { right: 20px; }
+.lightbox .dismiss { top: 20px; right: 20px; }
+
+.indicator {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 6px 12px;
+  font-size: var(--fs-small);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: var(--radius-pill);
+}
+
+.wp-block-gallery img {
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: opacity var(--t-fast);
+}
+
+.wp-block-gallery img:hover {
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   10. TEMPLATES
+   ========================================================================== */
+
+/* Page title block (page.php) */
+.header {
+  padding: var(--space-8) 0 var(--space-5);
+}
+
+.header h1 {
+  margin: 0;
+}
+
+/* Full-width featured-image page (full-width-hero.php) and post hero (single.php) */
+.page-title {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 420px;
+  margin-top: 0;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.page-title::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(71deg, #070B02 8%, rgba(5, 5, 5, 0) 60%);
+}
+
+.page-title .background-image {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -1134,272 +2444,615 @@ input, textarea {
   z-index: -1;
 }
 
-
-.article-meta-info {
-  font-size:14px;
-}
-
-
-ul {
-  list-style:none;
-  padding-inline-start:0;
-  padding-inline-end: 0;  
-  padding:0;
-  padding-left:0;
-  margin:0;
-}
-
-ul.ticks {
-  list-style-type: none; /* Removes the default bullets */
-}
-
-ul.ticks li::before {
-  content: '\f058'; 
-  font-family: "Font Awesome 5 Free"; 
-  display: inline-block;
-  margin-right: 10px; 
-  color: var(--green);
-}
-ul.ticks li {
-  padding-top: 6px; 
-}
-
-
-/* Details element */
-details > summary {
-   font-weight: 500;
-   font-size:16px;
-}
-
-details {
-  padding:10px;
-  background-color: #fff;
-  border:1px solid var(--light-grey);
-}
-
-/* Services ring */
-
-
-.circle-container {
-/*   border: 1px solid #334155; */
-  margin:auto;
-  height: 400px;
-  width: 400px;
+.page-title .page-header {
   position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
+  align-items: flex-start;
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
 }
 
-.circle {
-  border-radius: 50%;
+.page-title .page-header h1 {
+  font-size: var(--fs-display);
+  line-height: 1.15;
+  max-width: 640px;
 }
 
-
-.circle-outline {
-  width: 340px;
-  height: 340px;
-  border: 1px solid var(--green);
-  position: absolute;
-  z-index: 1;
+.page-title .page-header p {
+  font-size: var(--fs-lead);
+  line-height: 1.4;
 }
 
-@keyframes fade-in {
-  0% {
-    opacity:0;
-  }
-  100% {
-    opacity:1;
-  }
-}
-
-.circle-inner {
-  width: 310px;
-  height: 310px;
-/*   outline: 1px solid #cbd5e1; */
-  background: #f9f9f9;
-  border:2px solid #cbd5e1;
+.hero-btn-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  z-index: 1;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-5);
 }
 
-.inner-circle-content {
-  position: relative; /* This will be the stacking context for absolute positioned content divs */
-  width: 100%;
+.hero-btn-container .btn + .btn {
+  background: #fff;
+  border-color: #fff;
+  color: var(--dark);
+}
+
+/* Single post */
+.article-container {
+  max-width: calc(var(--content-max) + 2 * var(--gutter));
+  padding-top: var(--space-7);
+}
+
+.article-container .page-title {
+  min-height: 0;
+  margin-bottom: var(--space-6);
+  border-radius: var(--radius-lg);
+}
+
+.article-container .page-title::before {
+  display: none;
+}
+
+.article-title {
+  margin: 0 0 var(--space-4);
+}
+
+.article-meta-info {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-4) 0;
+  margin-bottom: var(--space-6);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+}
+
+.article-container .wp-block-image img {
+  border-radius: var(--radius-md);
+}
+
+/* "Latest articles" strip (page, services, single templates) */
+.recent-posts {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: var(--grid-gap);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding-bottom: var(--space-2);
+}
+
+.recent-posts::-webkit-scrollbar {
+  display: none;
+}
+
+.recent-post {
+  flex: 0 0 min(320px, 80%);
+  width: auto;
+  max-width: none;
+  padding: 0;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 992px) {
+  .recent-posts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    overflow: visible;
+  }
+
+  .recent-post {
+    flex: none;
+  }
+}
+
+.recent-post > a {
+  display: block;
+  color: inherit;
+}
+
+.recent-post .post-image {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  transition: transform var(--t-med), box-shadow var(--t-med);
+}
+
+.recent-post > a:hover .post-image {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lift);
+}
+
+.recent-posts-title {
+  font-size: var(--fs-h4);
+  margin: var(--space-4) 0 var(--space-1);
+}
+
+.recent-post > a:hover .recent-posts-title {
+  color: var(--accent);
+}
+
+.recent-post p {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  color: var(--link);
+  margin: 0;
+}
+
+/* Blog index / archive (home.php, archive.php) */
+.blog-page-card {
+  padding: 0 var(--space-3);
+  margin-bottom: var(--grid-gap) !important;
+}
+
+.blog-page-card > a {
+  display: block;
   height: 100%;
+  color: inherit;
+}
+
+.blog-page-card .card {
+  height: 100%;
+}
+
+.blog-page-card .card-text p {
+  margin-bottom: var(--space-4);
+}
+
+.pagination {
   display: flex;
-  align-items: center; /* Center child divs vertically */
-  justify-content: center; /* Center child divs horizontally */
+  justify-content: center;
+  gap: 6px;
+  margin: var(--space-7) 0;
+  padding: 0;
+  list-style: none;
 }
 
-.inner-circle-content > div {
-  position: absolute;
-  opacity: 0; 
-  text-align: center;
-/*   margin-bottom:20px; */
-  font-size: 14px;
-  padding: 35px;
-  transition: opacity 1s;
-  visibility: hidden; /* Initially set to hidden */
+.page-numbers {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
 }
 
-.inner-circle-content > div.active-content {
-  opacity: 1;
-  visibility: visible; /* Set to visible when active */
+.page-numbers.current,
+.page-numbers:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
 }
 
-
-.icon {
-    transition: border-color 2s; /* Set a 2s transition for border color if you want a gradual change */
+/* Services page (services.php): content + sticky offers sidebar */
+.services-page .row {
+  gap: var(--space-7) 0;
 }
 
-.icon img {
-  border-radius:50%;
-  max-width:100%;
+@media (min-width: 992px) {
+  .services-page .col-lg-8 {
+    width: calc(66.666% - var(--space-5));
+  }
+
+  .services-page .col-lg-4 {
+    width: calc(33.333% - var(--space-5));
+    margin-left: auto;
+  }
 }
 
-.active-ring { 
-  border:3px solid var(--green); 
+.sidebar-offers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  font-size: var(--fs-small);
 }
 
-
-.icon {
-    transition: border 0.2s ease-in-out;
-  width: 60px;
-  height: 60px;
-  outline: 1px solid #64748b;
-  position: absolute;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background:#64748b;
-  z-index:2;
+@media (min-width: 992px) {
+  .sidebar-offers {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-5));
+  }
 }
 
-.icon-title {
-	margin-bottom:2px;
-	font-weight:600;
+.sidebar-offers .offer {
+  width: 100%;
+  padding: var(--card-pad-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
 }
 
-.icon:hover {
-  cursor:pointer;
+.sidebar-offers .offer > *:last-child {
+  margin-bottom: 0;
 }
 
-#icon-1 {
-  left: calc(50%); /* 0° */
-  top: calc(50% - 170px);
+.page-template-services h2 {
+  margin-top: var(--space-6);
 }
 
-#icon-2 {
-  left: calc(50% + 170px * sin(72deg)); /* 72° */
-  top: calc(50% - 170px * cos(72deg));
+/* Services summary bar (icon + caption columns, existing content) */
+.services-summary img {
+  max-width: 40px;
 }
 
-#icon-3 {
-  left: calc(50% + 170px * sin(2*72deg)); /* 144° */
-  top: calc(50% - 170px * cos(2*72deg));
+.services-summary p {
+  margin-bottom: 0;
+  font-size: var(--fs-small);
+  line-height: 1.3;
 }
 
-#icon-4 {
-  left: calc(50% + 170px * sin(3*72deg)); /* 216° */
-  top: calc(50% - 170px * cos(3*72deg));
+@media (max-width: 600px) {
+  .services-summary p { font-size: 13px; }
+  .services-summary img { max-width: 30px; }
+  .services-summary .wp-block-column { min-width: 100px; }
+  .services-summary .wp-block-columns { gap: 0 !important; }
 }
 
-#icon-5 {
-  left: calc(50% + 170px * sin(4*72deg)); /* 288° */
-  top: calc(50% - 170px * cos(4*72deg));
-}
-
-@media screen and (max-width:600px){
-	.circle-container {
-		width:300px;
-		height:300px;
-		margin-top:40px;
-	}
-	.circle-inner {
-		width:290px;
-		height:290px;
-	}
-	.circle-outline {
-		width:320px;
-		height:320px;
-	}
-	.icon {
-		width:62px;
-		height:62px;
-	}
-	#icon-1 {
-	  left: calc(50%); /* 0° */
-	  top: calc(50% - 160px);
-	}
-
-	#icon-2 {
-	  left: calc(50% + 160px * sin(72deg)); /* 72° */
-	  top: calc(50% - 170px * cos(72deg));
-	}
-
-	#icon-3 {
-	  left: calc(50% + 160px * sin(2*72deg)); /* 144° */
-	  top: calc(50% - 170px * cos(2*72deg));
-	}
-
-	#icon-4 {
-	  left: calc(50% + 160px * sin(3*72deg)); /* 216° */
-	  top: calc(50% - 170px * cos(3*72deg));
-	}
-
-	#icon-5 {
-	  left: calc(50% + 160px * sin(4*72deg)); /* 288° */
-	  top: calc(50% - 170px * cos(4*72deg));
-	}
-}
-
-
-/* Footers */
+/* ==========================================================================
+   11. FOOTER   (Figma: footer-section — dark band, brand + three link
+   columns, regulated-standards row, legal line)
+   ========================================================================== */
 
 .site-footer {
-  border-top:1px solid #ededed;
-  background:#f5f7f2;
+  --text: #fff;
+  --text-soft: rgba(255, 255, 255, 0.78);
+  --text-muted: rgba(255, 255, 255, 0.60);
+  --heading: #fff;
+  --link: rgba(255, 255, 255, 0.78);
+  --link-hover: #fff;
+  --border: rgba(255, 255, 255, 0.14);
+  padding: var(--space-9) 0 var(--space-8);
+  background: var(--dark);
+  color: var(--text-soft);
+}
+
+.site-footer a {
+  color: var(--link);
+}
+
+.site-footer a:hover {
+  color: var(--link-hover);
+}
+
+.site-footer p {
+  color: inherit;
+}
+
+/* Brand + link columns */
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 0.9fr;
+  gap: var(--space-7) var(--space-6);
+  padding-bottom: var(--space-9);
+  border-bottom: 1px solid var(--border);
+}
+
+.footer-brand__logo {
+  display: inline-block;
+  padding: 10px 14px;
+  margin-bottom: var(--space-5);
+  background: #fff;
+  border-radius: var(--radius-md);
+  line-height: 0;
+}
+
+.footer-brand__logo .custom-logo {
+  max-width: 150px;
+  max-height: 48px;
+  width: auto;
+  height: auto;
+}
+
+.footer-brand__name {
+  display: inline-block;
+  margin-bottom: var(--space-5);
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  color: #fff;
+}
+
+.footer-tagline {
+  max-width: 320px;
+  margin: 0;
+  font-size: var(--fs-small);
+  line-height: 1.6;
+}
+
+.footer-heading {
+  margin: 0 0 var(--space-4);
+  font-size: var(--fs-h2);
+  color: #fff;
 }
 
 .footer-menu {
   display: flex;
-  gap:15px;
-  font-weight: 400;
-
-  font-size: 13px;
-}
-
-.footer-menu li a {
-  color:var(--body-text-color);
+  flex-direction: column;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .footer-menu li {
-  list-style-type:none;
-  padding-inline-start:0;
-  padding-inline-end: 0;  
-  padding:0;
-  margin:0;
-  margin-bottom:1rem;
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  line-height: 1.4;
 }
-.footer-links {
-  font-weight:300;
-  font-size: 13px;
+
+.footer-menu li a {
+  display: inline-block;
+  font-weight: 400;
+}
+
+.footer-menu li.current-menu-item > a {
+  color: #fff;
+}
+
+/* Fallback: a single menu flowed into columns */
+.footer-col--wide {
+  grid-column: span 3;
+}
+
+.footer-menu--columns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3) var(--space-6);
+}
+
+/* Regulated standards row */
+.footer-standards {
   display: flex;
-  justify-content: center;
-  gap:20px;
-  
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-7) 0;
+  border-bottom: 1px solid var(--border);
 }
 
-footer .custom-logo {
-  width:100px;
-  margin-bottom:20px;
+.footer-standards p {
+  margin: 0;
 }
 
-.footer-header {
-  font-weight:400;
+.footer-standards__title {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 4px !important;
+}
+
+.footer-standards__sub {
+  max-width: 360px;
+  font-size: var(--fs-caption-lg);
+  color: var(--text-muted);
+}
+
+.footer-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+
+.footer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 12px 18px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+
+.footer-badge:hover {
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.footer-badge svg {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+}
+
+.footer-badge span {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.footer-badge strong {
+  font-size: var(--fs-caption-lg);
+  font-weight: 700;
+}
+
+.footer-badge small {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* Legal line */
+.footer-bottom {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-7);
+  padding-top: var(--space-7);
+  font-size: var(--fs-caption-lg);
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.footer-bottom p {
+  max-width: 600px;
+  margin: 0;
+  color: var(--text-muted);
+}
+
+.footer-bottom .footer-address {
+  text-align: right;
+  max-width: 460px;
+}
+
+.footer-bottom .footer-address a {
+  color: var(--text-muted);
+}
+
+.footer-bottom .footer-address a:hover {
+  color: #fff;
+}
+
+@media (max-width: 1024px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .footer-brand {
+    grid-column: span 2;
+  }
+
+  .footer-col--wide {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    padding-top: var(--space-8);
+  }
+
+  .footer-grid {
+    grid-template-columns: 1fr;
+    padding-bottom: var(--space-7);
+  }
+
+  .footer-brand,
+  .footer-col--wide {
+    grid-column: auto;
+  }
+
+  .footer-menu--columns {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-standards {
+    padding: var(--space-6) 0;
+  }
+
+  .footer-badge {
+    width: 100%;
+  }
+
+  .footer-bottom,
+  .footer-bottom .footer-address {
+    flex-direction: column;
+    text-align: left;
+  }
+}
+
+/* ==========================================================================
+   12. LEGACY — classes still used by published page content
+   ========================================================================== */
+
+/* Offer colours (sidebar offers) */
+.green  { color: var(--olive); }
+.bronze { color: #B8742A; }
+.silver { color: #8C8C8C; }
+.gold   { color: #C99A2E; }
+.border-bronze { border: 1px solid #B8742A; }
+.border-silver { border: 1px solid #8C8C8C; }
+.border-gold   { border: 1px solid #C99A2E; }
+.background-bronze { background: #B8742A; color: #fff; }
+.background-silver { background: #8C8C8C; color: #fff; }
+.background-gold   { background: #C99A2E; color: #fff; }
+.background-green  { background: var(--olive); color: #fff; }
+
+/* Leaf watermark backgrounds */
+.leaf-bg,
+.leaf-bg-right {
+  background-image: url('https://cheshirejointinjections.com/wp-content/uploads/2024/01/Logo-background-image.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.leaf-bg-right {
+  background-position: right;
+}
+
+@media (max-width: 650px) {
+  .leaf-bg { background-size: cover; }
+}
+
+/* Old landing heading → display size */
+.landing-h1 {
+  font-size: var(--fs-display);
+  line-height: 1.15;
+}
+
+/* Old "rounded card" wrapper */
+.rounded-card > * {
+  border-radius: var(--radius-sm) !important;
+}
+
+.hide-sm {
+  display: none;
+}
+
+@media (min-width: 1000px) {
+  .hide-sm {
+    display: block;
+  }
+}
+
+/* ==========================================================================
+   13. UTILITIES
+   ========================================================================== */
+
+.text-center { text-align: center; }
+.text-olive  { color: var(--olive); }
+.text-muted  { color: var(--text-muted) !important; }
+.bg-white    { background: #fff !important; }
+.bg-soft     { background: var(--bg-soft); }
+.bg-tint     { background: var(--olive-light); }
+.bg-olive    { background: var(--olive); }
+.bg-dark     { background: var(--dark); }
+
+.rounded {
+  border-radius: var(--radius-md) !important;
+  overflow: hidden;
+}
+
+.shadow-card { box-shadow: var(--shadow-card); }
+
+.screen-reader-text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

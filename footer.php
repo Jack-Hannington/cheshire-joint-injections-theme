@@ -1,56 +1,84 @@
-</div>
-<footer id="colophon" class="site-footer aos-fade-up" data-aos="fade-up">
-    <div id="contact">
-        <div class="container">
-        <div class="row py-5 ">
-        <div class="col-lg-6 col-12">
-        <p class="brow-text">Reach us here</p>
-        <h2 class="wp-block-heading">Contact us</h2>
-        <p>Ask any injection related questions below and we’ll get back to you as soon as we can.
-    
-        <p>Call us on: <a class="fw-bolder" href="tel:07572461827">07572461827</a>  Email: <a href="mailto:info@cheshirejointinjections.com">info@cheshirejointinjections.com</a> </p>
-        <iframe class="google-maps-embed" style="max-width:100%;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2381.7353400580655!2d-2.107245623303167!3d53.3479936746003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487a4bf36f4952ef%3A0x9fea728f4afebe2e!2sCheshire%20Physiotherapy%20and%20Pilates%20Clinic!5e0!3m2!1sen!2suk!4v1702740676626!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-     
+</div><!-- #content.site-content -->
 
-     
-</div>
-<div class="col-lg-6 col-12 maps-container">
-    <iframe data-tally-src="https://tally.so/embed/w4KDZk?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" loading="lazy" width="100%" height="200" frameborder="0" marginheight="0" marginwidth="0" title="Cheshire joint injections Contact form
-"></iframe><script>var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach((function(e){e.src=e.dataset.tallySrc}))};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}</script>
+<footer id="colophon" class="site-footer">
+	<div class="container">
 
-    
-</div>
-</div>
-</div>
-</div>
- <div class="pt-5 border-top">
-            <div class="container footer-links">
-                <!-- Footer content goes here -->
-                <div class="row ">
-                    <div class="col-12 d-flex justify-content-start">
-                    <?php
-        if (function_exists('the_custom_logo')) {
-            the_custom_logo();
-        }
-        ?> 
-                    </div>
-                    <div class="col-12 d-flex justify-content-start">
-                   
-                    <?php wp_nav_menu(array(
-            'theme_location' => 'footer-menu',
-            'menu_class' => 'footer-menu',
-            'fallback_cb' => false
-        )); ?>
-                    </div>  
-                   <p class="mt-3"> &copy <?php echo date('Y'); ?> Cheshire joint injections.
-                  Cheshire Physiotherapy and Pilates Clinic, The Old Pumphouse, Middlewood Road, Poynton, Cheshire, SK12 1SH</p>
-            </div>
- 
-    </div>
-        </div>
-    </footer>
+		<div class="footer-grid">
+			<div class="footer-brand">
+				<?php if ( function_exists( 'the_custom_logo' ) && has_custom_logo() ) : ?>
+					<div class="footer-brand__logo"><?php the_custom_logo(); ?></div>
+				<?php else : ?>
+					<a class="footer-brand__name" href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php bloginfo( 'name' ); ?></a>
+				<?php endif; ?>
+				<p class="footer-tagline"><?php echo esc_html( get_theme_mod( 'altius_healthcare_footer_tagline', 'Specialist non-surgical joint care and ultrasound-guided interventions delivered by senior clinical NHS consultants in Poynton, Cheshire.' ) ); ?></p>
+			</div>
 
-    <?php wp_footer(); ?>
+			<?php
+			$footer_columns = array(
+				'services-menu' => 'Treatments',
+				'clinic-menu'   => 'Conditions We Treat',
+				'company-menu'  => 'Resources',
+			);
+			$any_assigned = false;
+			foreach ( $footer_columns as $location => $heading ) {
+				if ( ! has_nav_menu( $location ) ) {
+					continue;
+				}
+				$any_assigned = true;
+				echo '<nav class="footer-col" aria-label="' . esc_attr( $heading ) . '">';
+				echo '<h3 class="footer-heading">' . esc_html( $heading ) . '</h3>';
+				wp_nav_menu( array(
+					'theme_location' => $location,
+					'menu_class'     => 'footer-menu',
+					'container'      => false,
+					'depth'          => 1,
+					'fallback_cb'    => false,
+				) );
+				echo '</nav>';
+			}
+			// Nothing assigned yet: fall back to the single Footer Menu so links never disappear.
+			if ( ! $any_assigned && has_nav_menu( 'footer-menu' ) ) {
+				echo '<nav class="footer-col footer-col--wide" aria-label="Footer">';
+				echo '<h3 class="footer-heading">Quick links</h3>';
+				wp_nav_menu( array(
+					'theme_location' => 'footer-menu',
+					'menu_class'     => 'footer-menu footer-menu--columns',
+					'container'      => false,
+					'depth'          => 1,
+					'fallback_cb'    => false,
+				) );
+				echo '</nav>';
+			}
+			?>
+		</div>
+
+		<div class="footer-standards">
+			<div class="footer-standards__text">
+				<p class="footer-standards__title">Regulated clinical standards</p>
+				<p class="footer-standards__sub">Our practitioners are certified by the UK's leading healthcare governing bodies.</p>
+			</div>
+			<div class="footer-badges">
+				<a class="footer-badge" href="https://www.hcpc-uk.org/check-the-register/" target="_blank" rel="noopener">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
+					<span><strong>hcpc registered</strong><small>Health &amp; Care Professions Council</small></span>
+				</a>
+				<a class="footer-badge" href="https://www.csp.org.uk/" target="_blank" rel="noopener">
+					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
+					<span><strong>The Chartered Society</strong><small>of Physiotherapy Member</small></span>
+				</a>
+			</div>
+		</div>
+
+		<div class="footer-bottom">
+			<p>&copy; <?php echo date( 'Y' ); ?>. Trading as the Cheshire joint injection clinic LTD (13835955) previously trading as Perform Ready Physio LTD 13221673. All rights reserved.</p>
+			<p class="footer-address">Our address: <a title="Cheshire Joint Injections address" href="https://maps.app.goo.gl/W6N9cSejWhPHPxvW9" target="_blank" rel="noopener">Cheshire Physiotherapy and Pilates Clinic, The Old Pumphouse, Middlewood Road, Poynton, Cheshire, SK12 1SH</a></p>
+		</div>
+
+	</div>
+</footer>
+</div><!-- #page -->
+
+<?php wp_footer(); ?>
 
 </body>
 </html>

@@ -793,11 +793,36 @@ textarea {
 }
 
 /* ==========================================================================
-   7. NAVIGATION
-   DOM: nav > .navbar.container > #nav-logo | #nav-toggle | .menu-container | #nav-cta
-   functions.js toggles .show + animate.css classes on .menu-container and
-   .rotate-icon on sub-menu chevrons; keep those hooks.
+   7. NAVIGATION  — glass header, hover dropdowns, full-screen glass drawer
+   DOM: nav > .navbar.container > #nav-logo | #nav-cta | #nav-toggle | #site-menu.menu-container
+   functions.js toggles .show on .menu-container, html.menu-open (scroll lock)
+   and .is-open on li.menu-item-has-children; keep those hooks.
    ========================================================================== */
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-bg-strong: rgba(255, 255, 255, 0.9);
+  --drawer-bg: rgba(250, 251, 249, 0.88);
+  --glass-border: rgba(28, 41, 13, 0.08);
+  --glass-blur: saturate(180%) blur(20px);
+  --nav-link: rgba(28, 41, 13, 0.78);
+  --nav-hover-bg: rgba(28, 41, 13, 0.05);
+}
+
+@media (max-width: 782px) {
+  :root {
+    --nav-height: 60px;
+  }
+}
+
+/* No backdrop blur (old browsers, reduced transparency): go solid so text stays legible */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  :root {
+    --glass-bg: rgba(255, 255, 255, 0.97);
+    --glass-bg-strong: #fff;
+    --drawer-bg: var(--warm-neutral);
+  }
+}
 
 .site-header nav {
   position: fixed;
@@ -806,15 +831,16 @@ textarea {
   width: 100%;
   margin: 0;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.94);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
   box-shadow: none;
-  transition: box-shadow var(--t-med);
+  transition: background var(--t-med), box-shadow var(--t-med);
 }
 
 .site-header nav.scrolled {
+  background: var(--glass-bg-strong);
   box-shadow: var(--shadow-nav);
 }
 
@@ -841,7 +867,7 @@ body.admin-bar .site-header nav {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-3);
+  gap: var(--space-2);
   height: var(--nav-height);
   padding-top: 0;
   padding-bottom: 0;
@@ -849,6 +875,7 @@ body.admin-bar .site-header nav {
 }
 
 #nav-logo {
+  order: 0;
   flex: 1 1 auto;
   min-width: 0;
 }
@@ -861,12 +888,12 @@ body.admin-bar .site-header nav {
 .custom-logo {
   width: auto;
   max-width: 200px;
-  max-height: 46px;
+  max-height: 44px;
   height: auto;
   transition: none;
 }
 
-/* Hamburger */
+/* Round glass buttons: hamburger + drawer close */
 #nav-toggle,
 .close-menu {
   order: 3;
@@ -880,94 +907,118 @@ body.admin-bar .site-header nav {
   justify-content: center;
   align-items: center;
   gap: 5px;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   padding: 0;
-  background: #fff;
-  border: 1px solid var(--border);
+  color: var(--heading);
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid var(--glass-border);
   border-radius: 50%;
   cursor: pointer;
-  transition: border-color var(--t-fast), background var(--t-fast);
+  -webkit-tap-highlight-color: transparent;
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
 }
 
 .nav-toggle:hover {
-  border-color: var(--accent);
-  background: var(--tint);
+  background: #fff;
+  border-color: rgba(28, 41, 13, 0.16);
+}
+
+.nav-toggle:active {
+  transform: scale(0.94);
+}
+
+.nav-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 #showMenu span {
   display: block;
   width: 18px;
-  height: 2px;
-  background: var(--olive);
+  height: 1.5px;
+  background: currentColor;
   border-radius: 2px;
 }
 
-.close-menu span {
-  font-size: 26px;
-  line-height: 1;
-  color: var(--text);
+.close-menu svg {
+  width: 18px;
+  height: 18px;
 }
 
-/* Mobile CTA next to the hamburger */
+/* Header CTA: sits by the hamburger on mobile, after the menu on desktop */
 #nav-cta {
-  flex: 0 0 auto;
   order: 2;
+  flex: 0 0 auto;
   text-align: right;
 }
 
 #nav-cta .wp-block-button__link {
-  min-height: 40px;
-  padding: 10px 18px;
+  min-height: 38px;
+  padding: 9px 16px;
   font-size: 14px;
 }
 
 @media (max-width: 600px) {
   .custom-logo {
     max-width: 140px;
-    max-height: 40px;
-  }
-
-  #nav-cta .wp-block-button__link {
-    min-height: 36px;
-    padding: 8px 14px;
-    font-size: 13px;
+    max-height: 38px;
   }
 }
 
-/* Full-screen drawer (mobile) — functions.js adds .show + animate.css classes */
+/* ---- Drawer (below 1000px): full-screen glass sheet ---------------------- */
 .menu-container {
   position: fixed;
   inset: 0;
-  display: none;
+  z-index: 1001;
+  display: flex;
   flex-direction: column;
   height: 100vh;
   height: 100dvh;
-  background: var(--bg);
+  background: var(--drawer-bg);
+  -webkit-backdrop-filter: saturate(160%) blur(28px);
+  backdrop-filter: saturate(160%) blur(28px);
   overflow-y: auto;
-  z-index: 1001;
+  -webkit-overflow-scrolling: touch;
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity var(--t-med), transform var(--t-med), visibility 0s var(--t-med);
 }
 
 .menu-container.show {
-  display: flex;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--t-med), transform var(--t-med), visibility 0s;
+}
+
+html.menu-open,
+html.menu-open body {
+  overflow: hidden;
 }
 
 .menu-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px var(--gutter);
-  border-bottom: 1px solid var(--border);
+  flex: 0 0 auto;
+  height: var(--nav-height);
+  padding: 0 var(--gutter);
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .menu-body {
   flex: 1 0 auto;
+  padding: var(--space-3) var(--gutter);
 }
 
 .menu-footer {
-  padding: var(--space-4) var(--gutter) var(--space-6);
+  flex: 0 0 auto;
+  padding: var(--space-4) var(--gutter) calc(var(--space-6) + env(safe-area-inset-bottom, 0px));
   margin: 0;
-  border-top: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.5);
+  border-top: 1px solid var(--glass-border);
 }
 
 .menu-footer .wp-block-button {
@@ -980,7 +1031,7 @@ body.admin-bar .site-header nav {
 
 .menu-footer .wp-block-social-links {
   justify-content: center;
-  margin-top: var(--space-5);
+  margin: var(--space-5) auto 0;
 }
 
 .menu,
@@ -991,16 +1042,26 @@ body.admin-bar .site-header nav {
 }
 
 .menu > li {
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.menu > li:last-child {
+  border-bottom: 0;
 }
 
 .menu li a {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
   width: 100%;
-  padding: 16px var(--gutter);
-  font-size: 16px;
+  padding: 15px 0;
+  font-family: var(--font-heading);
+  font-size: 21px;
   font-weight: 500;
-  color: var(--text);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+  color: var(--heading);
   transition: color var(--t-fast), background var(--t-fast);
 }
 
@@ -1011,67 +1072,78 @@ body.admin-bar .site-header nav {
   opacity: 1;
 }
 
-/* Sub-menu chevron: functions.js injects an Iconify svg into the parent link */
-.menu-item-has-children > a > svg,
-.menu-item-has-children > a > .iconify {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  margin-left: 6px;
-  vertical-align: -3px;
-  float: right;
+/* Chevron: functions.js appends an inline svg to parent links */
+.menu-chevron {
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  color: var(--text-muted);
   transition: transform var(--t-fast);
 }
 
-.rotate-icon {
+.menu-item-has-children.is-open > a > .menu-chevron {
   transform: rotate(180deg);
 }
 
-/* Sub-menus: hidden; functions.js sets inline display:block on tap (mobile) */
+/* Collapsible sub-menus */
 .sub-menu {
-  display: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s var(--ease);
+}
+
+.menu-item-has-children.is-open > .sub-menu {
+  max-height: 1200px;
 }
 
 .sub-menu > li {
   border-bottom: 0;
 }
 
-@media (max-width: 999px) {
-  .menu-item-has-children > .sub-menu {
-    margin: 0 var(--space-3) var(--space-3);
-    padding: var(--space-1);
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-  }
-
-  .sub-menu li a {
-    padding: 12px 16px;
-    font-size: 15px;
-    border-radius: var(--radius-sm);
-  }
+.sub-menu > li:last-child {
+  padding-bottom: var(--space-3);
 }
 
-/* Desktop nav */
+.sub-menu li a {
+  padding: 9px 0 9px 14px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--text-soft);
+  border-left: 1.5px solid var(--glass-border);
+}
+
+.sub-menu li a:hover {
+  border-left-color: var(--accent);
+}
+
+/* ---- Desktop (1000px+): inline links with glass dropdowns ---------------- */
 @media (min-width: 1000px) {
   #nav-toggle {
     display: none;
   }
 
   #nav-logo {
-    flex: 1;
+    flex: 1 1 auto;
   }
 
   .menu-container {
+    order: 1;
     position: static;
-    display: flex;
-    flex: 0 0 auto;
+    z-index: auto;
+    flex: 0 1 auto;
     flex-direction: row;
     align-items: center;
     height: auto;
     background: transparent;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     overflow: visible;
-    z-index: auto;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   .menu-header,
@@ -1081,12 +1153,13 @@ body.admin-bar .site-header nav {
 
   .menu-body {
     flex: none;
+    padding: 0;
   }
 
   .menu {
     display: flex;
     align-items: center;
-    gap: var(--space-1);
+    gap: 2px;
     white-space: nowrap;
   }
 
@@ -1096,35 +1169,62 @@ body.admin-bar .site-header nav {
   }
 
   .menu li a {
-    padding: 10px 14px;
-    font-size: 15px;
-    border-radius: var(--radius-sm);
+    display: inline-flex;
+    width: auto;
+    gap: 2px;
+    padding: 8px 11px;
+    font-family: var(--font-body);
+    font-size: 14.5px;
+    font-weight: 500;
+    letter-spacing: 0;
+    color: var(--nav-link);
+    border-radius: 999px;
   }
 
-  .menu > li > a:hover {
-    background: var(--tint);
+  .menu > li > a:hover,
+  .menu > li:hover > a,
+  .menu > li.is-open > a {
+    color: var(--heading);
+    background: var(--nav-hover-bg);
   }
 
-  .menu-item-has-children > a > svg,
-  .menu-item-has-children > a > .iconify {
-    float: none;
+  .menu li.current-menu-item > a,
+  .menu li.current-menu-ancestor > a {
+    color: var(--accent);
   }
 
-  .menu-item-has-children:hover > a > svg {
+  .menu-chevron {
+    width: 14px;
+    height: 14px;
+    color: currentColor;
+    opacity: 0.6;
+  }
+
+  .menu-item-has-children:hover > a > .menu-chevron,
+  .menu-item-has-children.is-open > a > .menu-chevron {
     transform: rotate(180deg);
   }
 
   .menu-item-has-children > .sub-menu {
     position: absolute;
-    top: calc(100% + 6px);
+    top: calc(100% + 8px);
     left: 0;
-    min-width: 240px;
-    padding: var(--space-2);
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-menu);
-    margin-top: 0;
+    min-width: 260px;
+    max-width: 340px;
+    max-height: none;
+    overflow: visible;
+    padding: 6px;
+    background: var(--glass-bg-strong);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    box-shadow: 0 16px 40px rgba(28, 41, 13, 0.12);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(6px) scale(0.98);
+    transform-origin: top left;
+    transition: opacity var(--t-fast), transform var(--t-fast), visibility 0s var(--t-fast);
   }
 
   /* Bridge the gap so hover doesn't drop between link and panel */
@@ -1138,24 +1238,37 @@ body.admin-bar .site-header nav {
   }
 
   .menu-item-has-children:hover > .sub-menu,
-  .menu-item-has-children:focus-within > .sub-menu {
-    display: block;
+  .menu-item-has-children:focus-within > .sub-menu,
+  .menu-item-has-children.is-open > .sub-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: opacity var(--t-fast), transform var(--t-fast), visibility 0s;
+  }
+
+  .sub-menu > li:last-child {
+    padding-bottom: 0;
   }
 
   .sub-menu li a {
-    padding: 10px 14px;
-    font-size: 14.5px;
-    white-space: nowrap;
+    display: block;
+    padding: 9px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: normal;
+    color: var(--text);
+    border-left: 0;
+    border-radius: 8px;
   }
 
   .sub-menu li a:hover {
-    background: var(--tint);
+    color: var(--heading);
+    background: var(--nav-hover-bg);
   }
 
   #nav-cta {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
+    order: 2;
+    margin-left: var(--space-2);
   }
 }
 
@@ -1916,9 +2029,14 @@ details[open] {
   border-color: rgba(79, 127, 12, 0.4);
 }
 
-.wp-block-accordion-heading {
-  margin: 0;
+.wp-block-accordion-heading,
+.wp-block-accordion-item > .wp-block-accordion-heading {
+  margin: 0;   /* outranks the panel-card h3 margin that left a 12px gap under closed titles */
   font-size: 17px;
+}
+
+.wp-block-accordion-heading__toggle:hover .wp-block-accordion-heading__toggle-title {
+  text-decoration: none;
 }
 
 .wp-block-accordion-heading__toggle {
@@ -1928,7 +2046,7 @@ details[open] {
   gap: var(--space-4);
   width: 100%;
   min-height: 0;
-  padding: 18px 22px;
+  padding: 15px 20px;
   font-family: var(--font-heading);
   font-size: inherit;
   font-weight: 500;
@@ -1972,7 +2090,7 @@ details[open] {
 }
 
 .wp-block-accordion-panel {
-  padding: 0 22px 20px;
+  padding: 0 20px 18px;
 }
 
 .wp-block-accordion-panel[hidden] {

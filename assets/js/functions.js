@@ -1,85 +1,83 @@
-// Toggle menu
+// Menu: glass drawer below 1000px, hover/click dropdowns above.
+// style.css hooks: .show on .menu-container, html.menu-open, li.is-open.
 
-const menu = document.querySelector(".menu-container");
-
-//Check is admin bar is shown - if it then add additional class to container-fluid so it doesn't overlap
-document.addEventListener("DOMContentLoaded", function(event) {
+//Check is admin bar is shown - if it then add additional class so the fixed nav sits below it
+document.addEventListener("DOMContentLoaded", function () {
   if (document.querySelector("#wpadminbar")) {
-  console.log('admin bar is shown');
-  document.querySelector('nav').classList.add('admin-margin');
-  // document.querySelector('.menu-container').classList.add('admin-margin');
-}});
-
-
-document.querySelector("#showMenu").addEventListener("click", () => {
-  document.body.style.overflowY = "hidden"; //Prevent scrolling when animating
-  menu.classList.remove("show", "animate__fadeOutLeft");
-  menu.classList.add("show", "animate__fadeInRight", "animate__animated");
+    document.querySelector('nav').classList.add('admin-margin');
+  }
 });
 
-document.querySelector("#closeMenu").addEventListener("click", () => {
-  menu.classList.add("animate__fadeOutLeft");
-  setTimeout(function () {
-    document.body.style.overflowY = "auto";
-    menu.classList.remove("show");
-  }, 500);
-});
+(function () {
+  var menu = document.querySelector('.menu-container');
+  var openBtn = document.getElementById('showMenu');
+  var closeBtn = document.getElementById('closeMenu');
+  if (!menu || !openBtn) return;
 
-const mediaQueryList = window.matchMedia('(min-width: 1000px)');
-const checkViewportWidth = () => {
-    if (mediaQueryList.matches) {
-        // If viewport is 1000px or wider, remove the class
-        menu.classList.remove('animate__fadeOutLeft');
-        // menu.classList.remove('admin-margin');
-    } else {
-        // If viewport is less than 1000px wide, add the class
-        menu.classList.add('animate__fadeOutLeft');
-        // menu.classList.add('admin-margin');
-    }
-};
+  var desktop = window.matchMedia('(min-width: 1000px)');
+  var CHEVRON = '<svg class="menu-chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 7.5l5 5 5-5"/></svg>';
 
-// Call the function once at script load time
-checkViewportWidth();
+  function openMenu() {
+    menu.classList.add('show');
+    document.documentElement.classList.add('menu-open');
+    openBtn.setAttribute('aria-expanded', 'true');
+    if (closeBtn) closeBtn.focus();
+  }
 
-// Then set it up to be called every time the viewport width changes
-mediaQueryList.addEventListener('change', checkViewportWidth);
+  function closeMenu() {
+    if (!menu.classList.contains('show')) return;
+    menu.classList.remove('show');
+    document.documentElement.classList.remove('menu-open');
+    openBtn.setAttribute('aria-expanded', 'false');
+    openBtn.focus();
+  }
 
-document.addEventListener("DOMContentLoaded", function() {
-  // Get all menu items that have children
-  var menuItems = document.querySelectorAll('.menu-item-has-children');
+  openBtn.addEventListener('click', openMenu);
+  if (closeBtn) closeBtn.addEventListener('click', closeMenu);
 
-  // Add Iconify icon to each of them
-  menuItems.forEach(function(menuItem) {
-      var menuItemLink = menuItem.querySelector('a');
-      menuItemLink.insertAdjacentHTML('beforeend', '<span class="iconify" data-icon="tabler:chevron-down"></span>');
-      
-      // Get the icon within the menu item with a delay of 300ms
-      setTimeout(function() {
-        var menuItemIcons = document.querySelectorAll('.menu-item-has-children>a>svg');
+  /* Sub-menus: parent links (placeholder hrefs) toggle their panel */
+  var parents = Array.prototype.slice.call(menu.querySelectorAll('.menu-item-has-children'));
 
-        // Add click event to the menu item link
-        menuItemLink.addEventListener('click', function(event) {
-            // Prevent the page from navigating to the link on click
-            event.preventDefault();
+  function closeAllSub(except) {
+    parents.forEach(function (li) {
+      if (li === except) return;
+      li.classList.remove('is-open');
+      var a = li.querySelector(':scope > a');
+      if (a) a.setAttribute('aria-expanded', 'false');
+    });
+  }
 
-            // Get the sub-menu of the clicked menu item
-            var subMenu = menuItem.querySelector('.sub-menu');
-
-            // Toggle the display of the sub-menu
-            subMenu.style.display = (subMenu.style.display === 'block') ? 'none' : 'block';
-            
-            // Add this css to the icon   transform: rotate(180deg); 
-            
-            menuItemIcons.forEach(icon => icon.classList.toggle('rotate-icon'));
-            
-            // Prevent this event from bubbling up to the li
-            event.stopPropagation();
-        });
-      }, 300); // Delay of 300ms
+  parents.forEach(function (li) {
+    var link = li.querySelector(':scope > a');
+    if (!link) return;
+    link.insertAdjacentHTML('beforeend', CHEVRON);
+    link.setAttribute('aria-haspopup', 'true');
+    link.setAttribute('aria-expanded', 'false');
+    link.addEventListener('click', function (e) {
+      e.preventDefault();
+      var willOpen = !li.classList.contains('is-open');
+      closeAllSub(li);
+      li.classList.toggle('is-open', willOpen);
+      link.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+    });
   });
-});
 
-
+  /* Leaf links close the drawer; clicking elsewhere closes desktop dropdowns */
+  menu.querySelectorAll('.menu a').forEach(function (a) {
+    if (a.parentElement.classList.contains('menu-item-has-children')) return;
+    a.addEventListener('click', function () { if (!desktop.matches) closeMenu(); });
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.menu-item-has-children')) closeAllSub();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeMenu(); closeAllSub(); }
+  });
+  desktop.addEventListener('change', function (mq) {
+    if (mq.matches) closeMenu();
+    closeAllSub();
+  });
+})();
 
 
 // Convert classes to data-aos animations 

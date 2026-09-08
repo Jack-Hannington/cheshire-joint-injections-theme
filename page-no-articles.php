@@ -1,30 +1,21 @@
 <?php
-get_header();
-?>
-
-
-<?php
 /**
  * Template Name: Page with no articles
  *
- * Displays a page with only the page title.
+ * Kept for pages that were assigned it; identical to "Page" now that no
+ * template shows the articles strip.
  */
+get_header();
 ?>
 
-
-<?php
-$post = get_post();
-?>
-<div style="padding-bottom: 20px;">
-<div class="container">  
+<main id="primary" class="page-body">
+  <div class="container">
     <div class="header">
-        <h1><?php the_title(); ?></h1> 
+      <h1><?php the_title(); ?></h1>
     </div>
     <?php the_content(); ?>
-</div>
-</div>
-
+  </div>
+</main>
 
 <?php
 get_footer();
-?>

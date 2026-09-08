@@ -810,7 +810,7 @@ textarea {
 :root {
   --glass-bg: rgba(255, 255, 255, 0.72);
   --glass-bg-strong: rgba(255, 255, 255, 0.9);
-  --drawer-bg: rgba(250, 251, 249, 0.95);
+  --drawer-bg: var(--warm-neutral);   /* solid: the page never shows through the open menu */
   --glass-border: rgba(28, 41, 13, 0.08);
   --glass-blur: saturate(180%) blur(20px);
   --nav-link: rgba(28, 41, 13, 0.78);
@@ -828,7 +828,6 @@ textarea {
   :root {
     --glass-bg: rgba(255, 255, 255, 0.97);
     --glass-bg-strong: #fff;
-    --drawer-bg: var(--warm-neutral);
   }
 }
 
@@ -1029,17 +1028,19 @@ html.menu-open body {
   border-top: 1px solid var(--glass-border);
 }
 
+.menu-footer__buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
 .menu-footer .wp-block-button {
   display: block;
+  margin: 0;
 }
 
 .menu-footer .wp-block-button__link {
   width: 100%;
-}
-
-.menu-footer .wp-block-social-links {
-  justify-content: center;
-  margin: var(--space-5) auto 0;
 }
 
 .menu,
@@ -2535,6 +2536,16 @@ details > *:last-child {
    10. TEMPLATES
    ========================================================================== */
 
+/* Page body (page, no-title, hero, services, single templates): breathing room
+   above the footer unless the page ends in a full-width band. */
+.page-body {
+  padding-bottom: var(--section-y);
+}
+
+.page-body:has(> .container > .alignfull:last-child) {
+  padding-bottom: 0;
+}
+
 /* Page title block (page.php) */
 .header {
   padding: var(--space-8) 0 var(--space-5);
@@ -2645,73 +2656,6 @@ details > *:last-child {
   border-radius: var(--radius-md);
 }
 
-/* "Latest articles" strip (page, services, single templates) */
-.recent-posts {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: var(--grid-gap);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  padding-bottom: var(--space-2);
-}
-
-.recent-posts::-webkit-scrollbar {
-  display: none;
-}
-
-.recent-post {
-  flex: 0 0 min(320px, 80%);
-  width: auto;
-  max-width: none;
-  padding: 0;
-  scroll-snap-align: start;
-}
-
-@media (min-width: 992px) {
-  .recent-posts {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    overflow: visible;
-  }
-
-  .recent-post {
-    flex: none;
-  }
-}
-
-.recent-post > a {
-  display: block;
-  color: inherit;
-}
-
-.recent-post .post-image {
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  transition: transform var(--t-med), box-shadow var(--t-med);
-}
-
-.recent-post > a:hover .post-image {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-lift);
-}
-
-.recent-posts-title {
-  font-size: var(--fs-h4);
-  margin: var(--space-4) 0 var(--space-1);
-}
-
-.recent-post > a:hover .recent-posts-title {
-  color: var(--accent);
-}
-
-.recent-post p {
-  font-size: var(--fs-label);
-  font-weight: 600;
-  color: var(--link);
-  margin: 0;
-}
-
 /* Blog index / archive (home.php, archive.php) */
 .blog-page-card {
   padding: 0 var(--space-3);
@@ -2763,20 +2707,34 @@ details > *:last-child {
   color: #fff;
 }
 
-/* Services page (services.php): content + sticky offers sidebar */
-.services-page .row {
-  gap: var(--space-7) 0;
+/* Services page (services.php): content + sticky offers sidebar.
+   Offers are "Sidebar offers" posts whose content is a Group with the legacy
+   .card class — that Group is the only surface; the .offer wrapper has no chrome. */
+.services-page {
+  padding-top: var(--space-7);
+}
+
+.services-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-8);
 }
 
 @media (min-width: 992px) {
-  .services-page .col-lg-8 {
-    width: calc(66.666% - var(--space-5));
+  .services-layout {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: var(--space-9);
+    align-items: start;
   }
 
-  .services-page .col-lg-4 {
-    width: calc(33.333% - var(--space-5));
-    margin-left: auto;
+  .sidebar-offers {
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-5));
   }
+}
+
+.services-content {
+  min-width: 0;
 }
 
 .sidebar-offers {
@@ -2786,24 +2744,92 @@ details > *:last-child {
   font-size: var(--fs-small);
 }
 
-@media (min-width: 992px) {
-  .sidebar-offers {
-    position: sticky;
-    top: calc(var(--nav-height) + var(--space-5));
-  }
+.sidebar-offers .offer > .wp-block-group {
+  margin-bottom: 0 !important;      /* legacy mb-2 on the group */
 }
 
-.sidebar-offers .offer {
-  width: 100%;
-  padding: var(--card-pad-sm);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-card);
+.sidebar-offers .offer .card {
+  display: block;                   /* editor set a flex layout; block keeps the rows flush */
+  padding: var(--card-pad-sm) !important;   /* legacy p-3 */
+  border-radius: var(--radius-lg) !important; /* legacy .rounded */
+  box-shadow: none;
 }
 
-.sidebar-offers .offer > *:last-child {
+.sidebar-offers .offer .card h2,
+.sidebar-offers .offer .card h3,
+.sidebar-offers .offer .card h4 {
+  margin: 0 0 var(--space-3);
+  font-size: var(--fs-h4) !important;  /* inline 16px in the offer content */
+  line-height: 1.3;
+}
+
+.sidebar-offers .offer .card p {
+  margin: 0 0 var(--space-4);
+}
+
+/* Link-only paragraphs → hairline rows with a chevron */
+.sidebar-offers .offer .card p:has(> a:only-child) {
+  margin: 0;
+  border-top: 1px solid var(--border-soft);
+}
+
+.sidebar-offers .offer .card p:has(> a:only-child) > a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 11px 0;
+  font-weight: 500;
+  line-height: 1.35;
+  color: var(--text);
+  text-decoration: none;
+  transition: color var(--t-fast);
+}
+
+.sidebar-offers .offer .card p:has(> a:only-child) > a::after {
+  content: "";
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  background-color: var(--text-muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4-4-4-4'/%3E%3C/svg%3E") center / 16px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12l4-4-4-4'/%3E%3C/svg%3E") center / 16px no-repeat;
+  transition: background-color var(--t-fast), transform var(--t-fast);
+}
+
+.sidebar-offers .offer .card p:has(> a:only-child) > a:hover {
+  color: var(--link);
+}
+
+.sidebar-offers .offer .card p:has(> a:only-child) > a:hover::after {
+  background-color: var(--link);
+  transform: translateX(2px);
+}
+
+.sidebar-offers .offer .card p:has(> a:only-child):last-child > a {
+  padding-bottom: 0;
+}
+
+/* The "find the right treatment" card: olive-tint panel instead of the leaf watermark */
+.sidebar-offers .offer .card.leaf-bg-right,
+.sidebar-offers .offer .card.leaf-bg {
+  background: var(--tint);
+  background-image: none;
+  border-color: transparent;
+}
+
+.sidebar-offers .offer .wp-block-buttons {
   margin-bottom: 0;
+}
+
+.sidebar-offers .offer .wp-block-button {
+  width: 100%;
+  margin-top: 0 !important;         /* legacy mt-2 */
+}
+
+.sidebar-offers .offer .wp-block-button__link {
+  width: 100%;
+  font-size: var(--fs-small) !important;
 }
 
 .page-template-services h2 {
@@ -2829,29 +2855,26 @@ details > *:last-child {
 }
 
 /* ==========================================================================
-   11. FOOTER   (Figma: footer-section — dark band, brand + three link
-   columns, regulated-standards row, legal line)
+   11. FOOTER   (Figma: footer-section — brand + three link columns,
+   regulated-standards row, legal line). Olive-tint band; swap --footer-bg
+   for --warm-grey / --olive-dark if the tint ever clashes with the page above.
    ========================================================================== */
 
 .site-footer {
-  --text: #fff;
-  --text-soft: rgba(255, 255, 255, 0.78);
-  --text-muted: rgba(255, 255, 255, 0.60);
-  --heading: #fff;
-  --link: rgba(255, 255, 255, 0.78);
-  --link-hover: #fff;
-  --border: rgba(255, 255, 255, 0.14);
+  --footer-bg: var(--olive-light);
+  --border: rgba(28, 41, 13, 0.10);
   padding: var(--space-9) 0 var(--space-8);
-  background: var(--dark);
+  background: var(--footer-bg);
+  border-top: 1px solid var(--border);
   color: var(--text-soft);
 }
 
 .site-footer a {
-  color: var(--link);
+  color: var(--text-soft);
 }
 
 .site-footer a:hover {
-  color: var(--link-hover);
+  color: var(--link);
 }
 
 .site-footer p {
@@ -2863,16 +2886,13 @@ details > *:last-child {
   display: grid;
   grid-template-columns: 1.4fr 1fr 1fr 0.9fr;
   gap: var(--space-7) var(--space-6);
-  padding-bottom: var(--space-9);
+  padding-bottom: var(--space-8);
   border-bottom: 1px solid var(--border);
 }
 
 .footer-brand__logo {
   display: inline-block;
-  padding: 10px 14px;
   margin-bottom: var(--space-5);
-  background: #fff;
-  border-radius: var(--radius-md);
   line-height: 0;
 }
 
@@ -2888,7 +2908,7 @@ details > *:last-child {
   margin-bottom: var(--space-5);
   font-family: var(--font-heading);
   font-size: var(--fs-h3);
-  color: #fff;
+  color: var(--heading);
 }
 
 .footer-tagline {
@@ -2900,8 +2920,12 @@ details > *:last-child {
 
 .footer-heading {
   margin: 0 0 var(--space-4);
-  font-size: var(--fs-h2);
-  color: #fff;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--heading);
 }
 
 .footer-menu {
@@ -2926,7 +2950,7 @@ details > *:last-child {
 }
 
 .footer-menu li.current-menu-item > a {
-  color: #fff;
+  color: var(--heading);
 }
 
 /* Fallback: a single menu flowed into columns */
@@ -2960,7 +2984,7 @@ details > *:last-child {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--heading);
   margin-bottom: 4px !important;
 }
 
@@ -2981,23 +3005,24 @@ details > *:last-child {
   align-items: center;
   gap: var(--space-3);
   padding: 12px 18px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  color: #fff;
-  transition: background var(--t-fast), border-color var(--t-fast);
+  color: var(--text);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
 }
 
 .footer-badge:hover {
-  background: rgba(255, 255, 255, 0.10);
-  border-color: rgba(255, 255, 255, 0.3);
-  color: #fff;
+  border-color: rgba(79, 127, 12, 0.35);
+  box-shadow: var(--shadow-card);
+  color: var(--text);
 }
 
 .footer-badge svg {
   flex-shrink: 0;
   width: 22px;
   height: 22px;
+  color: var(--accent);
 }
 
 .footer-badge span {
@@ -3044,7 +3069,7 @@ details > *:last-child {
 }
 
 .footer-bottom .footer-address a:hover {
-  color: #fff;
+  color: var(--link);
 }
 
 @media (max-width: 1024px) {

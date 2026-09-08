@@ -13,12 +13,12 @@ white / warm-neutral canvas, olive accents, Manrope headings, Inter body.
 | `inc/blocks.php` | Block styles (the Styles panel in the block sidebar) and the pattern category. |
 | `patterns/` | Block patterns, auto-registered. One file per Figma section. |
 | `functions.php` | Setup, assets, Customizer (alert bar, footer tagline, social), offers CPT. |
-| `header.php` / `footer.php` | Fixed nav with mobile drawer; dark footer — brand + tagline, three menu columns, HCPC/CSP badges, legal line. |
+| `header.php` / `footer.php` | Glass nav with mobile drawer; olive-tint footer — brand + tagline, three menu columns (small uppercase headings), HCPC/CSP badges, legal line. Change `--footer-bg` in section 11 of `style.css` to recolour it. |
 | `assets/js/main.js` | Nav shadow on scroll + card carousel (vanilla). |
 | `assets/js/functions.js` | Mobile drawer, sub-menus, AOS, gallery lightbox (older, jQuery-era). |
 | `assets/img/` | Placeholder photos exported from Figma and the contact icons. |
-| `page.php` / `page-no-title.php` / `blank-page.php` | Page templates. Content sits in a 1280px container; Full-width blocks break out to the viewport edge. |
-| `services.php` | Content + sticky offers sidebar. |
+| `page.php` / `page-no-title.php` / `blank-page.php` | Page templates. Content sits in a 1280px container; Full-width blocks break out to the viewport edge. No "Latest articles" strip any more — the content ends at the footer. |
+| `services.php` | Content beside a sticky 340px sidebar built from the *Sidebar offers* posts. An offer that is a heading plus link paragraphs renders as hairline rows with chevrons (typed `->` arrows are stripped); the `leaf-bg` card becomes an olive-tint panel. |
 | `full-width-hero.php` | Featured image as a full-bleed hero (uses `.page-title`). |
 | `home.php` / `archive.php` / `single.php` | Blog. |
 

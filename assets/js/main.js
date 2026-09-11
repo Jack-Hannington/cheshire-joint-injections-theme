@@ -46,32 +46,19 @@
       if (track.classList.contains(c)) footer.classList.add(c);
     });
 
-    /* Dots by default; a proportional progress bar for the reviews gallery */
-    var useBar = track.classList.contains('reviews-gallery');
-    var dots, thumb;
-    if (useBar) {
-      dots = document.createElement('div');
-      dots.className = 'carousel-progress';
-      thumb = document.createElement('div');
-      thumb.className = 'carousel-progress__thumb';
-      dots.appendChild(thumb);
-      dots.addEventListener('click', function (e) {
-        var r = dots.getBoundingClientRect();
-        var frac = (e.clientX - r.left) / r.width;
-        track.scrollTo({ left: frac * track.scrollWidth - track.clientWidth / 2, behavior: 'smooth' });
-      });
-    } else {
-      dots = document.createElement('div');
-      dots.className = 'carousel-dots';
-      cards.forEach(function (_, i) {
-        var d = document.createElement('button');
-        d.type = 'button';
-        d.className = 'carousel-dot';
-        d.setAttribute('aria-label', 'Go to card ' + (i + 1));
-        d.addEventListener('click', function () { scrollToCard(track, cards, i); });
-        dots.appendChild(d);
-      });
-    }
+    /* Proportional progress bar: the thumb is the visible share of the track,
+       so it stays honest however many cards fit. (Per-card dots could never
+       reach the last dots once more than one card was visible.) */
+    var bar = document.createElement('div');
+    bar.className = 'carousel-progress';
+    var thumb = document.createElement('div');
+    thumb.className = 'carousel-progress__thumb';
+    bar.appendChild(thumb);
+    bar.addEventListener('click', function (e) {
+      var r = bar.getBoundingClientRect();
+      var frac = (e.clientX - r.left) / r.width;
+      track.scrollTo({ left: frac * track.scrollWidth - track.clientWidth / 2, behavior: 'smooth' });
+    });
 
     var arrows = document.createElement('div');
     arrows.className = 'carousel-arrows';
@@ -88,7 +75,7 @@
     arrows.appendChild(prev);
     arrows.appendChild(next);
 
-    footer.appendChild(dots);
+    footer.appendChild(bar);
     footer.appendChild(arrows);
     track.parentNode.insertBefore(footer, track.nextSibling);
 
@@ -96,15 +83,9 @@
       var i = activeIndex(track, cards);
       var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
       track.classList.toggle('has-more', !atEnd);
-      if (useBar) {
-        footer.hidden = track.scrollWidth <= track.clientWidth + 2;
-        thumb.style.width = (track.clientWidth / track.scrollWidth * 100) + '%';
-        thumb.style.left = (track.scrollLeft / track.scrollWidth * 100) + '%';
-      } else {
-        dots.querySelectorAll('.carousel-dot').forEach(function (d, j) {
-          d.classList.toggle('is-active', j === i);
-        });
-      }
+      footer.hidden = track.scrollWidth <= track.clientWidth + 2;
+      thumb.style.width = (track.clientWidth / track.scrollWidth * 100) + '%';
+      thumb.style.left = (track.scrollLeft / track.scrollWidth * 100) + '%';
       prev.disabled = i === 0;
       next.disabled = atEnd;
     }

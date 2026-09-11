@@ -465,12 +465,12 @@ blockquote,
 
 .site-content {
   flex: 1 0 auto;
-  margin-top: var(--nav-height);
+  margin-top: var(--nav-offset);
   overflow-x: clip;           /* full-width bands use 100vw; clip the scrollbar overshoot */
 }
 
 body:has(.alert-bar) .site-content {
-  margin-top: calc(var(--nav-height) + 36px);
+  margin-top: calc(var(--nav-offset) + 36px);
 }
 
 .site-footer {
@@ -627,7 +627,7 @@ body.admin-bar #page.site {
 .wp-block-button__link,
 .wp-block-button .wp-block-button__link,
 .wp-element-button,
-:where(button:not(.nav-toggle):not(.carousel-arrow):not(.carousel-dot):not(.wp-block-accordion-heading__toggle), input[type="submit"], input[type="button"]) {
+:where(button:not(.nav-toggle):not(.carousel-arrow):not(.wp-block-accordion-heading__toggle), input[type="submit"], input[type="button"]) {
   /* Bootstrap reads these for its :active / :focus states on .btn */
   --bs-btn-color: var(--accent-contrast);
   --bs-btn-bg: var(--accent);
@@ -667,7 +667,7 @@ body.admin-bar #page.site {
 .wp-block-button__link:hover,
 .wp-block-button .wp-block-button__link:hover,
 .wp-element-button:hover,
-:where(button:not(.nav-toggle):not(.carousel-arrow):not(.carousel-dot):not(.wp-block-accordion-heading__toggle), input[type="submit"], input[type="button"]):hover {
+:where(button:not(.nav-toggle):not(.carousel-arrow):not(.wp-block-accordion-heading__toggle), input[type="submit"], input[type="button"]):hover {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
   color: var(--accent-contrast);
@@ -801,13 +801,18 @@ textarea {
 }
 
 /* ==========================================================================
-   7. NAVIGATION  — glass header, hover dropdowns, full-screen glass drawer
+   7. NAVIGATION  — floating glass pill, hover dropdowns, full-screen glass drawer
+   The bar is fixed, inset from the viewport by --nav-inset, capped at the
+   container width and rounded. Over a hero it is a frosted dark glass with
+   white links; once the page scrolls (.scrolled) it is white glass.
    DOM: nav > .navbar.container > #nav-logo | #nav-cta | #nav-toggle | #site-menu.menu-container
    functions.js toggles .show on .menu-container, html.menu-open (scroll lock)
    and .is-open on li.menu-item-has-children; keep those hooks.
    ========================================================================== */
 
 :root {
+  --nav-inset: 12px;                                             /* gap between the pill and the viewport edge */
+  --nav-offset: calc(var(--nav-height) + 2 * var(--nav-inset));  /* space the floating bar takes at the top */
   --glass-bg: rgba(255, 255, 255, 0.72);
   --glass-bg-strong: rgba(255, 255, 255, 0.9);
   --drawer-bg: var(--warm-neutral);   /* solid: the page never shows through the open menu */
@@ -820,6 +825,7 @@ textarea {
 @media (max-width: 782px) {
   :root {
     --nav-height: 60px;
+    --nav-inset: 8px;
   }
 }
 
@@ -829,37 +835,59 @@ textarea {
     --glass-bg: rgba(255, 255, 255, 0.97);
     --glass-bg-strong: #fff;
   }
+
+  /* Without the filter the nav is not the drawer's containing block */
+  .menu-container {
+    top: 0;
+  }
 }
 
 .site-header nav {
   position: fixed;
-  top: 0;
+  top: var(--nav-inset);
   left: 0;
-  width: 100%;
-  margin: 0;
+  right: 0;
+  width: min(100% - 2 * var(--nav-inset), var(--container) + 2 * var(--gutter));
+  margin: 0 auto;
   z-index: 1000;
   background: var(--glass-bg);
   -webkit-backdrop-filter: var(--glass-blur);
   backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--glass-border);
-  box-shadow: none;
-  transition: background var(--t-med), box-shadow var(--t-med);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-nav);
+  transition: background var(--t-med), border-color var(--t-med), box-shadow var(--t-med),
+              top var(--t-med), width var(--t-med), border-radius var(--t-med);
 }
 
+/* Scrolled: the pill docks to the top edge as a full-width white glass bar */
 .site-header nav.scrolled {
+  top: 0;
+  width: 100%;
   background: var(--glass-bg-strong);
+  border-color: transparent;
+  border-bottom-color: var(--glass-border);
+  border-radius: 0;
   box-shadow: var(--shadow-nav);
 }
 
 /* Logged-in admin bar (JS adds .admin-margin; body.admin-bar covers no-JS) */
 .admin-margin,
 body.admin-bar .site-header nav {
+  top: calc(32px + var(--nav-inset));
+}
+
+body.admin-bar .site-header nav.scrolled {
   top: 32px;
 }
 
 @media (max-width: 782px) {
   .admin-margin,
   body.admin-bar .site-header nav {
+    top: calc(46px + var(--nav-inset));
+  }
+
+  body.admin-bar .site-header nav.scrolled {
     top: 46px;
   }
 
@@ -897,7 +925,7 @@ body.admin-bar .site-header nav {
   max-width: 200px;
   max-height: 44px;
   height: auto;
-  transition: none;
+  transition: filter var(--t-med);
 }
 
 /* Round glass buttons: hamburger + drawer close */
@@ -973,10 +1001,16 @@ body.admin-bar .site-header nav {
   }
 }
 
-/* ---- Drawer (below 1000px): full-screen glass sheet ---------------------- */
+/* ---- Drawer (below 1000px): full-screen glass sheet ----------------------
+   The nav's backdrop-filter makes it the containing block for this fixed
+   sheet, so the offsets below undo the pill's inset and centre a 100vw
+   sheet on the (already centred) pill. */
 .menu-container {
   position: fixed;
-  inset: 0;
+  top: calc(-1 * var(--nav-inset));
+  left: 50%;
+  width: 100vw;
+  margin-left: -50vw;
   z-index: 1001;
   display: flex;
   flex-direction: column;
@@ -1067,7 +1101,7 @@ html.menu-open body {
   padding: 13px 0;
   font-family: var(--font-body);
   font-size: 17px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0;
   line-height: 1.3;
   color: var(--heading);
@@ -1142,6 +1176,10 @@ html.menu-open body {
   .menu-container {
     order: 1;
     position: static;
+    top: auto;
+    left: auto;
+    width: auto;
+    margin-left: 0;
     z-index: auto;
     flex: 0 1 auto;
     flex-direction: row;
@@ -1186,7 +1224,7 @@ html.menu-open body {
     padding: 8px 11px;
     font-family: var(--font-body);
     font-size: 14.5px;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0;
     color: var(--nav-link);
     border-radius: 999px;
@@ -1286,10 +1324,105 @@ html.menu-open body {
   }
 }
 
+/* ---- Frosted over a hero (body.has-hero) --------------------------------
+   functions.php adds .has-hero when the page opens with a full-width Cover
+   (photo/video) or the featured-image hero template, and .is-under-nav to
+   that Cover. The pill starts as dark frosted glass over the hero (same
+   recipe as the Glass block style) — white links, white logo, white-outline
+   hamburger — and becomes white glass on scroll (.scrolled). The hero pads
+   itself by the bar's offset so nothing hides under it. */
+:root {
+  --hero-pad: var(--nav-offset);
+}
+
+body:has(.alert-bar) {
+  --hero-pad: calc(var(--nav-offset) + 36px);
+}
+
+.has-hero .site-content,
+body.has-hero:has(.alert-bar) .site-content {
+  margin-top: 0;
+}
+
+.has-hero .wp-block-cover.is-under-nav {
+  padding-top: var(--hero-pad);
+}
+
+/* Soft scrim behind the clear bar so links stay legible on bright photos */
+.has-hero .wp-block-cover.is-under-nav::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  height: calc(var(--hero-pad) + 72px);
+  background: linear-gradient(to bottom, rgba(7, 11, 2, 0.42), rgba(7, 11, 2, 0));
+  pointer-events: none;
+}
+
+.has-hero .wp-block-cover.is-under-nav.is-style-hero,
+.has-hero .page-title .page-header {
+  padding-top: calc(var(--hero-pad) + var(--section-y));
+}
+
+.has-hero .site-header nav:not(.scrolled) {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.04) 45%, rgba(255, 255, 255, 0) 100%),
+    rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: saturate(160%) blur(24px);
+  backdrop-filter: saturate(160%) blur(24px);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 8px 32px rgba(7, 11, 2, 0.18);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .has-hero .site-header nav:not(.scrolled) {
+    background: rgba(7, 11, 2, 0.72);
+  }
+}
+
+.has-hero .site-header nav:not(.scrolled) #nav-logo .custom-logo {
+  filter: brightness(0) invert(1);
+}
+
+.has-hero .site-header nav:not(.scrolled) #nav-toggle .nav-toggle {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.36);
+}
+
+.has-hero .site-header nav:not(.scrolled) #nav-toggle .nav-toggle:hover {
+  background: rgba(255, 255, 255, 0.26);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+@media (min-width: 1000px) {
+  .has-hero .site-header nav:not(.scrolled) .menu > li > a {
+    color: rgba(255, 255, 255, 0.86);
+  }
+
+  .has-hero .site-header nav:not(.scrolled) .menu > li > a:hover,
+  .has-hero .site-header nav:not(.scrolled) .menu > li:hover > a,
+  .has-hero .site-header nav:not(.scrolled) .menu > li.is-open > a,
+  .has-hero .site-header nav:not(.scrolled) .menu > li.current-menu-item > a,
+  .has-hero .site-header nav:not(.scrolled) .menu > li.current-menu-ancestor > a {
+    color: #fff;
+  }
+
+  .has-hero .site-header nav:not(.scrolled) .menu > li > a:hover,
+  .has-hero .site-header nav:not(.scrolled) .menu > li:hover > a,
+  .has-hero .site-header nav:not(.scrolled) .menu > li.is-open > a {
+    background: rgba(255, 255, 255, 0.14);
+  }
+}
+
 /* Alert bar (Customizer) — sits under the fixed nav */
 .alert-bar {
   position: fixed;
-  top: var(--nav-height);
+  top: var(--nav-offset);
   left: 0;
   width: 100%;
   z-index: 999;
@@ -1299,7 +1432,7 @@ html.menu-open body {
 }
 
 body.admin-bar .alert-bar {
-  top: calc(var(--nav-height) + 32px);
+  top: calc(var(--nav-offset) + 32px);
 }
 
 .alert-bar a {
@@ -1503,6 +1636,7 @@ a.card:hover,
 .has-dark-background-color,
 .has-ink-background-color,
 .wp-block-cover:not(.is-light),
+.is-style-glass,
 .page-title {
   --text: #fff;
   --text-soft: rgba(255, 255, 255, 0.85);
@@ -1548,6 +1682,67 @@ a.card:hover,
   --carousel-fade: var(--dark);
   background: var(--dark);
   border-color: var(--dark);
+}
+
+/* ---- Glass (Group / Row / Stack / Column style) -------------------------
+   Frosted surface for sitting over a photo or video (Figma "Glass": frost
+   100, light from -45deg at 80%). Strong blur + a faint white fill + a
+   hairline edge, with a soft top-left highlight standing in for the light.
+   It joins the dark-context list above, so text, links, icons and hairlines
+   inside go white without extra classes. Drop anything on top: logos,
+   ratings, buttons. Browsers without backdrop-filter get a solid dark tint. */
+.is-style-glass {
+  --frost-fill: rgba(255, 255, 255, 0.12);
+  --frost-edge: rgba(255, 255, 255, 0.30);
+  --frost-blur: saturate(160%) blur(24px);
+  position: relative;
+  isolation: isolate;
+  padding: var(--space-4) var(--space-5);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.20) 0%, rgba(255, 255, 255, 0.05) 45%, rgba(255, 255, 255, 0) 100%),
+    var(--frost-fill);
+  -webkit-backdrop-filter: var(--frost-blur);
+  backdrop-filter: var(--frost-blur);
+  border: 1px solid var(--frost-edge);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 1px 0 0 rgba(255, 255, 255, 0.16),
+    0 8px 32px rgba(7, 11, 2, 0.18);
+  color: #fff;
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .is-style-glass {
+    --frost-fill: rgba(7, 11, 2, 0.72);
+  }
+}
+
+/* Inside a hero the glass hugs its content instead of spanning the column */
+.wp-block-cover .is-style-glass {
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* Row/Stack content: images and text sit tight, no card margins */
+.is-style-glass.is-layout-flex > .wp-block-image,
+.is-style-glass.is-layout-flex > p,
+.is-style-glass.is-layout-flex > .wp-block-group > .wp-block-image,
+.is-style-glass.is-layout-flex > .wp-block-group > p {
+  margin: 0;
+}
+
+.is-style-glass img {
+  display: block;
+}
+
+/* A Separator inside a glass Row becomes a vertical hairline between items */
+.is-style-glass.is-layout-flex:not(.is-vertical) > .wp-block-separator {
+  width: 1px;
+  align-self: stretch;
+  margin: 0;
+  border-top: 0;
+  border-left: 1px solid var(--frost-edge);
 }
 
 /* Primary button on an olive panel becomes white so it still reads as the CTA */
@@ -2187,23 +2382,11 @@ details > *:last-child {
   display: none;
 }
 
-/* Fade on the right edge while more cards are hidden. Set --carousel-fade on
-   the parent (dark panels do this automatically). */
-.wp-block-columns.is-style-carousel::after {
-  content: "";
-  position: sticky;
-  right: 0;
-  flex: 0 0 72px;
-  align-self: stretch;
-  background: linear-gradient(to right, transparent, var(--carousel-fade, var(--bg)) 80%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity var(--t-med);
-}
-
-.wp-block-columns.is-style-carousel.has-more::after {
-  opacity: 1;
-}
+/* No edge fade. The old sticky ::after was a 72px flex item inside the
+   scroller, so it added itself (plus a gap) to the scrollable width and the
+   row always had "more" to scroll past the last card. The progress bar and
+   arrows are the "more" cue; main.js still toggles .has-more if a theme
+   ever wants a cue that lives outside the scroll box. */
 
 .wp-block-columns.is-style-carousel > .wp-block-column {
   flex: 0 0 var(--carousel-card) !important;
@@ -2225,34 +2408,6 @@ details > *:last-child {
   justify-content: center;
   min-height: 44px;
   margin-top: var(--space-4);
-}
-
-.carousel-dots {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.carousel-dot {
-  width: 6px;
-  height: 6px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: var(--dot, var(--border));
-  flex-shrink: 0;
-  cursor: pointer;
-  transition: background var(--t-fast), transform var(--t-fast);
-}
-
-.carousel-dot:hover {
-  background: var(--dot-hover, var(--olive-pale));
-}
-
-.carousel-dot.is-active {
-  width: 8px;
-  height: 8px;
-  background: var(--dot-active, var(--accent));
 }
 
 .carousel-arrows {
@@ -2376,13 +2531,7 @@ details > *:last-child {
   border-radius: 0;
 }
 
-/* No edge fade: the row ends on a whole card and the progress bar + arrows
-   are the "more" cue (the fade washed out the photo cards). */
-.wp-block-columns.is-style-carousel.reviews-gallery::after {
-  display: none;
-}
-
-/* Progress bar (main.js builds this instead of dots for .reviews-gallery):
+/* Progress bar (main.js builds this for every carousel):
    the thumb is as wide as the visible share of the track, so it is honest
    about how much is left. Click anywhere on the bar to jump. */
 .carousel-progress {
@@ -2425,6 +2574,95 @@ details > *:last-child {
   /* Swiping is the natural control on touch — no arrows on small screens */
   .carousel-arrows {
     display: none;
+  }
+}
+
+/* ---- Conditions cards (Card carousel + .conditions) ----------------------
+   Figma "Conditions We Treat": compact photo tiles, bottom shade, label with
+   arrow. Each Column ("Photo" style) holds a Cover + link-icon paragraph;
+   the link stretches over the whole tile. Three per view, 6+ scroll. */
+.wp-block-columns.is-style-carousel.conditions {
+  --carousel-gap: var(--grid-gap);
+  --carousel-card: calc((100% - 2 * var(--carousel-gap)) / 3);
+}
+
+.conditions > .wp-block-column.is-style-photo {
+  position: relative;
+  display: block;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.conditions .wp-block-cover {
+  align-items: flex-end;
+  justify-content: flex-start;
+  min-height: 200px;
+  padding: var(--space-5);
+  margin: 0;
+}
+
+.conditions .wp-block-cover__image-background {
+  transition: transform 0.6s var(--ease);
+}
+
+.conditions > .wp-block-column:hover .wp-block-cover__image-background {
+  transform: scale(1.04);
+}
+
+.conditions .wp-block-cover__inner-container {
+  text-align: left;
+}
+
+.conditions .wp-block-cover .is-style-link-icon {
+  margin: 0;
+}
+
+.conditions .wp-block-cover .is-style-link-icon a {
+  gap: 8px;
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-heading);
+  line-height: 1.3;
+  color: #fff;
+}
+
+.conditions .wp-block-cover .is-style-link-icon a::after {
+  width: 18px;
+  height: 18px;
+  -webkit-mask-size: 18px;
+  mask-size: 18px;
+}
+
+/* The whole tile is the link */
+.conditions .wp-block-cover .is-style-link-icon a::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+
+.conditions .wp-block-cover .is-style-link-icon a:hover {
+  color: #fff;
+}
+
+.conditions > .wp-block-column:hover .is-style-link-icon a::after {
+  transform: translateX(3px);
+}
+
+@media (max-width: 1024px) {
+  .wp-block-columns.is-style-carousel.conditions {
+    --carousel-card: calc((100% - var(--carousel-gap)) / 2);
+  }
+}
+
+@media (max-width: 782px) {
+  .wp-block-columns.is-style-carousel.conditions {
+    --carousel-card: min(280px, 74vw);
+  }
+
+  .conditions .wp-block-cover {
+    min-height: 170px;
+    padding: var(--space-4);
   }
 }
 
@@ -2856,25 +3094,31 @@ details > *:last-child {
 
 /* ==========================================================================
    11. FOOTER   (Figma: footer-section — brand + three link columns,
-   regulated-standards row, legal line). Olive-tint band; swap --footer-bg
-   for --warm-grey / --olive-dark if the tint ever clashes with the page above.
+   regulated-standards row, legal line). Figma uses the near-black --dark;
+   we sit one step lighter on --olive-dark. Change --footer-bg to move it.
    ========================================================================== */
 
 .site-footer {
-  --footer-bg: var(--olive-light);
-  --border: rgba(28, 41, 13, 0.10);
-  padding: var(--space-9) 0 var(--space-8);
+  --footer-bg: var(--warm-neutral);
+  --text: var(--dark);
+  --text-soft: rgba(28, 41, 13, 0.80);
+  --text-muted: rgba(28, 41, 13, 0.60);
+  --heading: var(--ink);
+  --link: rgba(28, 41, 13, 0.78);
+  --link-hover: var(--olive);
+  --border: var(--light-grey);
+  padding: var(--space-8) 0 var(--space-7);
   background: var(--footer-bg);
   border-top: 1px solid var(--border);
   color: var(--text-soft);
 }
 
 .site-footer a {
-  color: var(--text-soft);
+  color: var(--link);
 }
 
 .site-footer a:hover {
-  color: var(--link);
+  color: var(--link-hover);
 }
 
 .site-footer p {
@@ -2884,9 +3128,9 @@ details > *:last-child {
 /* Brand + link columns */
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 0.9fr;
+  grid-template-columns: 1.6fr 1fr 1fr 0.9fr;
   gap: var(--space-7) var(--space-6);
-  padding-bottom: var(--space-8);
+  padding-bottom: var(--space-7);
   border-bottom: 1px solid var(--border);
 }
 
@@ -2897,8 +3141,8 @@ details > *:last-child {
 }
 
 .footer-brand__logo .custom-logo {
-  max-width: 150px;
-  max-height: 48px;
+  max-width: 140px;
+  max-height: 40px;
   width: auto;
   height: auto;
 }
@@ -2912,26 +3156,27 @@ details > *:last-child {
 }
 
 .footer-tagline {
-  max-width: 320px;
+  max-width: 300px;
   margin: 0;
-  font-size: var(--fs-small);
+  font-size: var(--fs-caption-lg);
   line-height: 1.6;
+  color: var(--text-muted);
 }
 
+/* Column titles: small, 600, sentence case (Jack: the 24px Figma size read too heavy on the light footer) */
 .footer-heading {
   margin: 0 0 var(--space-4);
   font-family: var(--font-body);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  line-height: 1.3;
   color: var(--heading);
 }
 
 .footer-menu {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -2940,13 +3185,18 @@ details > *:last-child {
 .footer-menu li {
   margin: 0;
   padding: 0;
-  font-size: 15px;
-  line-height: 1.4;
+  font-size: 14px;
+  line-height: 1.45;
 }
 
 .footer-menu li a {
   display: inline-block;
   font-weight: 400;
+  color: var(--text-soft);
+}
+
+.footer-menu li a:hover {
+  color: var(--olive);
 }
 
 .footer-menu li.current-menu-item > a {
@@ -2965,13 +3215,14 @@ details > *:last-child {
 }
 
 /* Regulated standards row */
+/* Accreditation row: rating + governing-body marks as a single quiet line */
 .footer-standards {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-5);
-  padding: var(--space-7) 0;
+  gap: var(--space-5) var(--space-7);
+  padding: var(--space-6) 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -2980,12 +3231,10 @@ details > *:last-child {
 }
 
 .footer-standards__title {
-  font-size: var(--fs-small);
+  font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   color: var(--heading);
-  margin-bottom: 4px !important;
+  margin-bottom: 2px !important;
 }
 
 .footer-standards__sub {
@@ -2994,50 +3243,70 @@ details > *:last-child {
   color: var(--text-muted);
 }
 
-.footer-badges {
+.footer-accreditation {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
-}
-
-.footer-badge {
-  display: inline-flex;
   align-items: center;
-  gap: var(--space-3);
-  padding: 12px 18px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  gap: var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.footer-badge:hover {
-  border-color: rgba(79, 127, 12, 0.35);
-  box-shadow: var(--shadow-card);
-  color: var(--text);
+.footer-accreditation li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
 }
 
-.footer-badge svg {
-  flex-shrink: 0;
-  width: 22px;
+.footer-accreditation li + li {
+  padding-left: var(--space-5);
+  border-left: 1px solid var(--border);
+}
+
+.footer-accreditation a {
+  display: flex;
+  align-items: center;
+  line-height: 0;
+  opacity: 0.85;
+  transition: opacity var(--t-fast);
+}
+
+.footer-accreditation a:hover {
+  opacity: 1;
+}
+
+.footer-accreditation img {
+  display: block;
+  width: auto;
+  height: 28px;
+}
+
+.footer-accreditation .footer-accreditation__stars {
+  height: 18px;
+}
+
+.footer-accreditation .footer-accreditation__g {
   height: 22px;
-  color: var(--accent);
 }
 
-.footer-badge span {
+.footer-accreditation span {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
+  white-space: nowrap;
 }
 
-.footer-badge strong {
-  font-size: var(--fs-caption-lg);
-  font-weight: 700;
+.footer-accreditation strong {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--heading);
 }
 
-.footer-badge small {
-  font-size: 11px;
+.footer-accreditation small {
+  font-size: 12px;
   color: var(--text-muted);
 }
 
@@ -3047,7 +3316,7 @@ details > *:last-child {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: var(--space-4) var(--space-7);
-  padding-top: var(--space-7);
+  padding-top: var(--space-6);
   font-size: var(--fs-caption-lg);
   line-height: 1.5;
   color: var(--text-muted);
@@ -3069,7 +3338,7 @@ details > *:last-child {
 }
 
 .footer-bottom .footer-address a:hover {
-  color: var(--link);
+  color: var(--olive);
 }
 
 @media (max-width: 1024px) {
@@ -3106,11 +3375,15 @@ details > *:last-child {
   }
 
   .footer-standards {
-    padding: var(--space-6) 0;
+    padding: var(--space-5) 0;
   }
 
-  .footer-badge {
-    width: 100%;
+  .footer-accreditation {
+    gap: var(--space-4);
+  }
+
+  .footer-accreditation li + li {
+    padding-left: var(--space-4);
   }
 
   .footer-bottom,

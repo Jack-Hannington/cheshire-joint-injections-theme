@@ -340,3 +340,61 @@ add_action('init', 'create_offers_cpt');
 
 
 
+
+
+/**
+ * Transparent header over a hero.
+ * When a page opens with a full-width Cover (photo or video, not the "light"
+ * variant) or uses the featured-image hero template, <body> gets .has-hero:
+ * the fixed nav starts clear over the hero and turns back into glass once
+ * the page scrolls (main.js adds .scrolled). The first Cover gets
+ * .is-under-nav so style.css can pad it by the nav height.
+ */
+function cji_page_has_hero() {
+    static $has = null;
+    if ( null !== $has ) {
+        return $has;
+    }
+    $has = false;
+    if ( ! is_singular() ) {
+        return $has;
+    }
+    $post = get_queried_object();
+    if ( ! $post instanceof WP_Post ) {
+        return $has;
+    }
+    if ( 'full-width-hero.php' === get_page_template_slug( $post ) && has_post_thumbnail( $post ) ) {
+        $has = true;
+        return $has;
+    }
+    foreach ( parse_blocks( $post->post_content ) as $block ) {
+        if ( empty( $block['blockName'] ) ) {
+            if ( '' === trim( $block['innerHTML'] ) ) {
+                continue; // whitespace between blocks
+            }
+            break;        // classic/freeform content first: no hero
+        }
+        $attrs = $block['attrs'];
+        $has   = 'core/cover' === $block['blockName']
+            && 'full' === ( $attrs['align'] ?? '' )
+            && false !== ( $attrs['isDark'] ?? true );
+        break;
+    }
+    return $has;
+}
+
+add_filter( 'body_class', function ( $classes ) {
+    if ( cji_page_has_hero() ) {
+        $classes[] = 'has-hero';
+    }
+    return $classes;
+} );
+
+add_filter( 'render_block_core/cover', function ( $html, $block ) {
+    static $done = false;
+    if ( $done || is_admin() || ! cji_page_has_hero() || 'full' !== ( $block['attrs']['align'] ?? '' ) ) {
+        return $html;
+    }
+    $done = true;
+    return preg_replace( '/\bclass="wp-block-cover\b/', 'class="wp-block-cover is-under-nav', $html, 1 );
+}, 10, 2 );

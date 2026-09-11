@@ -13,10 +13,10 @@ white / warm-neutral canvas, olive accents, Manrope headings, Inter body.
 | `inc/blocks.php` | Block styles (the Styles panel in the block sidebar) and the pattern category. |
 | `patterns/` | Block patterns, auto-registered. One file per Figma section. |
 | `functions.php` | Setup, assets, Customizer (alert bar, footer tagline, social), offers CPT. |
-| `header.php` / `footer.php` | Glass nav with mobile drawer; olive-tint footer — brand + tagline, three menu columns (small uppercase headings), HCPC/CSP badges, legal line. Change `--footer-bg` in section 11 of `style.css` to recolour it. |
-| `assets/js/main.js` | Nav shadow on scroll + card carousel (vanilla). |
+| `header.php` / `footer.php` | Floating glass nav pill with mobile drawer (over a hero — any page that opens with a Full-width Cover, or the featured-image hero template, gets `body.has-hero` — it is dark frosted glass with white links; once scrolled it docks to the top edge full-width as white glass); warm-white footer — logo + tagline, three menu columns (15px/600 sentence-case titles), an accreditation line (Google 4.9, five stars, CSP and HCPC marks from `assets/img/accreditation/`), legal line. Change `--footer-bg` in section 11 of `style.css` to recolour it. |
+| `assets/js/main.js` | Nav `.scrolled` toggle + card carousel with a proportional progress bar (vanilla). |
 | `assets/js/functions.js` | Mobile drawer, sub-menus, AOS, gallery lightbox (older, jQuery-era). |
-| `assets/img/` | Placeholder photos exported from Figma and the contact icons. |
+| `assets/img/`, `assets/video/` | Photos (team portraits, conditions, accreditation marks), the contact icons, and the hero/b-roll clips compressed to 1080p + 720p H.264 with poster frames (originals are 4K in the client's `cji_media` folder). |
 | `page.php` / `page-no-title.php` / `blank-page.php` | Page templates. Content sits in a 1280px container; Full-width blocks break out to the viewport edge. No "Latest articles" strip any more — the content ends at the footer. |
 | `services.php` | Content beside a sticky 340px sidebar built from the *Sidebar offers* posts. An offer that is a heading plus link paragraphs renders as hairline rows with chevrons (typed `->` arrows are stripped); the `leaf-bg` card becomes an olive-tint panel. |
 | `full-width-hero.php` | Featured image as a full-bleed hero (uses `.page-title`). |
@@ -55,12 +55,12 @@ full-bleed band with section padding. Dark panels re-point the colour tokens, so
 links, hairlines and buttons inside them adapt automatically — no text colour to set.
 
 **Patterns** (inserter → Patterns → *Cheshire Joint Injections*):
-Hero · Section intro · Services bento grid · Treatment cards (3-up) · Reviews carousel ·
+Hero · Section intro · Services bento grid · Conditions we treat (scrollable photo tiles linking to condition pages) · Treatment cards (3-up) · Reviews carousel ·
 Reviews gallery (quote cards mixed with photo cards) · Team about · Team profile cards · CTA band · Contact section · FAQ accordion.
 Each is plain core blocks, so text and images are edited inline and nothing drifts from `style.css`.
 
 Handy extra classes for "Additional CSS class(es)": `section`, `section-header`, `max-680` (and
-450/560/650/750), `bento` / `bento--tall` on Columns, `reviews-gallery` on a Card-carousel Columns (4-up, `testimonial-quote` paragraph, Column style "Photo (fills card)" for image cards), `panel-visual` on the last Image in a bento
+450/560/650/750), `bento` / `bento--tall` on Columns, `reviews-gallery` on a Card-carousel Columns (4-up, `testimonial-quote` paragraph, Column style "Photo (fills card)" for image cards), `conditions` on a Card-carousel Columns (3-up photo tiles: each Column is "Photo (fills card)" holding a Cover with the *Dark shade (bottom)* gradient and a "Link with arrow" paragraph; the link covers the whole tile), `panel-visual` on the last Image in a bento
 card (give that Image the "Fade into panel" style for a taller photo that fades up into the panel colour), `contact-detail`, `contact-section`, `team-about`, `is-dark`.
 
 ## Colour tokens

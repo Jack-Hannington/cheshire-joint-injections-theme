@@ -13,6 +13,7 @@ function cji_block_styles() {
 		'panel-olive'      => 'Panel (olive)',
 		'panel-olive-dark' => 'Panel (olive dark)',
 		'panel-dark'       => 'Panel (dark)',
+		'glass'            => 'Glass (frosted)',
 	);
 
 	$styles = array(

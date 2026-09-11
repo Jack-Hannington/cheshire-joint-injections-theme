@@ -57,16 +57,23 @@
 				<p class="footer-standards__title">Regulated clinical standards</p>
 				<p class="footer-standards__sub">Our practitioners are certified by the UK's leading healthcare governing bodies.</p>
 			</div>
-			<div class="footer-badges">
-				<a class="footer-badge" href="https://www.hcpc-uk.org/check-the-register/" target="_blank" rel="noopener">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/><path d="M9 12l2 2 4-4"/></svg>
-					<span><strong>hcpc registered</strong><small>Health &amp; Care Professions Council</small></span>
-				</a>
-				<a class="footer-badge" href="https://www.csp.org.uk/" target="_blank" rel="noopener">
-					<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6M15 9l-6 6"/></svg>
-					<span><strong>The Chartered Society</strong><small>of Physiotherapy Member</small></span>
-				</a>
-			</div>
+			<?php $acc = get_template_directory_uri() . '/assets/img/accreditation/'; ?>
+			<ul class="footer-accreditation" aria-label="Ratings and accreditations">
+				<li>
+					<img class="footer-accreditation__g" src="<?php echo esc_url( $acc . 'google-g.png' ); ?>" alt="" loading="lazy" decoding="async">
+					<span><strong>4.9 / 5</strong><small>Google reviews</small></span>
+				</li>
+				<li>
+					<img class="footer-accreditation__stars" src="<?php echo esc_url( $acc . 'stars.png' ); ?>" alt="Five stars" loading="lazy" decoding="async">
+					<span><strong>Rated excellent</strong><small>by our patients</small></span>
+				</li>
+				<li>
+					<a href="https://www.csp.org.uk/" target="_blank" rel="noopener"><img src="<?php echo esc_url( $acc . 'csp.png' ); ?>" alt="Chartered Society of Physiotherapy member" loading="lazy" decoding="async"></a>
+				</li>
+				<li>
+					<a href="https://www.hcpc-uk.org/check-the-register/" target="_blank" rel="noopener"><img src="<?php echo esc_url( $acc . 'hcpc.png' ); ?>" alt="Health and Care Professions Council registered" loading="lazy" decoding="async"></a>
+				</li>
+			</ul>
 		</div>
 
 		<div class="footer-bottom">

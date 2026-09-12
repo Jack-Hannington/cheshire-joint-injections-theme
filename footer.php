@@ -1,3 +1,4 @@
+<?php get_template_part( 'template-parts/contact', 'section' ); ?>
 </div><!-- #content.site-content -->
 
 <footer id="colophon" class="site-footer">

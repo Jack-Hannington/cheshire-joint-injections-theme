@@ -2,6 +2,7 @@
  * Cheshire Joint Injections — front-end behaviour (vanilla).
  *  - nav shadow once the page has scrolled
  *  - card carousel (Columns block with the "Card carousel" style)
+ *  - "Read more" toggle for clamped Groups (Group style "Read more")
  * The drawer/menu toggling still lives in functions.js.
  */
 (function () {
@@ -100,5 +101,25 @@
       if (e.key === 'ArrowLeft') { e.preventDefault(); scrollToCard(track, cards, activeIndex(track, cards) - 1); }
     });
     update();
+  });
+
+  /* Read more (Group block style "Read more"): clamp is CSS; add the toggle
+     only when the text really overflows, so short copy is left alone. */
+  document.querySelectorAll('.is-style-read-more').forEach(function (box, n) {
+    if (box.scrollHeight <= box.clientHeight + 4) return;
+    box.classList.add('is-clamped');
+    if (!box.id) box.id = 'read-more-' + (n + 1);
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'read-more-toggle';
+    btn.textContent = 'Read more';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', box.id);
+    btn.addEventListener('click', function () {
+      var open = box.classList.toggle('is-open');
+      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+      btn.textContent = open ? 'Read less' : 'Read more';
+    });
+    box.insertAdjacentElement('afterend', btn);
   });
 })();

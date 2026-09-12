@@ -17,7 +17,10 @@ function cji_block_styles() {
 	);
 
 	$styles = array(
-		'core/group'      => $panels + array( 'narrow' => 'Narrow (reading width)' ),
+		'core/group'      => $panels + array(
+			'narrow'    => 'Narrow (reading width)',
+			'read-more' => 'Read more (clamped)',
+		),
 		'core/column'     => $panels + array( 'photo' => 'Photo (fills card)' ),
 		'core/columns'    => array(
 			'cards'    => 'Cards',
@@ -48,6 +51,7 @@ function cji_block_styles() {
 			'photo'      => 'Photo (rounded)',
 			'icon-badge' => 'Icon badge',
 			'panel-fade' => 'Fade into panel',
+			'avatar'     => 'Avatar (round)',
 		),
 		'core/media-text' => array(
 			'profile-card' => 'Profile card',

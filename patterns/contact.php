@@ -4,7 +4,7 @@
  * Slug: cji/contact
  * Categories: cji
  * Viewport Width: 1440
- * Description: Enquiry form card (Tally embed in a Custom HTML block) beside the clinic details: heading, intro, icon rows, and opening hours.
+ * Description: Enquiry form card (Tally embed in a Custom HTML block) beside the clinic details: heading, intro, icon rows, and opening hours. This same file is printed globally above the footer by template-parts/contact-section.php, so editing it here changes every page; only insert it on a page that should not show the global one.
  */
 $icons = get_template_directory_uri() . '/assets/img/icons/';
 ?>
@@ -97,10 +97,6 @@ $icons = get_template_directory_uri() . '/assets/img/icons/';
 <!-- wp:list {"className":"is-style-rows"} -->
 <ul class="wp-block-list is-style-rows"><!-- wp:list-item -->
 <li>Monday – Friday <strong>07:00 – 19:00</strong></li>
-<!-- /wp:list-item -->
-
-<!-- wp:list-item -->
-<li>Saturday appointments <strong>On request</strong></li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->

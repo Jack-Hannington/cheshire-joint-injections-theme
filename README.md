@@ -14,6 +14,7 @@ white / warm-neutral canvas, olive accents, Manrope headings, Inter body.
 | `patterns/` | Block patterns, auto-registered. One file per Figma section. |
 | `functions.php` | Setup, assets, Customizer (alert bar, footer tagline, social), offers CPT. |
 | `header.php` / `footer.php` | Floating glass nav pill with mobile drawer (over a hero — any page that opens with a Full-width Cover, or the featured-image hero template, gets `body.has-hero` — it is dark frosted glass with white links; once scrolled it docks to the top edge full-width as white glass); warm-white footer — logo + tagline, three menu columns (15px/600 sentence-case titles), an accreditation line (Google 4.9, five stars, CSP and HCPC marks from `assets/img/accreditation/`), legal line. Change `--footer-bg` in section 11 of `style.css` to recolour it. |
+| `template-parts/contact-section.php` | The global contact section (form card + clinic details) printed above the footer on every page. Its markup is `patterns/contact.php` rendered through `do_blocks()`, so edit that pattern file to change it site-wide. Skipped automatically on pages that already contain the contact section or a Tally form; `add_filter( 'cji_show_footer_contact', '__return_false' )` hides it elsewhere. |
 | `assets/js/main.js` | Nav `.scrolled` toggle + card carousel with a proportional progress bar (vanilla). |
 | `assets/js/functions.js` | Mobile drawer, sub-menus, AOS, gallery lightbox (older, jQuery-era). |
 | `assets/img/` | Design assets only: placeholder photos exported from Figma, the conditions tiles, the accreditation marks and the contact icons. Site media (hero and b-roll video, team portraits) lives in the media library — `home_page.mp4` is the hero (1080p H.264, 5 MB, poster `hero-poster.jpg`); the 4K masters are in the client's `cji_media` folder. |
@@ -39,13 +40,13 @@ size/spacing presets match the CSS, and `style.css` is loaded into the editor so
 
 | Block | Styles |
 | --- | --- |
-| Group / Column | Card (white) · Panel (olive tint) · Panel (warm grey) · Panel (olive) · Panel (olive dark) · Panel (dark) · Narrow (Group only) |
+| Group / Column | Card (white) · Panel (olive tint) · Panel (warm grey) · Panel (olive) · Panel (olive dark) · Panel (dark) · Narrow (Group only) · Read more (Group only — clamps long copy to ~8 lines with a "Read more" toggle on the front end; the editor shows it all) |
 | Columns | **Cards** — every column becomes a card · **Card carousel** — same, as a horizontal scroller with dots and arrows |
 | Button | default (olive) · Outline · White · Text link |
 | Paragraph | Eyebrow label · Lead · Caption · Link with arrow · Pill badge |
 | Heading | Display (66px hero size) |
 | List | Tick list · Rows (hairlines) |
-| Image | Photo (rounded) · Icon badge |
+| Image | Photo (rounded) · Icon badge · Fade into panel · Avatar (round, 56px) |
 | Media & Text | Profile card |
 | Cover | Hero |
 | Separator | Hairline |
@@ -56,12 +57,12 @@ links, hairlines and buttons inside them adapt automatically — no text colour 
 
 **Patterns** (inserter → Patterns → *Cheshire Joint Injections*):
 Hero · Section intro · Services bento grid · Conditions we treat (scrollable photo tiles linking to condition pages) · Treatment cards (3-up) · Reviews carousel ·
-Reviews gallery (quote cards mixed with photo cards) · Team about · Team profile cards · CTA band · Contact section · FAQ accordion.
+Reviews gallery (quote cards mixed with photo cards) · Review cards (grid of full reviews: avatar row, then the review in a "Read more" Group) · Team about · Team profile cards · CTA band · Contact section · FAQ accordion.
 Each is plain core blocks, so text and images are edited inline and nothing drifts from `style.css`.
 
 Handy extra classes for "Additional CSS class(es)": `section`, `section-header`, `max-680` (and
 450/560/650/750), `bento` / `bento--tall` on Columns, `reviews-gallery` on a Card-carousel Columns (4-up, `testimonial-quote` paragraph, Column style "Photo (fills card)" for image cards), `conditions` on a Card-carousel Columns (3-up photo tiles: each Column is "Photo (fills card)" holding a Cover with the *Dark shade (bottom)* gradient and a "Link with arrow" paragraph; the link covers the whole tile), `panel-visual` on the last Image in a bento
-card (give that Image the "Fade into panel" style for a taller photo that fades up into the panel colour), `contact-detail`, `contact-section`, `team-about`, `is-dark`.
+card (give that Image the "Fade into panel" style for a taller photo that fades up into the panel colour), `reviewer` on a Row (Group, flex) holding an Avatar image and the `testimonial-name` / `testimonial-role` paragraphs, `contact-detail`, `contact-section`, `team-about`, `is-dark`, `faq-layout` on a two-column Columns (left column sticks on desktop; give each topic Heading an HTML anchor and link to it from the list in the left column).
 
 ## Colour tokens
 

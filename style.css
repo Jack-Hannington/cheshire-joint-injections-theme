@@ -38,35 +38,50 @@ Text Domain: cheshire_joint_injections
 
 :root {
   /* Brand palette */
-  --olive: #4F7F0C;          /* Primary/Default — buttons, links, accents */
-  --olive-dark: #264D03;     /* Primary/Dark */
-  --olive-light: #EBF2E5;    /* Primary/Light — tints, icon badges */
-  --olive-pale: #A3C47A;     /* links on dark panels */
-  --warm-neutral: #FAFBF9;   /* Neutral/Background — soft bands, inputs */
-  --warm-grey: #F0EDE8;      /* neutral bento card */
-  --light-grey: #E4EAE2;     /* Neutral/Border */
-  --dark: #1C290D;           /* Surface/Dark + Text/Body */
-  --ink: #111111;            /* Text/Primary — headings */
+  --olive: #4F7F0C;
+  /* Primary/Default — buttons, links, accents */
+  --olive-dark: #264D03;
+  /* Primary/Dark */
+  --olive-light: #EBF2E5;
+  /* Primary/Light — tints, icon badges */
+  --olive-pale: #A3C47A;
+  /* links on dark panels */
+  --warm-neutral: #FAFBF9;
+  /* Neutral/Background — soft bands, inputs */
+  --warm-grey: #F0EDE8;
+  /* neutral bento card */
+  --light-grey: #E4EAE2;
+  /* Neutral/Border */
+  --dark: #1C290D;
+  /* Surface/Dark + Text/Body */
+  --ink: #111111;
+  /* Text/Primary — headings */
   --white: #FFFFFF;
 
   /* Semantic — components read these. Dark panels override them (section 8). */
   --bg: var(--white);
   --bg-soft: var(--warm-neutral);
-  --surface: var(--white);                 /* card background */
-  --text: var(--dark);                     /* labels, names, list items */
-  --text-soft: rgba(28, 41, 13, 0.80);     /* paragraphs (Figma body @ 80%) */
-  --text-muted: rgba(28, 41, 13, 0.60);    /* captions, roles */
+  --surface: var(--white);
+  /* card background */
+  --text: var(--dark);
+  /* labels, names, list items */
+  --text-soft: rgba(15, 24, 5, 0.8);
+  /* paragraphs (Figma body @ 80%) */
+  --text-muted: rgba(28, 41, 13, 0.60);
+  /* captions, roles */
   --heading: var(--ink);
   --accent: var(--olive);
   --accent-hover: #43700A;
-  --accent-contrast: var(--white);         /* text on olive */
+  --accent-contrast: var(--white);
+  /* text on olive */
   --link: var(--olive);
   --link-hover: var(--olive-dark);
   --border: var(--light-grey);
   --border-soft: #F3F3F3;
   --tint: var(--olive-light);
   --field-bg: var(--warm-neutral);
-  --btn-outline: var(--olive);             /* outline button colour */
+  --btn-outline: var(--olive);
+  /* outline button colour */
   --icon-bg: var(--olive-light);
   --focus-ring: 0 0 0 3px rgba(79, 127, 12, 0.28);
 
@@ -76,17 +91,26 @@ Text Domain: cheshire_joint_injections
   --fw-heading: 400;
   --fs-body: 16px;
   --lh-body: 1.6;
-  --fs-display: clamp(40px, 5.2vw, 66px);  /* Heading/Display */
-  --fs-h1: clamp(32px, 3.6vw, 40px);       /* Heading/H1 */
-  --fs-h2: clamp(24px, 2.6vw, 28px);       /* Heading/H2 */
-  --fs-h3: 20px;                           /* Heading/H3 */
+  --fs-display: clamp(40px, 5.2vw, 66px);
+  /* Heading/Display */
+  --fs-h1: clamp(32px, 3.6vw, 40px);
+  /* Heading/H1 */
+  --fs-h2: clamp(24px, 2.6vw, 28px);
+  /* Heading/H2 */
+  --fs-h3: 20px;
+  /* Heading/H3 */
   --fs-h4: 18px;
-  --fs-lead: 18px;                         /* Body/Large */
-  --fs-small: 14px;                        /* Body/Small */
-  --fs-caption: 12px;                      /* Body/Caption */
+  --fs-lead: 18px;
+  /* Body/Large */
+  --fs-small: 14px;
+  /* Body/Small */
+  --fs-caption: 12px;
+  /* Body/Caption */
   --fs-caption-lg: 13px;
-  --fs-label: 14px;                        /* UI/Label */
-  --fs-button: 15px;                       /* UI/Button */
+  --fs-label: 14px;
+  /* UI/Label */
+  --fs-button: 15px;
+  /* UI/Button */
 
   /* Spacing scale (multiples of 4, as used throughout the Figma) */
   --space-1: 4px;
@@ -101,12 +125,16 @@ Text Domain: cheshire_joint_injections
   --space-10: 96px;
 
   /* Layout */
-  --container: 1280px;       /* 1440 frame minus 80px side padding */
-  --content-max: 760px;      /* comfortable reading width */
+  --container: 1280px;
+  /* 1440 frame minus 80px side padding */
+  --content-max: 760px;
+  /* comfortable reading width */
   --gutter: 20px;
   --nav-height: 72px;
-  --section-y: 96px;         /* vertical padding of a section/band */
-  --section-gap: 56px;       /* section header → content */
+  --section-y: 96px;
+  /* vertical padding of a section/band */
+  --section-gap: 56px;
+  /* section header → content */
   --card-pad: 32px;
   --card-pad-sm: 24px;
   --panel-pad: 36px;
@@ -114,10 +142,14 @@ Text Domain: cheshire_joint_injections
 
   /* Radii */
   --radius-xs: 4px;
-  --radius-sm: 6px;          /* buttons, inputs, card images */
-  --radius-md: 12px;         /* small cards, photos */
-  --radius-lg: 16px;         /* cards */
-  --radius-xl: 20px;         /* bento panels */
+  --radius-sm: 6px;
+  /* buttons, inputs, card images */
+  --radius-md: 12px;
+  /* small cards, photos */
+  --radius-lg: 16px;
+  /* cards */
+  --radius-xl: 20px;
+  /* bento panels */
   --radius-pill: 100px;
 
   /* Shadows (Figma: very soft olive-tinted) */
@@ -130,7 +162,8 @@ Text Domain: cheshire_joint_injections
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
   --t-fast: 0.2s var(--ease);
   --t-med: 0.35s var(--ease);
-  --animate-duration: 400ms; /* animate.css (mobile drawer) */
+  --animate-duration: 400ms;
+  /* animate.css (mobile drawer) */
 }
 
 @media (max-width: 1024px) {
@@ -243,12 +276,35 @@ h6,
   text-wrap: balance;
 }
 
-h1, .h1 { font-size: var(--fs-h1); line-height: 1.2; }
-h2, .h2 { font-size: var(--fs-h2); line-height: 1.3; }
-h3, .h3 { font-size: var(--fs-h3); line-height: 1.3; }
-h4 { font-size: var(--fs-h4); }
-h5 { font-size: 16px; }
-h6 { font-size: 14px; }
+h1,
+.h1 {
+  font-size: var(--fs-h1);
+  line-height: 1.2;
+}
+
+h2,
+.h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.3;
+}
+
+h3,
+.h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.3;
+}
+
+h4 {
+  font-size: var(--fs-h4);
+}
+
+h5 {
+  font-size: 16px;
+}
+
+h6 {
+  font-size: 14px;
+}
 
 /* Display size — hero headlines. Heading block style or "Display" font-size preset. */
 .display,
@@ -259,11 +315,16 @@ h6 { font-size: 14px; }
   letter-spacing: -0.015em;
 }
 
-.has-xx-large-font-size { line-height: 1.2; }
-.has-x-large-font-size  { line-height: 1.3; }
+.has-xx-large-font-size {
+  line-height: 1.2;
+}
+
+.has-x-large-font-size {
+  line-height: 1.3;
+}
 
 /* Rhythm: a heading that follows body content gets breathing room above it */
-:where(p, ul, ol, figure, .wp-block-image, .wp-block-buttons, .wp-block-list, .wp-block-group, .wp-block-columns, .wp-block-table) + :where(h2, h3, h4) {
+:where(p, ul, ol, figure, .wp-block-image, .wp-block-buttons, .wp-block-list, .wp-block-group, .wp-block-columns, .wp-block-table)+ :where(h2, h3, h4) {
   margin-top: 1.5em;
 }
 
@@ -298,9 +359,9 @@ small {
 
 /* The heading under an eyebrow hugs it (overrides the heading-after-paragraph
    rhythm above and the Group's flow gap) */
-.eyebrow + :where(h1, h2, h3, h4),
-.is-style-eyebrow + :where(h1, h2, h3, h4),
-.brow-text + :where(h1, h2, h3, h4) {
+.eyebrow+ :where(h1, h2, h3, h4),
+.is-style-eyebrow+ :where(h1, h2, h3, h4),
+.brow-text+ :where(h1, h2, h3, h4) {
   margin-top: 0;
 }
 
@@ -333,11 +394,25 @@ small {
 }
 
 /* Width caps for long copy (use on headings / paragraphs / groups) */
-.max-450 { max-width: 450px; }
-.max-560 { max-width: 560px; }
-.max-650 { max-width: 650px; }
-.max-680 { max-width: 680px; }
-.max-750 { max-width: 750px; }
+.max-450 {
+  max-width: 450px;
+}
+
+.max-560 {
+  max-width: 560px;
+}
+
+.max-650 {
+  max-width: 650px;
+}
+
+.max-680 {
+  max-width: 680px;
+}
+
+.max-750 {
+  max-width: 750px;
+}
 
 /* Lists */
 ul.wp-block-list,
@@ -466,7 +541,8 @@ blockquote,
 .site-content {
   flex: 1 0 auto;
   margin-top: var(--nav-offset);
-  overflow-x: clip;           /* full-width bands use 100vw; clip the scrollbar overshoot */
+  overflow-x: clip;
+  /* full-width bands use 100vw; clip the scrollbar overshoot */
 }
 
 body:has(.alert-bar) .site-content {
@@ -542,13 +618,13 @@ body.admin-bar #page.site {
   margin-bottom: var(--section-gap);
 }
 
-.section-header > h1,
-.section-header > h2,
-.section-header > h3 {
+.section-header>h1,
+.section-header>h2,
+.section-header>h3 {
   margin-bottom: var(--space-3);
 }
 
-.section-header > p {
+.section-header>p {
   max-width: 680px;
   margin-bottom: 0;
 }
@@ -558,8 +634,8 @@ body.admin-bar #page.site {
   text-align: center;
 }
 
-.section-header--center > *,
-.section-header.has-text-align-center > * {
+.section-header--center>*,
+.section-header.has-text-align-center>* {
   margin-left: auto;
   margin-right: auto;
 }
@@ -611,9 +687,20 @@ body.admin-bar #page.site {
 }
 
 /* Bootstrap spacing helpers still used by templates — keep them on our scale */
-.py-5 { padding-top: var(--section-y) !important; padding-bottom: var(--section-y) !important; }
-.py-4 { padding-top: var(--space-7) !important; padding-bottom: var(--space-7) !important; }
-.mt-5 { margin-top: var(--section-y) !important; }
+.py-5 {
+  padding-top: var(--section-y) !important;
+  padding-bottom: var(--section-y) !important;
+}
+
+.py-4 {
+  padding-top: var(--space-7) !important;
+  padding-bottom: var(--space-7) !important;
+}
+
+.mt-5 {
+  margin-top: var(--section-y) !important;
+}
+
 .border-top,
 .border-bottom {
   border-color: var(--border) !important;
@@ -685,7 +772,7 @@ body.admin-bar #page.site {
 
 /* Secondary / outline — core Button "Outline" style, or .btn--outline */
 .btn--outline,
-.wp-block-button.is-style-outline > .wp-block-button__link,
+.wp-block-button.is-style-outline>.wp-block-button__link,
 .wp-block-button .wp-block-button__link.is-style-outline {
   --bs-btn-bg: transparent;
   --bs-btn-color: var(--btn-outline);
@@ -695,7 +782,7 @@ body.admin-bar #page.site {
 }
 
 .btn--outline:hover,
-.wp-block-button.is-style-outline > .wp-block-button__link:hover,
+.wp-block-button.is-style-outline>.wp-block-button__link:hover,
 .wp-block-button .wp-block-button__link.is-style-outline:hover {
   background: var(--btn-outline);
   border-color: var(--btn-outline);
@@ -704,7 +791,7 @@ body.admin-bar #page.site {
 
 /* White — white fill; olive text on light backgrounds, dark text on dark ones */
 .btn--white,
-.wp-block-button.is-style-white > .wp-block-button__link {
+.wp-block-button.is-style-white>.wp-block-button__link {
   --bs-btn-bg: #fff;
   --bs-btn-color: var(--btn-white-text, var(--olive));
   background: #fff;
@@ -713,7 +800,7 @@ body.admin-bar #page.site {
 }
 
 .btn--white:hover,
-.wp-block-button.is-style-white > .wp-block-button__link:hover {
+.wp-block-button.is-style-white>.wp-block-button__link:hover {
   background: var(--olive-light);
   border-color: var(--olive-light);
   color: var(--dark);
@@ -722,7 +809,7 @@ body.admin-bar #page.site {
 
 /* Ghost / text link — no box, olive label */
 .btn--ghost,
-.wp-block-button.is-style-ghost > .wp-block-button__link {
+.wp-block-button.is-style-ghost>.wp-block-button__link {
   --bs-btn-bg: transparent;
   --bs-btn-color: var(--link);
   padding-left: var(--space-4);
@@ -733,7 +820,7 @@ body.admin-bar #page.site {
 }
 
 .btn--ghost:hover,
-.wp-block-button.is-style-ghost > .wp-block-button__link:hover {
+.wp-block-button.is-style-ghost>.wp-block-button__link:hover {
   background: var(--tint);
   border-color: transparent;
   color: var(--link);
@@ -749,7 +836,7 @@ body.admin-bar #page.site {
 }
 
 .btn--block,
-.wp-block-button.w-100 > .wp-block-button__link,
+.wp-block-button.w-100>.wp-block-button__link,
 .wp-block-button__link.w-100 {
   display: flex;
   width: 100%;
@@ -811,11 +898,14 @@ textarea {
    ========================================================================== */
 
 :root {
-  --nav-inset: 12px;                                             /* gap between the pill and the viewport edge */
-  --nav-offset: calc(var(--nav-height) + 2 * var(--nav-inset));  /* space the floating bar takes at the top */
+  --nav-inset: 12px;
+  /* gap between the pill and the viewport edge */
+  --nav-offset: calc(var(--nav-height) + 2 * var(--nav-inset));
+  /* space the floating bar takes at the top */
   --glass-bg: rgba(255, 255, 255, 0.72);
   --glass-bg-strong: rgba(255, 255, 255, 0.9);
-  --drawer-bg: var(--warm-neutral);   /* solid: the page never shows through the open menu */
+  --drawer-bg: var(--warm-neutral);
+  /* solid: the page never shows through the open menu */
   --glass-border: rgba(28, 41, 13, 0.08);
   --glass-blur: saturate(180%) blur(20px);
   --nav-link: rgba(28, 41, 13, 0.78);
@@ -857,7 +947,7 @@ textarea {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-nav);
   transition: background var(--t-med), border-color var(--t-med), box-shadow var(--t-med),
-              top var(--t-med), width var(--t-med), border-radius var(--t-med);
+    top var(--t-med), width var(--t-med), border-radius var(--t-med);
 }
 
 /* Scrolled: the pill docks to the top edge as a full-width white glass bar */
@@ -882,6 +972,7 @@ body.admin-bar .site-header nav.scrolled {
 }
 
 @media (max-width: 782px) {
+
   .admin-margin,
   body.admin-bar .site-header nav {
     top: calc(46px + var(--nav-inset));
@@ -1084,11 +1175,11 @@ html.menu-open body {
   padding: 0;
 }
 
-.menu > li {
+.menu>li {
   border-bottom: 1px solid var(--glass-border);
 }
 
-.menu > li:last-child {
+.menu>li:last-child {
   border-bottom: 0;
 }
 
@@ -1109,8 +1200,8 @@ html.menu-open body {
 }
 
 .menu li a:hover,
-.menu li.current-menu-item > a,
-.menu li.current-menu-ancestor > a {
+.menu li.current-menu-item>a,
+.menu li.current-menu-ancestor>a {
   color: var(--accent);
   opacity: 1;
 }
@@ -1124,7 +1215,7 @@ html.menu-open body {
   transition: transform var(--t-fast);
 }
 
-.menu-item-has-children.is-open > a > .menu-chevron {
+.menu-item-has-children.is-open>a>.menu-chevron {
   transform: rotate(180deg);
 }
 
@@ -1135,15 +1226,15 @@ html.menu-open body {
   transition: max-height 0.35s var(--ease);
 }
 
-.menu-item-has-children.is-open > .sub-menu {
+.menu-item-has-children.is-open>.sub-menu {
   max-height: 1200px;
 }
 
-.sub-menu > li {
+.sub-menu>li {
   border-bottom: 0;
 }
 
-.sub-menu > li:last-child {
+.sub-menu>li:last-child {
   padding-bottom: var(--space-3);
 }
 
@@ -1212,7 +1303,7 @@ html.menu-open body {
     white-space: nowrap;
   }
 
-  .menu > li {
+  .menu>li {
     position: relative;
     border-bottom: 0;
   }
@@ -1230,15 +1321,15 @@ html.menu-open body {
     border-radius: 999px;
   }
 
-  .menu > li > a:hover,
-  .menu > li:hover > a,
-  .menu > li.is-open > a {
+  .menu>li>a:hover,
+  .menu>li:hover>a,
+  .menu>li.is-open>a {
     color: var(--heading);
     background: var(--nav-hover-bg);
   }
 
-  .menu li.current-menu-item > a,
-  .menu li.current-menu-ancestor > a {
+  .menu li.current-menu-item>a,
+  .menu li.current-menu-ancestor>a {
     color: var(--accent);
   }
 
@@ -1249,12 +1340,12 @@ html.menu-open body {
     opacity: 0.6;
   }
 
-  .menu-item-has-children:hover > a > .menu-chevron,
-  .menu-item-has-children.is-open > a > .menu-chevron {
+  .menu-item-has-children:hover>a>.menu-chevron,
+  .menu-item-has-children.is-open>a>.menu-chevron {
     transform: rotate(180deg);
   }
 
-  .menu-item-has-children > .sub-menu {
+  .menu-item-has-children>.sub-menu {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
@@ -1286,16 +1377,16 @@ html.menu-open body {
     height: 10px;
   }
 
-  .menu-item-has-children:hover > .sub-menu,
-  .menu-item-has-children:focus-within > .sub-menu,
-  .menu-item-has-children.is-open > .sub-menu {
+  .menu-item-has-children:hover>.sub-menu,
+  .menu-item-has-children:focus-within>.sub-menu,
+  .menu-item-has-children.is-open>.sub-menu {
     opacity: 1;
     visibility: visible;
     transform: none;
     transition: opacity var(--t-fast), transform var(--t-fast), visibility 0s;
   }
 
-  .sub-menu > li:last-child {
+  .sub-menu>li:last-child {
     padding-bottom: 0;
   }
 
@@ -1400,21 +1491,21 @@ body.has-hero:has(.alert-bar) .site-content {
 }
 
 @media (min-width: 1000px) {
-  .has-hero .site-header nav:not(.scrolled) .menu > li > a {
+  .has-hero .site-header nav:not(.scrolled) .menu>li>a {
     color: rgba(255, 255, 255, 0.86);
   }
 
-  .has-hero .site-header nav:not(.scrolled) .menu > li > a:hover,
-  .has-hero .site-header nav:not(.scrolled) .menu > li:hover > a,
-  .has-hero .site-header nav:not(.scrolled) .menu > li.is-open > a,
-  .has-hero .site-header nav:not(.scrolled) .menu > li.current-menu-item > a,
-  .has-hero .site-header nav:not(.scrolled) .menu > li.current-menu-ancestor > a {
+  .has-hero .site-header nav:not(.scrolled) .menu>li>a:hover,
+  .has-hero .site-header nav:not(.scrolled) .menu>li:hover>a,
+  .has-hero .site-header nav:not(.scrolled) .menu>li.is-open>a,
+  .has-hero .site-header nav:not(.scrolled) .menu>li.current-menu-item>a,
+  .has-hero .site-header nav:not(.scrolled) .menu>li.current-menu-ancestor>a {
     color: #fff;
   }
 
-  .has-hero .site-header nav:not(.scrolled) .menu > li > a:hover,
-  .has-hero .site-header nav:not(.scrolled) .menu > li:hover > a,
-  .has-hero .site-header nav:not(.scrolled) .menu > li.is-open > a {
+  .has-hero .site-header nav:not(.scrolled) .menu>li>a:hover,
+  .has-hero .site-header nav:not(.scrolled) .menu>li:hover>a,
+  .has-hero .site-header nav:not(.scrolled) .menu>li.is-open>a {
     background: rgba(255, 255, 255, 0.14);
   }
 }
@@ -1451,8 +1542,8 @@ body.admin-bar .alert-bar {
 
 .card,
 .is-style-card,
-.wp-block-columns.is-style-cards > .wp-block-column,
-.wp-block-columns.is-style-carousel > .wp-block-column {
+.wp-block-columns.is-style-cards>.wp-block-column,
+.wp-block-columns.is-style-carousel>.wp-block-column {
   --bs-card-bg: var(--surface);
   --bs-card-border-color: var(--border);
   --bs-card-border-radius: var(--radius-lg);
@@ -1486,16 +1577,16 @@ body.admin-bar .alert-bar {
 }
 
 /* Cards that are links lift on hover */
-a > .card,
+a>.card,
 a.card,
 .card:has(> a:only-child) {
   cursor: pointer;
 }
 
-a > .card:hover,
+a>.card:hover,
 a.card:hover,
-.wp-block-columns.is-style-cards > .wp-block-column:hover,
-.wp-block-columns.is-style-carousel > .wp-block-column:hover {
+.wp-block-columns.is-style-cards>.wp-block-column:hover,
+.wp-block-columns.is-style-carousel>.wp-block-column:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-lift);
   border-color: rgba(79, 127, 12, 0.35);
@@ -1514,20 +1605,34 @@ a.card:hover,
 }
 
 /* Card content rhythm (Figma treatment card: 24px gap, 12px between title/text) */
-.card h2, .card h3, .card h4, .card .card-title,
-.panel h2, .panel h3, .panel h4,
-.is-style-card h2, .is-style-card h3, .is-style-card h4,
-.is-style-cards > .wp-block-column h2, .is-style-cards > .wp-block-column h3, .is-style-cards > .wp-block-column h4,
-.is-style-carousel > .wp-block-column h2, .is-style-carousel > .wp-block-column h3, .is-style-carousel > .wp-block-column h4,
-[class*="is-style-panel"] h2, [class*="is-style-panel"] h3, [class*="is-style-panel"] h4 {
+.card h2,
+.card h3,
+.card h4,
+.card .card-title,
+.panel h2,
+.panel h3,
+.panel h4,
+.is-style-card h2,
+.is-style-card h3,
+.is-style-card h4,
+.is-style-cards>.wp-block-column h2,
+.is-style-cards>.wp-block-column h3,
+.is-style-cards>.wp-block-column h4,
+.is-style-carousel>.wp-block-column h2,
+.is-style-carousel>.wp-block-column h3,
+.is-style-carousel>.wp-block-column h4,
+[class*="is-style-panel"] h2,
+[class*="is-style-panel"] h3,
+[class*="is-style-panel"] h4 {
   margin: 0 0 var(--space-3);
 }
 
-.card p, .card .card-text,
+.card p,
+.card .card-text,
 .panel p,
 .is-style-card p,
-.is-style-cards > .wp-block-column p,
-.is-style-carousel > .wp-block-column p,
+.is-style-cards>.wp-block-column p,
+.is-style-carousel>.wp-block-column p,
 [class*="is-style-panel"] p {
   font-size: var(--fs-small);
   line-height: 1.5;
@@ -1542,37 +1647,37 @@ a.card:hover,
   line-height: 1.6;
 }
 
-.card > *:last-child,
-.panel > *:last-child,
-.is-style-card > *:last-child,
-.is-style-cards > .wp-block-column > *:last-child,
-.is-style-carousel > .wp-block-column > *:last-child,
-[class*="is-style-panel"] > *:last-child {
+.card>*:last-child,
+.panel>*:last-child,
+.is-style-card>*:last-child,
+.is-style-cards>.wp-block-column>*:last-child,
+.is-style-carousel>.wp-block-column>*:last-child,
+[class*="is-style-panel"]>*:last-child {
   margin-bottom: 0;
 }
 
 /* Buttons at the foot of a card sit on the baseline of the card */
-.is-style-cards > .wp-block-column > .wp-block-buttons:last-child,
-.is-style-carousel > .wp-block-column > .wp-block-buttons:last-child,
-.is-style-card > .wp-block-buttons:last-child,
-.is-style-cards > .wp-block-column > .is-style-link-icon:last-child,
-.is-style-carousel > .wp-block-column > .is-style-link-icon:last-child {
+.is-style-cards>.wp-block-column>.wp-block-buttons:last-child,
+.is-style-carousel>.wp-block-column>.wp-block-buttons:last-child,
+.is-style-card>.wp-block-buttons:last-child,
+.is-style-cards>.wp-block-column>.is-style-link-icon:last-child,
+.is-style-carousel>.wp-block-column>.is-style-link-icon:last-child {
   margin-top: auto;
   padding-top: var(--space-2);
 }
 
 /* Images in cards: flush, rounded, fixed ratio */
-.card > .wp-block-image,
-.is-style-card > .wp-block-image,
-.is-style-cards > .wp-block-column > .wp-block-image,
-.is-style-carousel > .wp-block-column > .wp-block-image {
+.card>.wp-block-image,
+.is-style-card>.wp-block-image,
+.is-style-cards>.wp-block-column>.wp-block-image,
+.is-style-carousel>.wp-block-column>.wp-block-image {
   margin: 0 0 var(--space-5);
 }
 
-.card > .wp-block-image img,
-.is-style-card > .wp-block-image img,
-.is-style-cards > .wp-block-column > .wp-block-image img,
-.is-style-carousel > .wp-block-column > .wp-block-image img {
+.card>.wp-block-image img,
+.is-style-card>.wp-block-image img,
+.is-style-cards>.wp-block-column>.wp-block-image img,
+.is-style-carousel>.wp-block-column>.wp-block-image img {
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
@@ -1605,7 +1710,8 @@ a.card:hover,
 .is-style-panel-olive-dark,
 .is-style-panel-dark {
   --bs-card-bg: transparent;
-  --carousel-fade: var(--olive-light);   /* colour a fade/wash matches (see .is-style-panel-fade) */
+  --carousel-fade: var(--olive-light);
+  /* colour a fade/wash matches (see .is-style-panel-fade) */
   display: block;
   min-width: 0;
   padding: var(--panel-pad);
@@ -1725,10 +1831,10 @@ a.card:hover,
 }
 
 /* Row/Stack content: images and text sit tight, no card margins */
-.is-style-glass.is-layout-flex > .wp-block-image,
-.is-style-glass.is-layout-flex > p,
-.is-style-glass.is-layout-flex > .wp-block-group > .wp-block-image,
-.is-style-glass.is-layout-flex > .wp-block-group > p {
+.is-style-glass.is-layout-flex>.wp-block-image,
+.is-style-glass.is-layout-flex>p,
+.is-style-glass.is-layout-flex>.wp-block-group>.wp-block-image,
+.is-style-glass.is-layout-flex>.wp-block-group>p {
   margin: 0;
 }
 
@@ -1737,7 +1843,7 @@ a.card:hover,
 }
 
 /* A Separator inside a glass Row becomes a vertical hairline between items */
-.is-style-glass.is-layout-flex:not(.is-vertical) > .wp-block-separator {
+.is-style-glass.is-layout-flex:not(.is-vertical)>.wp-block-separator {
   width: 1px;
   align-self: stretch;
   margin: 0;
@@ -1746,16 +1852,16 @@ a.card:hover,
 }
 
 /* Primary button on an olive panel becomes white so it still reads as the CTA */
-.is-style-panel-olive .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link,
-.has-olive-background-color .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link,
+.is-style-panel-olive .wp-block-button:not([class*="is-style-"])>.wp-block-button__link,
+.has-olive-background-color .wp-block-button:not([class*="is-style-"])>.wp-block-button__link,
 .panel--olive .btn:not([class*="btn--"]) {
   background: #fff;
   border-color: #fff;
   color: var(--dark);
 }
 
-.is-style-panel-olive .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link:hover,
-.has-olive-background-color .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link:hover {
+.is-style-panel-olive .wp-block-button:not([class*="is-style-"])>.wp-block-button__link:hover,
+.has-olive-background-color .wp-block-button:not([class*="is-style-"])>.wp-block-button__link:hover {
   background: var(--olive-light);
   border-color: var(--olive-light);
 }
@@ -1769,9 +1875,17 @@ a.card:hover,
   --icon-bg: #fff;
 }
 
-.has-warm-neutral-background-color { --carousel-fade: var(--warm-neutral); }
-.has-warm-grey-background-color    { --carousel-fade: var(--warm-grey); }
-.has-light-grey-background-color   { --carousel-fade: var(--light-grey); }
+.has-warm-neutral-background-color {
+  --carousel-fade: var(--warm-neutral);
+}
+
+.has-warm-grey-background-color {
+  --carousel-fade: var(--warm-grey);
+}
+
+.has-light-grey-background-color {
+  --carousel-fade: var(--light-grey);
+}
 
 /* A Full-width panel becomes a band: square corners, section rhythm, gutters */
 .alignfull.panel,
@@ -1788,8 +1902,8 @@ a.card:hover,
    children auto side margins, which a flex column would shrink-wrap.) */
 .wp-block-column[class*="is-style-panel"],
 .wp-block-column.is-style-card,
-.wp-block-columns.is-style-cards > .wp-block-column,
-.wp-block-columns.is-style-carousel > .wp-block-column,
+.wp-block-columns.is-style-cards>.wp-block-column,
+.wp-block-columns.is-style-carousel>.wp-block-column,
 .blog-page-card .card {
   display: flex;
   flex-direction: column;
@@ -1930,8 +2044,8 @@ img.photo {
   text-align: left;
 }
 
-.wp-block-cover.is-style-hero .wp-block-cover__inner-container > *,
-.hero.wp-block-cover .wp-block-cover__inner-container > * {
+.wp-block-cover.is-style-hero .wp-block-cover__inner-container>*,
+.hero.wp-block-cover .wp-block-cover__inner-container>* {
   margin-left: 0 !important;
   margin-right: auto !important;
 }
@@ -1971,13 +2085,14 @@ img.photo {
   margin-top: var(--space-7);
 }
 
-.wp-block-cover.is-style-hero .wp-block-buttons .wp-block-button:not([class*="is-style-"]) + .wp-block-button:not([class*="is-style-"]) > .wp-block-button__link {
+.wp-block-cover.is-style-hero .wp-block-buttons .wp-block-button:not([class*="is-style-"])+.wp-block-button:not([class*="is-style-"])>.wp-block-button__link {
   background: #fff;
   border-color: #fff;
   color: var(--dark);
 }
 
 @media (max-width: 782px) {
+
   .wp-block-cover.is-style-hero,
   .hero.wp-block-cover {
     min-height: 480px;
@@ -1986,21 +2101,21 @@ img.photo {
 
 /* ---- Bento service grid (Columns with .bento) --------------------------
    Column panels with a final Image (.panel-visual) that sits on the foot. */
-.bento > .wp-block-column {
+.bento>.wp-block-column {
   min-height: 380px;
   overflow: hidden;
 }
 
-.bento--tall > .wp-block-column {
+.bento--tall>.wp-block-column {
   min-height: 480px;
 }
 
-.bento > .wp-block-column h3 {
+.bento>.wp-block-column h3 {
   font-size: var(--fs-h3);
 }
 
-.bento--tall > .wp-block-column h3,
-.bento--tall > .wp-block-column h2 {
+.bento--tall>.wp-block-column h3,
+.bento--tall>.wp-block-column h2 {
   font-size: var(--fs-h2);
   line-height: 1.3;
 }
@@ -2023,8 +2138,9 @@ img.photo {
 }
 
 @media (max-width: 782px) {
-  .bento > .wp-block-column,
-  .bento--tall > .wp-block-column {
+
+  .bento>.wp-block-column,
+  .bento--tall>.wp-block-column {
     min-height: 0;
   }
 
@@ -2060,6 +2176,7 @@ img.photo {
 }
 
 @media (max-width: 782px) {
+
   .panel-visual.is-style-panel-fade img,
   .bento--tall .panel-visual.is-style-panel-fade img {
     height: 240px;
@@ -2088,6 +2205,7 @@ img.photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 50% 18%;   /* portrait uploads are 2:3; keep the crop on the face */
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
 }
@@ -2102,7 +2220,7 @@ img.photo {
   margin: 0 0 6px;
 }
 
-.wp-block-media-text.is-style-profile-card .wp-block-media-text__content > p:first-of-type {
+.wp-block-media-text.is-style-profile-card .wp-block-media-text__content>p:first-of-type {
   margin-bottom: var(--space-5);
 }
 
@@ -2204,7 +2322,7 @@ img.photo {
   margin-bottom: var(--space-1);
 }
 
-.contact-detail p + p {
+.contact-detail p+p {
   font-size: var(--fs-body);
 }
 
@@ -2239,8 +2357,9 @@ details[open] {
 }
 
 .wp-block-accordion-heading,
-.wp-block-accordion-item > .wp-block-accordion-heading {
-  margin: 0;   /* outranks the panel-card h3 margin that left a 12px gap under closed titles */
+.wp-block-accordion-item>.wp-block-accordion-heading {
+  margin: 0;
+  /* outranks the panel-card h3 margin that left a 12px gap under closed titles */
   font-size: 17px;
 }
 
@@ -2306,12 +2425,12 @@ details[open] {
   padding: 0;
 }
 
-.wp-block-accordion-panel > *:last-child {
+.wp-block-accordion-panel>*:last-child {
   margin-bottom: 0;
 }
 
 .wp-block-details summary,
-details > summary {
+details>summary {
   position: relative;
   padding: 18px 56px 18px 22px;
   font-family: var(--font-heading);
@@ -2323,12 +2442,12 @@ details > summary {
 }
 
 .wp-block-details summary::-webkit-details-marker,
-details > summary::-webkit-details-marker {
+details>summary::-webkit-details-marker {
   display: none;
 }
 
 .wp-block-details summary::after,
-details > summary::after {
+details>summary::after {
   content: "";
   position: absolute;
   right: 22px;
@@ -2342,22 +2461,22 @@ details > summary::after {
 }
 
 .wp-block-details[open] summary::after,
-details[open] > summary::after {
+details[open]>summary::after {
   transform: translateY(-30%) rotate(225deg);
 }
 
 .wp-block-details summary:hover,
-details > summary:hover {
+details>summary:hover {
   color: var(--accent);
 }
 
-.wp-block-details > *:not(summary),
-details > *:not(summary) {
+.wp-block-details>*:not(summary),
+details>*:not(summary) {
   padding: 0 22px;
 }
 
-.wp-block-details > *:last-child,
-details > *:last-child {
+.wp-block-details>*:last-child,
+details>*:last-child {
   padding-bottom: 20px;
   margin-bottom: 0;
 }
@@ -2388,7 +2507,7 @@ details > *:last-child {
    arrows are the "more" cue; main.js still toggles .has-more if a theme
    ever wants a cue that lives outside the scroll box. */
 
-.wp-block-columns.is-style-carousel > .wp-block-column {
+.wp-block-columns.is-style-carousel>.wp-block-column {
   flex: 0 0 var(--carousel-card) !important;
   width: var(--carousel-card);
   scroll-snap-align: start;
@@ -2475,7 +2594,7 @@ details > *:last-child {
   --carousel-card: calc((100% - 3 * var(--carousel-gap)) / 4);
 }
 
-.reviews-gallery > .wp-block-column {
+.reviews-gallery>.wp-block-column {
   min-height: 425px;
 }
 
@@ -2499,7 +2618,7 @@ details > *:last-child {
   color: var(--olive);
 }
 
-.reviews-gallery > .wp-block-column > .testimonial-name {
+.reviews-gallery>.wp-block-column>.testimonial-name {
   margin-top: auto;
 }
 
@@ -2509,19 +2628,19 @@ details > *:last-child {
 }
 
 /* Photo card: the Image fills the card edge to edge */
-.reviews-gallery > .wp-block-column.is-style-photo {
+.reviews-gallery>.wp-block-column.is-style-photo {
   padding: 0;
   overflow: hidden;
 }
 
-.reviews-gallery > .wp-block-column.is-style-photo > .wp-block-image {
+.reviews-gallery>.wp-block-column.is-style-photo>.wp-block-image {
   position: relative;
   flex: 1 1 auto;
   min-height: 0;
   margin: 0;
 }
 
-.reviews-gallery > .wp-block-column.is-style-photo > .wp-block-image img {
+.reviews-gallery>.wp-block-column.is-style-photo>.wp-block-image img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -2567,7 +2686,7 @@ details > *:last-child {
     --carousel-card: min(300px, 78vw);
   }
 
-  .reviews-gallery > .wp-block-column {
+  .reviews-gallery>.wp-block-column {
     min-height: 380px;
   }
 
@@ -2586,7 +2705,7 @@ details > *:last-child {
   --carousel-card: calc((100% - 2 * var(--carousel-gap)) / 3);
 }
 
-.conditions > .wp-block-column.is-style-photo {
+.conditions>.wp-block-column.is-style-photo {
   position: relative;
   display: block;
   min-height: 0;
@@ -2606,7 +2725,7 @@ details > *:last-child {
   transition: transform 0.6s var(--ease);
 }
 
-.conditions > .wp-block-column:hover .wp-block-cover__image-background {
+.conditions>.wp-block-column:hover .wp-block-cover__image-background {
   transform: scale(1.04);
 }
 
@@ -2645,7 +2764,7 @@ details > *:last-child {
   color: #fff;
 }
 
-.conditions > .wp-block-column:hover .is-style-link-icon a::after {
+.conditions>.wp-block-column:hover .is-style-link-icon a::after {
   transform: translateX(3px);
 }
 
@@ -2697,8 +2816,13 @@ details > *:last-child {
 }
 
 @media (max-width: 700px) {
-  .feature { min-width: 40%; }
-  .feature-count { font-size: 1.8rem; }
+  .feature {
+    min-width: 40%;
+  }
+
+  .feature-count {
+    font-size: 1.8rem;
+  }
 }
 
 /* ---- Lightbox (functions.js) ------------------------------------------- */
@@ -2744,9 +2868,18 @@ details > *:last-child {
   transform: translateY(-50%);
 }
 
-.lightbox .prev { left: 20px; }
-.lightbox .next { right: 20px; }
-.lightbox .dismiss { top: 20px; right: 20px; }
+.lightbox .prev {
+  left: 20px;
+}
+
+.lightbox .next {
+  right: 20px;
+}
+
+.lightbox .dismiss {
+  top: 20px;
+  right: 20px;
+}
 
 .indicator {
   position: absolute;
@@ -2852,7 +2985,7 @@ details > *:last-child {
   margin-top: var(--space-5);
 }
 
-.hero-btn-container .btn + .btn {
+.hero-btn-container .btn+.btn {
   background: #fff;
   border-color: #fff;
   color: var(--dark);
@@ -2900,7 +3033,7 @@ details > *:last-child {
   margin-bottom: var(--grid-gap) !important;
 }
 
-.blog-page-card > a {
+.blog-page-card>a {
   display: block;
   height: 100%;
   color: inherit;
@@ -2982,14 +3115,18 @@ details > *:last-child {
   font-size: var(--fs-small);
 }
 
-.sidebar-offers .offer > .wp-block-group {
-  margin-bottom: 0 !important;      /* legacy mb-2 on the group */
+.sidebar-offers .offer>.wp-block-group {
+  margin-bottom: 0 !important;
+  /* legacy mb-2 on the group */
 }
 
 .sidebar-offers .offer .card {
-  display: block;                   /* editor set a flex layout; block keeps the rows flush */
-  padding: var(--card-pad-sm) !important;   /* legacy p-3 */
-  border-radius: var(--radius-lg) !important; /* legacy .rounded */
+  display: block;
+  /* editor set a flex layout; block keeps the rows flush */
+  padding: var(--card-pad-sm) !important;
+  /* legacy p-3 */
+  border-radius: var(--radius-lg) !important;
+  /* legacy .rounded */
   box-shadow: none;
 }
 
@@ -2997,7 +3134,8 @@ details > *:last-child {
 .sidebar-offers .offer .card h3,
 .sidebar-offers .offer .card h4 {
   margin: 0 0 var(--space-3);
-  font-size: var(--fs-h4) !important;  /* inline 16px in the offer content */
+  font-size: var(--fs-h4) !important;
+  /* inline 16px in the offer content */
   line-height: 1.3;
 }
 
@@ -3011,7 +3149,7 @@ details > *:last-child {
   border-top: 1px solid var(--border-soft);
 }
 
-.sidebar-offers .offer .card p:has(> a:only-child) > a {
+.sidebar-offers .offer .card p:has(> a:only-child)>a {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3024,7 +3162,7 @@ details > *:last-child {
   transition: color var(--t-fast);
 }
 
-.sidebar-offers .offer .card p:has(> a:only-child) > a::after {
+.sidebar-offers .offer .card p:has(> a:only-child)>a::after {
   content: "";
   flex-shrink: 0;
   width: 16px;
@@ -3035,16 +3173,16 @@ details > *:last-child {
   transition: background-color var(--t-fast), transform var(--t-fast);
 }
 
-.sidebar-offers .offer .card p:has(> a:only-child) > a:hover {
+.sidebar-offers .offer .card p:has(> a:only-child)>a:hover {
   color: var(--link);
 }
 
-.sidebar-offers .offer .card p:has(> a:only-child) > a:hover::after {
+.sidebar-offers .offer .card p:has(> a:only-child)>a:hover::after {
   background-color: var(--link);
   transform: translateX(2px);
 }
 
-.sidebar-offers .offer .card p:has(> a:only-child):last-child > a {
+.sidebar-offers .offer .card p:has(> a:only-child):last-child>a {
   padding-bottom: 0;
 }
 
@@ -3062,7 +3200,8 @@ details > *:last-child {
 
 .sidebar-offers .offer .wp-block-button {
   width: 100%;
-  margin-top: 0 !important;         /* legacy mt-2 */
+  margin-top: 0 !important;
+  /* legacy mt-2 */
 }
 
 .sidebar-offers .offer .wp-block-button__link {
@@ -3086,10 +3225,21 @@ details > *:last-child {
 }
 
 @media (max-width: 600px) {
-  .services-summary p { font-size: 13px; }
-  .services-summary img { max-width: 30px; }
-  .services-summary .wp-block-column { min-width: 100px; }
-  .services-summary .wp-block-columns { gap: 0 !important; }
+  .services-summary p {
+    font-size: 13px;
+  }
+
+  .services-summary img {
+    max-width: 30px;
+  }
+
+  .services-summary .wp-block-column {
+    min-width: 100px;
+  }
+
+  .services-summary .wp-block-columns {
+    gap: 0 !important;
+  }
 }
 
 /* ==========================================================================
@@ -3199,7 +3349,7 @@ details > *:last-child {
   color: var(--olive);
 }
 
-.footer-menu li.current-menu-item > a {
+.footer-menu li.current-menu-item>a {
   color: var(--heading);
 }
 
@@ -3261,7 +3411,7 @@ details > *:last-child {
   padding: 0;
 }
 
-.footer-accreditation li + li {
+.footer-accreditation li+li {
   padding-left: var(--space-5);
   border-left: 1px solid var(--border);
 }
@@ -3382,7 +3532,7 @@ details > *:last-child {
     gap: var(--space-4);
   }
 
-  .footer-accreditation li + li {
+  .footer-accreditation li+li {
     padding-left: var(--space-4);
   }
 
@@ -3398,17 +3548,53 @@ details > *:last-child {
    ========================================================================== */
 
 /* Offer colours (sidebar offers) */
-.green  { color: var(--olive); }
-.bronze { color: #B8742A; }
-.silver { color: #8C8C8C; }
-.gold   { color: #C99A2E; }
-.border-bronze { border: 1px solid #B8742A; }
-.border-silver { border: 1px solid #8C8C8C; }
-.border-gold   { border: 1px solid #C99A2E; }
-.background-bronze { background: #B8742A; color: #fff; }
-.background-silver { background: #8C8C8C; color: #fff; }
-.background-gold   { background: #C99A2E; color: #fff; }
-.background-green  { background: var(--olive); color: #fff; }
+.green {
+  color: var(--olive);
+}
+
+.bronze {
+  color: #B8742A;
+}
+
+.silver {
+  color: #8C8C8C;
+}
+
+.gold {
+  color: #C99A2E;
+}
+
+.border-bronze {
+  border: 1px solid #B8742A;
+}
+
+.border-silver {
+  border: 1px solid #8C8C8C;
+}
+
+.border-gold {
+  border: 1px solid #C99A2E;
+}
+
+.background-bronze {
+  background: #B8742A;
+  color: #fff;
+}
+
+.background-silver {
+  background: #8C8C8C;
+  color: #fff;
+}
+
+.background-gold {
+  background: #C99A2E;
+  color: #fff;
+}
+
+.background-green {
+  background: var(--olive);
+  color: #fff;
+}
 
 /* Leaf watermark backgrounds */
 .leaf-bg,
@@ -3423,7 +3609,9 @@ details > *:last-child {
 }
 
 @media (max-width: 650px) {
-  .leaf-bg { background-size: cover; }
+  .leaf-bg {
+    background-size: cover;
+  }
 }
 
 /* Old landing heading → display size */
@@ -3433,7 +3621,7 @@ details > *:last-child {
 }
 
 /* Old "rounded card" wrapper */
-.rounded-card > * {
+.rounded-card>* {
   border-radius: var(--radius-sm) !important;
 }
 
@@ -3451,21 +3639,46 @@ details > *:last-child {
    13. UTILITIES
    ========================================================================== */
 
-.text-center { text-align: center; }
-.text-olive  { color: var(--olive); }
-.text-muted  { color: var(--text-muted) !important; }
-.bg-white    { background: #fff !important; }
-.bg-soft     { background: var(--bg-soft); }
-.bg-tint     { background: var(--olive-light); }
-.bg-olive    { background: var(--olive); }
-.bg-dark     { background: var(--dark); }
+.text-center {
+  text-align: center;
+}
+
+.text-olive {
+  color: var(--olive);
+}
+
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.bg-white {
+  background: #fff !important;
+}
+
+.bg-soft {
+  background: var(--bg-soft);
+}
+
+.bg-tint {
+  background: var(--olive-light);
+}
+
+.bg-olive {
+  background: var(--olive);
+}
+
+.bg-dark {
+  background: var(--dark);
+}
 
 .rounded {
   border-radius: var(--radius-md) !important;
   overflow: hidden;
 }
 
-.shadow-card { box-shadow: var(--shadow-card); }
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
 
 .screen-reader-text {
   position: absolute;
@@ -3477,6 +3690,7 @@ details > *:last-child {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
